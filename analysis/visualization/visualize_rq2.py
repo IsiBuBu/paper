@@ -1,0 +1,309 @@
+# analysis/visualization/visualize_rq2.py
+
+import pandas as pd
+import numpy as np
+import logging
+import json
+from pathlib import Path
+from scipy import stats
+
+try:
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
+    PLOT_LIBS_INSTALLED = True
+except ImportError:
+    PLOT_LIBS_INSTALLED = False
+
+from config.config import get_analysis_dir, get_experiments_dir
+
+# --- Helper Functions ---
+
+def get_ci(data):
+    """Calculates the 95% confidence interval for a given dataset."""
+    if len(data) < 2:
+        return 0
+    mean, sem = np.mean(data), stats.sem(data)
+    # Return half the width of the CI
+    return sem * stats.t.ppf((1 + 0.95) / 2., len(data)-1)
+
+def format_with_ci(mean, ci, precision=2):
+    """Formats a mean and confidence interval into a string."""
+    return f"{mean:.{precision}f} [{mean-ci:.{precision}f}, {mean+ci:.{precision}f}]"
+
+def _get_raw_results_rq2(results_dir: Path, game_name: str) -> pd.DataFrame:
+    """Loads and structures raw JSON data for RQ2 analysis."""
+    records = []
+    for file_path in results_dir.glob(f"{game_name}/*/*_competition_result*.json"):
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for sim in data.get('simulation_results', []):
+                if 'rounds' in sim['game_data']:
+                    trigger_price = sim['game_data'].get('constants', {}).get('trigger_price')
+                    for i, round_data in enumerate(sim['game_data']['rounds']):
+                        challenger_action = round_data.get('actions', {}).get('challenger', {})
+                        challenger_true_cost = round_data.get('player_true_costs', {}).get('challenger')
+                        
+                        record = {
+                            'game': sim['game_name'],
+                            'model': sim['challenger_model'],
+                            'condition': sim['condition_name'],
+                            'simulation_id': sim['simulation_id'],
+                            'round': i + 1,
+                            'market_state': round_data.get('market_state'),
+                            'market_price': round_data.get('market_price'),
+                            'trigger_price': trigger_price,
+                            'challenger_true_cost': challenger_true_cost,
+                            'challenger_report': challenger_action.get('report'),
+                            'challenger_quantity': challenger_action.get('quantity')
+                        }
+                        records.append(record)
+    return pd.DataFrame(records)
+
+# --- Table Generation ---
+
+def _create_rq2_tables(magic_df, tables_dir):
+    """Creates and saves the per-game summary tables for RQ2 MAgIC metrics (Tables 2.1-2.4)."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Creating RQ2 per-game summary tables (Tables 2.1-2.4)...")
+
+    agg_df = magic_df.groupby(['game', 'model', 'condition', 'metric'])['mean'].agg(['mean', get_ci]).reset_index()
+
+    for game in agg_df['game'].unique():
+        game_df = agg_df[agg_df['game'] == game].copy()
+        
+        game_df['formatted_metric'] = game_df.apply(
+            lambda row: format_with_ci(row['mean'], row['get_ci']), axis=1
+        )
+        
+        pivot = game_df.pivot_table(
+            index='model',
+            columns=['condition', 'metric'],
+            values='formatted_metric',
+            aggfunc='first'
+        ).sort_index(axis=1)
+
+        table_path = tables_dir / f"T2_{game}_magic_summary.csv"
+        pivot.to_csv(table_path)
+        logger.info(f"Saved table: {table_path}")
+
+def _create_composite_magic_table(magic_df, tables_dir):
+    """Creates a comprehensive table of all unique MAgIC metrics for the 3-player condition."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Creating Table 2.0: Composite MAgIC Metrics Profile...")
+
+    baseline_df = magic_df[magic_df['condition'].str.contains('3_players|few_players')].copy()
+    
+    baseline_df['composite_metric'] = baseline_df.apply(
+        lambda row: f"{row['metric'].replace('_', ' ').title()} ({row['game'].replace('_', ' ').title()})", axis=1
+    )
+    
+    agg_df = baseline_df.groupby(['model', 'composite_metric'])['mean'].agg(['mean', get_ci]).reset_index()
+    agg_df['formatted_score'] = agg_df.apply(lambda row: format_with_ci(row['mean'], row['get_ci']), axis=1)
+
+    pivot_table = agg_df.pivot_table(index='model', columns='composite_metric', values='formatted_score', aggfunc='first')
+    
+    table_path = tables_dir / "T2.0_Composite_MAgIC_Profile.csv"
+    pivot_table.to_csv(table_path)
+    logger.info(f"Saved table: {table_path}")
+
+
+# --- Plot Generation ---
+
+def _plot_composite_magic_profile(magic_df, plots_dir):
+    """Plot 1.1: Composite MAgIC Profile (Radar Chart)."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Generating Plot 1.1: Composite MAgIC Profile (Radar Charts)...")
+    
+    magic_df['composite_metric'] = magic_df.apply(
+        lambda row: f"{row['metric'].replace('_', ' ').title()}\n({row['game'].split('_')[0].title()})", axis=1
+    )
+    
+    magic_df['structural_variation'] = np.where(magic_df['condition'].str.contains('5_players|more_players', regex=True), '5-Player', '3-Player')
+    
+    for variation in magic_df['structural_variation'].unique():
+        condition_df = magic_df[magic_df['structural_variation'] == variation]
+        pivot_df = condition_df.pivot_table(index='model', columns='composite_metric', values='mean').fillna(0)
+        
+        labels = pivot_df.columns
+        num_vars = len(labels)
+        
+        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(12, 12), subplot_kw=dict(polar=True))
+
+        for model in sorted(pivot_df.index):
+            values = pivot_df.loc[model].tolist()
+            values += values[:1]
+            ax.plot(angles, values, label=model, linewidth=2)
+            ax.fill(angles, values, alpha=0.25)
+
+        ax.set_yticklabels([])
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels, size=12)
+        
+        plt.title(f"Composite MAgIC Profile ({variation} Condition)", size=20, y=1.1)
+        plt.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
+        plt.tight_layout()
+        plt.savefig(plots_dir / f"P1.1_composite_magic_profile_{variation}.png")
+        plt.close()
+
+def _plot_game_specific_adaptation(magic_df, plots_dir):
+    """Plot 2.1: Game-Specific Behavioral Adaptation using the best chart type for the number of metrics."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Generating Plot 2.1: Game-Specific Behavioral Adaptation (Scatter/Radar Plots)...")
+
+    magic_df['structural_variation'] = np.where(magic_df['condition'].str.contains('5_players|more_players', regex=True), '5-Player', '3-Player')
+
+    for game in magic_df['game'].unique():
+        game_df = magic_df[magic_df['game'] == game]
+        
+        pivot_df = game_df.pivot_table(index='model', columns=['metric', 'structural_variation'], values='mean').fillna(0)
+        
+        # Create combined labels for radar chart axes
+        labels = [f"{metric.replace('_',' ').title()}\n({sv})" for metric, sv in pivot_df.columns]
+        num_vars = len(labels)
+        
+        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+        angles += angles[:1]
+
+        fig, ax = plt.subplots(figsize=(12, 12), subplot_kw=dict(polar=True))
+
+        for model in sorted(pivot_df.index):
+            values = pivot_df.loc[model].tolist()
+            values += values[:1]
+            ax.plot(angles, values, label=model, linewidth=2)
+            ax.fill(angles, values, alpha=0.2)
+
+        ax.set_yticklabels([])
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels, size=12)
+        plt.title(f"{game.replace('_',' ').title()} Profile", size=16, y=1.1)
+        plt.legend(loc='upper right', bbox_to_anchor=(1.4, 1.1))
+        plt.tight_layout()
+        plt.savefig(plots_dir / f"P2.1_{game}_radar_profile.png")
+        plt.close()
+
+def _plot_collusion_stability(results_dir, plots_dir):
+    """Plot 3.1: Collusion Stability 'Survival Curve' for Green & Porter."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Generating Plot 3.1: Collusion Stability 'Survival Curve'...")
+    
+    raw_df = _get_raw_results_rq2(results_dir, 'green_porter')
+    if raw_df.empty:
+        logger.warning("No raw data found for Green & Porter to plot collusion stability.")
+        return
+        
+    total_sims = raw_df.groupby(['model', 'condition'])['simulation_id'].nunique().reset_index(name='total_sims')
+    collusion_counts = raw_df[raw_df['market_state'] == 'Collusive'].groupby(['model', 'condition', 'round']).size().reset_index(name='collusive_count')
+    collusion_prop = pd.merge(collusion_counts, total_sims, on=['model', 'condition'])
+    collusion_prop['proportion'] = collusion_prop['collusive_count'] / collusion_prop['total_sims']
+    collusion_prop['condition_type'] = np.where(collusion_prop['condition'].str.contains('5_players|more_players'), '5-Player', '3-Player')
+
+    for condition_type in collusion_prop['condition_type'].unique():
+        plt.figure(figsize=(14, 8))
+        plot_data = collusion_prop[collusion_prop['condition_type'] == condition_type]
+        sns.lineplot(data=plot_data, x='round', y='proportion', hue='model', lw=2.5, palette='tab10', markers=True)
+        plt.title(f"Collusion Stability 'Survival Curve' (Green & Porter, {condition_type})", fontsize=16)
+        plt.xlabel("Game Round", fontsize=12)
+        plt.ylabel("Proportion of Games in Collusion", fontsize=12)
+        plt.ylim(0, 1.05)
+        plt.legend(title='Model')
+        plt.grid(True, linestyle='--', alpha=0.6)
+        plt.tight_layout()
+        plt.savefig(plots_dir / f"P3.1_green_porter_collusion_stability_{condition_type}.png")
+        plt.close()
+
+def _plot_nuanced_reporting_strategy(results_dir, plots_dir):
+    """Plot 3.3: Nuanced Reporting Strategy Over Time for Athey & Bagwell."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Generating Plot 3.3: Nuanced Reporting Strategy Over Time...")
+    
+    raw_df = _get_raw_results_rq2(results_dir, 'athey_bagwell')
+    if raw_df.empty:
+        logger.warning("No raw data found for Athey & Bagwell to plot reporting strategy.")
+        return
+        
+    raw_df['deception_event'] = ((raw_df['challenger_true_cost'] == 'high') & (raw_df['challenger_report'] == 'low')).astype(int)
+    rates_df = raw_df.groupby(['model', 'condition', 'round'])['deception_event'].mean().reset_index()
+    rates_df['condition_type'] = np.where(rates_df['condition'].str.contains('5_players|more_players'), '5-Player', '3-Player')
+    
+    for condition_type in rates_df['condition_type'].unique():
+        plt.figure(figsize=(14, 8))
+        plot_data = rates_df[rates_df['condition_type'] == condition_type]
+        sns.lineplot(data=plot_data, x='round', y='deception_event', hue='model', palette='viridis', lw=2.5, markers=True)
+        plt.title(f"Deception Rate Over Time (Athey & Bagwell, {condition_type})", fontsize=16)
+        plt.xlabel("Game Round", fontsize=12)
+        plt.ylabel("Proportion of 'Low' Reports when Cost is High", fontsize=12)
+        plt.legend(title='Model', bbox_to_anchor=(1.05, 1), loc='upper left')
+        plt.grid(True, linestyle='--', alpha=0.6)
+        plt.tight_layout(rect=[0, 0, 0.85, 1])
+        plt.savefig(plots_dir / f"P3.3_athey_bagwell_deception_strategy_{condition_type}.png")
+        plt.close()
+
+def _save_reporting_strategy_matrix(results_dir, tables_dir):
+    """Save Reporting Strategy Matrix as a CSV for Athey & Bagwell."""
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("Saving Reporting Strategy Matrix as CSV...")
+    
+    raw_df = _get_raw_results_rq2(results_dir, 'athey_bagwell')
+    if raw_df.empty:
+        logger.warning("No raw data found for Athey & Bagwell to create reporting matrix.")
+        return
+    
+    strategy_df = raw_df.groupby(['model', 'condition', 'challenger_true_cost', 'challenger_report']).size().reset_index(name='count')
+    total_counts = strategy_df.groupby(['model', 'condition', 'challenger_true_cost'])['count'].transform('sum')
+    strategy_df['probability'] = strategy_df['count'] / total_counts
+    
+    pivot_df = strategy_df.pivot_table(index=['model', 'condition'], columns=['challenger_true_cost', 'challenger_report'], values='probability').fillna(0)
+    
+    table_path = tables_dir / "T3.4_athey_bagwell_reporting_strategy.csv"
+    pivot_df.to_csv(table_path)
+    logger.info(f"Saved table: {table_path}")
+
+# --- Main Visualization Function ---
+
+def visualize_rq2():
+    """Generates all tables and plots for Research Question 2."""
+    if not PLOT_LIBS_INSTALLED:
+        print("Plotting libraries not installed. Skipping visualization.")
+        return
+
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)-20s - %(levelname)-8s - %(message)s')
+    logger = logging.getLogger("RQ2Visualizer")
+    logger.info("--- Generating visualizations for RQ2: Strategic Capability ---")
+    
+    analysis_dir = get_analysis_dir()
+    results_dir = get_experiments_dir()
+
+    plots_dir = analysis_dir / "plots" / "rq2"
+    tables_dir = analysis_dir / "tables" / "rq2"
+    plots_dir.mkdir(exist_ok=True, parents=True)
+    tables_dir.mkdir(exist_ok=True, parents=True)
+
+    try:
+        magic_df = pd.read_csv(analysis_dir / "magic_behavioral_metrics.csv")
+
+        # --- Generate Tables ---
+        _create_rq2_tables(magic_df, tables_dir)
+        _create_composite_magic_table(magic_df, tables_dir)
+        _save_reporting_strategy_matrix(results_dir, tables_dir)
+        
+        # --- Generate Plots ---
+        _plot_composite_magic_profile(magic_df, plots_dir)
+        _plot_game_specific_adaptation(magic_df, plots_dir)
+        _plot_collusion_stability(results_dir, plots_dir)
+        _plot_nuanced_reporting_strategy(results_dir, plots_dir)
+        
+        logger.info("--- Finished RQ2 visualizations ---")
+        
+    except FileNotFoundError as e:
+        logger.error(f"Failed to find necessary file for RQ2 visualizations: {e}")
+    except Exception as e:
+        logger.error(f"An unexpected error occurred during RQ2 visualization: {e}", exc_info=True)
+
+
+if __name__ == '__main__':
+    visualize_rq2()

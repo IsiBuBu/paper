@@ -1,0 +1,231 @@
+{
+  "models": {
+    "challenger_models": [
+      "gemini_2_5_flash_thinking_medium",
+      "gemini_2_5_flash_thinking_low",
+      "gemini_2_5_flash_thinking_off",
+      "gemini_2_5_flash_lite_thinking_medium",
+      "gemini_2_5_flash_lite_thinking_low",
+      "gemini_2_5_flash_lite_thinking_off",
+      "gemini_2_0_flash_lite",
+      "gemini_2_0_flash",
+      "random_agent"
+    ],
+    "defender_model": "gemini_2_0_flash_lite"
+  },
+  "model_configs": {
+    "random_agent": {
+      "provider": "baseline",
+      "model_name": "random_agent",
+      "display_name": "Random Player",
+      "thinking_available": false
+    },
+    "gemini_2_0_flash_lite": {
+      "provider": "google",
+      "model_name": "gemini-2.0-flash-lite",
+      "display_name": "Gemini 2.0 Flash-Lite",
+      "thinking_available": false,
+      "temperature": 1.0
+    },
+    "gemini_2_0_flash": {
+      "provider": "google",
+      "model_name": "gemini-2.0-flash",
+      "display_name": "Gemini 2.0 Flash",
+      "thinking_available": false,
+      "temperature": 1.0
+    },
+    "gemini_2_5_flash_lite_thinking_off": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash-lite",
+      "display_name": "Gemini 2.5 Flash-Lite (Thinking Off)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 0
+      },
+      "temperature": 1.0
+    },
+    "gemini_2_5_flash_thinking_off": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash",
+      "display_name": "Gemini 2.5 Flash (Thinking Off)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 0
+      },
+      "temperature": 1.0
+    },
+    "gemini_2_5_flash_lite_thinking_low": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash-lite",
+      "display_name": "Gemini 2.5 Flash-Lite (Low Budget)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 1024
+      },
+      "temperature": 1.0
+    },
+    "gemini_2_5_flash_thinking_low": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash",
+      "display_name": "Gemini 2.5 Flash (Low Budget)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 1024
+      },
+      "temperature": 1.0
+    },
+     "gemini_2_5_flash_lite_thinking_medium": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash-lite",
+      "display_name": "Gemini 2.5 Flash-Lite (Medium Budget)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 8192
+      },
+      "temperature": 1.0
+    },
+    "gemini_2_5_flash_thinking_medium": {
+      "provider": "google",
+      "model_name": "gemini-2.5-flash",
+      "display_name": "Gemini 2.5 Flash (Medium Budget)",
+      "thinking_available": true,
+      "thinking_config": {
+        "thinking_budget": 8192
+      },
+      "temperature": 1.0
+    }
+  },
+  "experiment_config": {
+    "main_experiment_simulations": 50,
+    "ablation_experiment_simulations": 50,
+    "random_seed": 42
+  },
+  "game_configs": {
+    "salop": {
+      "baseline": {
+        "transport_cost": 1.5,
+        "reservation_price": 30,
+        "max_brand_utility": 40,
+        "outside_good_surplus": 10,
+        "marginal_cost": 8,
+        "fixed_cost": 100,
+        "market_size": 3600,
+        "circumference": 1.0
+      },
+      "structural_variations": {
+        "few_players": {
+          "number_of_players": 3
+        },
+        "more_players": {
+          "number_of_players": 5
+        }
+      },
+      "ablation_studies": {
+        "low_transport": {
+          "transport_cost": 0.5,
+          "description": "Low transport cost increases competition"
+        }
+      }
+    },
+    "green_porter": {
+      "baseline": {
+        "base_demand": 120,
+        "demand_slope": 1,
+        "marginal_cost": 20,
+        "demand_shock_mean": 0,
+        "demand_shock_std": 5,
+        "demand_shock_distribution": "normal",
+        "trigger_price": 62,
+        "punishment_duration": 3,
+        "discount_factor": 0.9,
+        "time_horizon": 50
+      },
+      "structural_variations": {
+        "few_players": {
+          "number_of_players": 3,
+          "collusive_quantity": 17,
+          "cournot_quantity": 25
+        },
+        "more_players": {
+          "number_of_players": 5,
+          "collusive_quantity": 10,
+          "cournot_quantity": 17
+        }
+      },
+      "ablation_studies": {
+        "low_discount_factor": {
+          "discount_factor": 0.5,
+          "description": "Low discount factor makes future punishments less effective."
+        }
+      }
+    },
+    "spulber": {
+      "baseline": {
+        "demand_intercept": 100,
+        "demand_slope": 1,
+        "rival_cost_mean": 10,
+        "rival_cost_std": 2.0,
+        "rival_cost_distribution": "normal"
+      },
+      "challenger_config": {
+        "your_cost": 8
+      },
+      "structural_variations": {
+        "few_players": {
+          "number_of_players": 3
+        },
+        "more_players": {
+          "number_of_players": 5
+        }
+      },
+      "ablation_studies": {
+        "wide_cost_range": {
+          "rival_cost_std": 4.0
+        }
+      }
+    },
+    "athey_bagwell": {
+      "baseline": {
+        "persistence_probability": 0.7,
+        "cost_types": {
+          "high": 25,
+          "low": 15
+        },
+        "market_price": 30,
+        "market_size": 100,
+        "discount_factor": 0.9,
+        "time_horizon": 50
+      },
+      "structural_variations": {
+        "few_players": {
+          "number_of_players": 3
+        },
+        "more_players": {
+          "number_of_players": 5
+        }
+      },
+      "ablation_studies": {
+        "low_persistence": {
+          "persistence_probability": 0.3,
+          "description": "Low cost persistence reduces reputational stakes"
+        }
+      }
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "experiments.log",
+    "console": true
+  },
+  "output": {
+    "main_output_dir": "output",
+    "data_dir": "data",
+    "experiments_dir": "experiments",
+    "analysis_dir": "analysis"
+  },
+  "api_config": {
+    "rate_limit_delay": 1.0,
+    "max_retries": 3,
+    "timeout": 30
+  }
+}
