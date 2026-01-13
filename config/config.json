@@ -96,8 +96,7 @@
     }
   },
   "experiment_config": {
-    "main_experiment_simulations": 50,
-    "ablation_experiment_simulations": 50,
+    "main_experiment_simulations": 100,
     "random_seed": 42
   },
   "game_configs": {
@@ -119,12 +118,6 @@
         "more_players": {
           "number_of_players": 5
         }
-      },
-      "ablation_studies": {
-        "low_transport": {
-          "transport_cost": 0.5,
-          "description": "Low transport cost increases competition"
-        }
       }
     },
     "green_porter": {
@@ -133,10 +126,10 @@
         "demand_slope": 1,
         "marginal_cost": 20,
         "demand_shock_mean": 0,
-        "demand_shock_std": 5,
+        "demand_shock_std": 7,
         "demand_shock_distribution": "normal",
-        "trigger_price": 62,
-        "punishment_duration": 3,
+        "trigger_price": 66,
+        "punishment_duration": 2,
         "discount_factor": 0.9,
         "time_horizon": 50
       },
@@ -150,12 +143,6 @@
           "number_of_players": 5,
           "collusive_quantity": 10,
           "cournot_quantity": 17
-        }
-      },
-      "ablation_studies": {
-        "low_discount_factor": {
-          "discount_factor": 0.5,
-          "description": "Low discount factor makes future punishments less effective."
         }
       }
     },
@@ -177,11 +164,6 @@
         "more_players": {
           "number_of_players": 5
         }
-      },
-      "ablation_studies": {
-        "wide_cost_range": {
-          "rival_cost_std": 4.0
-        }
       }
     },
     "athey_bagwell": {
@@ -202,12 +184,6 @@
         },
         "more_players": {
           "number_of_players": 5
-        }
-      },
-      "ablation_studies": {
-        "low_persistence": {
-          "persistence_probability": 0.3,
-          "description": "Low cost persistence reduces reputational stakes"
         }
       }
     }
