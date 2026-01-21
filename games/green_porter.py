@@ -12,7 +12,7 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
 
     This class manages a multi-round Cournot competition with demand uncertainty.
     It uses a State Transition Algorithm triggered by a price threshold to switch
-    between "Collusive" and "Reversionary" (punishment) phases, as specified in t.txt.
+    between "Collusive" and "Reversionary" (punishment) phases.
     """
 
     def __init__(self):
@@ -45,22 +45,74 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         }
 
     def generate_player_prompt(self, player_id: str, game_state: Dict, game_config: GameConfig) -> str:
-        """Generates a prompt for a player with current market conditions."""
+        """Generates a prompt for a player with current market conditions and explicit state history."""
+        current_period = game_state.get('current_period', 1)
         price_history = game_state.get('price_history', [])
+        state_history = game_state.get('state_history', [])
+        
+        # --- 1. Format History Table ---
+        # Determine history length to display (e.g., last 10 periods)
+        history_limit = 10
+        start_index = max(0, len(price_history) - history_limit)
+        
+        recent_prices = price_history[start_index:]
+        recent_states = state_history[start_index:]
+        
+        history_lines = []
+        for i, (price, state) in enumerate(zip(recent_prices, recent_states)):
+            # Calculate the actual period number for this entry
+            period_num = start_index + i + 1
+            history_lines.append(f"Period {period_num} | {state} | ${price:.2f}")
+            
+        formatted_history_table = "\n".join(history_lines) if history_lines else "No history yet."
+
+        # --- 2. Calculate Economic Variables for Prompt ---
+        constants = game_config.constants
+        base_demand = constants.get('base_demand', 120)
+        slope = constants.get('demand_slope', 1)
+        mc = constants.get('marginal_cost', 20)
+        q_cournot = constants.get('cournot_quantity', 25)
+        num_players = constants.get('number_of_players', 3) 
+        q_collusive = constants.get('collusive_quantity', 17)
+
+        # A. Expected Price War Price (assuming all play Cournot)
+        # Price = A - B * (N * Q_cournot)
+        total_q_war = q_cournot * num_players
+        price_war_price = max(0, base_demand - (slope * total_q_war))
+        
+        # B. Expected Price War Profit
+        # Profit = (Price - MC) * Q_cournot
+        price_war_profit = (price_war_price - mc) * q_cournot
+
+        # C. Immediate Defect Profit (assuming others Cooperate)
+        # Price = A - B * ( (N-1)*Q_collusive + Q_defect )
+        # The defecting firm plays Cournot (25) while N-1 firms play Collusive (17)
+        total_q_defect = ((num_players - 1) * q_collusive) + q_cournot
+        defect_price = max(0, base_demand - (slope * total_q_defect))
+        immediate_defect_profit = (defect_price - mc) * q_cournot
+
         variables = get_prompt_variables(
             game_config,
             player_id=player_id,
-            current_round=game_state.get('current_period', 1),
+            current_round=current_period,
             current_market_state=game_state.get('market_state', 'Collusive'),
             price_history=price_history,
             price_history_length=len(price_history)
         )
+        
+        # Inject new variables
+        variables.update({
+            'formatted_history_table': formatted_history_table,
+            'expected_price_war_price': f"{price_war_price:.2f}",
+            'expected_price_war_profit': f"{price_war_profit:.2f}",
+            'immediate_defect_profit': f"{immediate_defect_profit:.2f}"
+        })
+        
         return self.prompt_template.format(**variables)
 
     def parse_llm_response(self, response: str, player_id: str, call_id: str, stage: int = 1) -> Optional[Dict[str, Any]]:
         """
         Parses the LLM's 'Cooperate' or 'Defect' decision and returns the corresponding quantity.
-        Accepts 'stage' argument for compatibility with the base class.
         """
         if not self.game_config:
             self.logger.error("Game config not initialized. Cannot map action to quantity.")
@@ -114,15 +166,19 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         return payoffs
 
     def update_game_state(self, game_state: Dict, actions: Dict[str, Any], game_config: GameConfig, payoffs: Dict[str, float]) -> Dict:
-        """Updates the game state using the State Transition Algorithm from t.txt."""
+        """Updates the game state using the State Transition Algorithm."""
         constants = game_config.constants
-        trigger_price = constants.get('trigger_price', 55)
-        punishment_periods = constants.get('punishment_duration', 3)
+        trigger_price = constants.get('trigger_price', 66)
+        punishment_periods = constants.get('punishment_duration', 2)
         market_price = game_state.get('current_market_price', 0)
+        
+        # Capture the state BEFORE updating it, to record what state generated this price
+        current_state_label = game_state['market_state']
 
         # Update histories
         game_state['price_history'].append(market_price)
-        game_state['state_history'].append(game_state['market_state'])
+        game_state['state_history'].append(current_state_label)
+        
         for pid, action in actions.items():
             game_state['quantity_history'][pid].append(action.get('quantity', constants.get('cournot_quantity', 25)))
             game_state['profit_history'][pid].append(payoffs.get(pid, 0.0))

@@ -1,6 +1,6 @@
 ## Your Strategic Problem: Pricing for Two Markets at Once
 
-You are one of {number_of_players} firms competing in a circular market with a circumference of **{circumference}** and a total of **{market_size}** customers. Your core challenge is to set a single price that balances the exploitation of your "local monopoly" power over nearby customers against the need to capture market share from direct competitors.
+You are one of **{number_of_players}** firms competing in a circular market with a circumference of **{circumference}** and a total of **{market_size}** customers.Your nearest competitors are located at a distance of **{circumference}/{number_of_players}** on either side. Your core challenge is to set a single price that balances the exploitation of your "local monopoly" power over nearby customers against the need to capture market share from direct competitors.
 
 ### Key Information & Market Dynamics:
 
