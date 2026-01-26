@@ -1,5 +1,3 @@
-# games/spulber.py
-
 from typing import Dict, Any, Optional
 
 from config.config import GameConfig, get_prompt_variables
@@ -8,10 +6,6 @@ from games.base_game import StaticGame, PriceParsingMixin
 class SpulberGame(StaticGame, PriceParsingMixin):
     """
     Implements the Spulber (1995) Bertrand competition game with unknown costs.
-
-    This class defines the logic for a static, winner-take-all price auction.
-    It uses the Winner Determination Algorithm from t.txt to identify the lowest
-    bidder, handle ties by splitting the market, and calculate profits accordingly.
     """
 
     def __init__(self):
@@ -24,7 +18,7 @@ class SpulberGame(StaticGame, PriceParsingMixin):
             'current_round': 1,
             'simulation_id': simulation_id,
             'constants': game_config.constants,
-            'player_private_costs': {} # Explicit field for private costs
+            'player_private_costs': {} 
         }
 
     def generate_player_prompt(self, player_id: str, game_state: Dict, game_config: GameConfig) -> str:
@@ -47,7 +41,7 @@ class SpulberGame(StaticGame, PriceParsingMixin):
         return parsed
 
     def calculate_payoffs(self, actions: Dict[str, Any], game_config: GameConfig, game_state: Optional[Dict] = None) -> Dict[str, float]:
-        """Calculates payoffs using the Winner Determination Algorithm from t.txt."""
+        """Calculates payoffs using the Winner Determination Algorithm."""
         constants = game_config.constants
         demand_intercept = constants.get('demand_intercept', 100)
         
@@ -70,17 +64,14 @@ class SpulberGame(StaticGame, PriceParsingMixin):
                 
                 player_cost = private_costs.get(player_id)
                 
-                # --- FIX: Ensure player_cost is a number, not a list ---
+                # Logic to handle if cost is a list vs scalar
                 if isinstance(player_cost, list):
-                    # This handles the case where the full list was passed instead of a single value
                     sim_id = game_state.get('simulation_id', 0)
                     if sim_id < len(player_cost):
                         player_cost = player_cost[sim_id]
                     else:
-                        # Fallback if the list is unexpectedly short
                         player_cost = constants.get('your_cost')
                 elif player_cost is None:
-                     # Fallback for the challenger if no pre-generated cost is found
                     player_cost = constants.get('your_cost')
 
                 profit = (min_price - player_cost) * quantity_sold
@@ -96,10 +87,18 @@ class SpulberGame(StaticGame, PriceParsingMixin):
         min_price = min(prices.values()) if prices else 0
         winners = [pid for pid, price in prices.items() if price == min_price]
 
+        # Resolve costs to scalars for logging, ensuring Metrics Calculator receives clean numbers
         private_costs = game_state.get('player_private_costs', {})
+        resolved_costs = {}
+        for pid, cost in private_costs.items():
+            if isinstance(cost, list):
+                sim_id = game_state.get('simulation_id', 0)
+                resolved_costs[pid] = cost[sim_id] if sim_id < len(cost) else cost[0]
+            else:
+                resolved_costs[pid] = cost
 
         return {
             "constants": game_config.constants,
             "winner_ids": winners,
-            "player_private_costs": private_costs
+            "player_private_costs": resolved_costs # Metrics calculator expects scalars here
         }

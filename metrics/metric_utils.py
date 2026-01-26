@@ -1,11 +1,9 @@
-# metrics/metric_utils.py
-
 import numpy as np
 import logging
+import json
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-import json
 
 # --- Core Data Structures for Metrics and Results ---
 
@@ -28,7 +26,6 @@ class MetricResult:
 class GameResult:
     """
     Standardized container for the complete output of a single game simulation.
-    This structure aligns with the desired JSON output format for results.
     """
     simulation_id: int
     game_name: str
@@ -38,7 +35,7 @@ class GameResult:
     players: List[str]
     actions: Dict[str, Any]
     payoffs: Dict[str, float]
-    game_data: Dict[str, Any] # For game-specific outcomes and logged data
+    game_data: Dict[str, Any]
 
 @dataclass
 class PlayerMetrics:
@@ -50,6 +47,18 @@ class PlayerMetrics:
     performance_metrics: Dict[str, MetricResult] = field(default_factory=dict)
     magic_metrics: Dict[str, MetricResult] = field(default_factory=dict)
     dynamic_metrics: Dict[str, Any] = field(default_factory=dict)
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Helper to serialize nested MetricResults."""
+        return {
+            "player_id": self.player_id,
+            "game_name": self.game_name,
+            "experiment_type": self.experiment_type,
+            "condition_name": self.condition_name,
+            "performance_metrics": {k: v.to_dict() for k, v in self.performance_metrics.items()},
+            "magic_metrics": {k: v.to_dict() for k, v in self.magic_metrics.items()},
+            "dynamic_metrics": self.dynamic_metrics
+        }
 
 @dataclass
 class ExperimentResults:
@@ -60,7 +69,8 @@ class ExperimentResults:
     # Nested dict structure: {challenger_model: {condition_name: PlayerMetrics}}
     results: Dict[str, Dict[str, PlayerMetrics]] = field(default_factory=dict)
 
-# --- MISSING CLASS DEFINITION ---
+# --- Metric Storage Utilities ---
+
 @dataclass
 class MetricStorage:
     """Utilities for saving and loading metrics results."""
@@ -68,14 +78,47 @@ class MetricStorage:
     @staticmethod
     def save_player_metrics(metrics: PlayerMetrics, filepath: str):
         """Save player metrics to a JSON file."""
-        # Implementation for saving metrics would go here
-        pass
+        path = Path(filepath)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        
+        try:
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(metrics.to_dict(), f, indent=2)
+        except Exception as e:
+            logging.getLogger("MetricStorage").error(f"Failed to save metrics to {filepath}: {e}")
 
     @staticmethod
-    def load_player_metrics(filepath: str) -> PlayerMetrics:
+    def load_player_metrics(filepath: str) -> Optional[PlayerMetrics]:
         """Load player metrics from a JSON file."""
-        # Implementation for loading metrics would go here
-        pass
+        path = Path(filepath)
+        if not path.exists():
+            return None
+            
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Reconstruct MetricResult objects
+            perf_metrics = {}
+            for k, v in data.get("performance_metrics", {}).items():
+                perf_metrics[k] = MetricResult(**v)
+                
+            magic_metrics = {}
+            for k, v in data.get("magic_metrics", {}).items():
+                magic_metrics[k] = MetricResult(**v)
+
+            return PlayerMetrics(
+                player_id=data["player_id"],
+                game_name=data["game_name"],
+                experiment_type=data["experiment_type"],
+                condition_name=data["condition_name"],
+                performance_metrics=perf_metrics,
+                magic_metrics=magic_metrics,
+                dynamic_metrics=data.get("dynamic_metrics", {})
+            )
+        except Exception as e:
+            logging.getLogger("MetricStorage").error(f"Failed to load metrics from {filepath}: {e}")
+            return None
 
 # --- Base Class for Metric Calculators ---
 
@@ -101,10 +144,9 @@ class MetricCalculator:
         """Calculates the Net Present Value of a stream of profits."""
         return sum(profit * (discount_factor ** t) for t, profit in enumerate(profit_stream))
 
-# --- Factory Functions for Creating Data Objects ---
+# --- Factory Functions ---
 
 def create_metric_result(name: str, value: float, description: str, metric_type: str, game_name: str, experiment_type: str, condition_name: str) -> MetricResult:
-    """Convenience factory for creating MetricResult objects."""
     return MetricResult(
         name=name, value=value, description=description, metric_type=metric_type,
         game_name=game_name, experiment_type=experiment_type, 
@@ -112,7 +154,6 @@ def create_metric_result(name: str, value: float, description: str, metric_type:
     )
 
 def create_game_result(simulation_id: int, game_name: str, experiment_type: str, condition_name: str, challenger_model: str, players: List[str], actions: Dict[str, Any], payoffs: Dict[str, float], game_data: Dict[str, Any]) -> GameResult:
-    """Convenience factory for creating GameResult objects."""
     return GameResult(
         simulation_id=simulation_id, game_name=game_name, experiment_type=experiment_type,
         condition_name=condition_name, challenger_model=challenger_model, players=players,

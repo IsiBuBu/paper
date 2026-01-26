@@ -1,18 +1,30 @@
-## Your Strategic Problem: Pricing for Two Markets at Once
+You are one of **{number_of_players}** firms competing in a circular market with a circumference of **{circumference}** and a total of **{market_size}** customers. Your nearest competitors are located at a distance of **{distance_to_neighbor}** on either side.
 
-You are one of **{number_of_players}** firms competing in a circular market with a circumference of **{circumference}** and a total of **{market_size}** customers.Your nearest competitors are located at a distance of **{circumference}/{number_of_players}** on either side. Your core challenge is to set a single price that balances the exploitation of your "local monopoly" power over nearby customers against the need to capture market share from direct competitors.
+### The Physics of Your Market Share
+Your market share depends entirely on how your price ($P$) compares to your neighbors' price ($P_{{rival}}$). You face two distinct demand regimes:
 
-### Key Information & Market Dynamics:
+1.  **Monopoly Boundary:** Customers are willing to travel to you only if their total cost (Price + Transport) is less than their reservation price ($R={reservation_price}$).
+    * **Formula:** Maximum reach in one direction is $x_{{max}} = (R - P) / {transport_cost}$.
+    **Strategic Implication:** If you charge a very high price, you shrink to a local monopoly and lose distant customers to the "Outside Good."
 
-* **Monopoly Segment:** For customers closest to you, your only competition is an "outside good." You can charge them a higher price, but their total cost is your price plus a travel cost. This travel cost is calculated as the **transportation cost of ${transport_cost} per unit of distance** multiplied by how far they are from you. If this total cost exceeds their effective **reservation price of ${reservation_price}**, they will buy nothing from your industry. (This reservation price is derived from a brand utility of **${max_brand_utility}** and an outside good surplus of **${outside_good_surplus}**).
-* **Competitive Segment:** At the edges of your market, your territory overlaps with your neighbors. To win these customers, you must offer a better deal (your price + their travel cost) than your rivals. Lowering your price here directly steals their market share.
-* **The Kink:** Your demand curve has a "kink" at the price where your market transitions from purely monopolistic to competitive. Your pricing decision revolves around this point.
+2.  **Competitive Boundary (The Critical Formula):**
+    If your price is low enough to compete with your neighbors, your market share is NOT fixed. It is dynamic. The boundary between you and a neighbor occurs where a customer is indifferent:
+    $$P + {transport_cost} \cdot x = P_{{rival}} + {transport_cost} \cdot ({distance_to_neighbor} - x)$$
+    
+    Solving for $x$ (your reach on one side), your total demand $Q$ (covering both left and right sides) becomes:
+    $$Q = {market_size} \cdot \left( {distance_to_neighbor} + \frac{{P_{{rival}} - P}}{{transport_cost}} \right)$$
 
-### Your Task:
+### Your Strategic Task
+Set a single price $P$ to maximize your **Profit**:
+$$Profit = (P - {marginal_cost}) \cdot Q - {fixed_cost}$$
 
-Choose your price for this period. Your objective is to maximize your total profit, calculated as `(Your Price - ${marginal_cost}) * Quantity Sold - ${fixed_cost}`.
+**Crucial Consideration:**
+You do not know $P_{{rival}}$ for certain, but you must assume your rivals are rational profit-maximizers who face the exact same incentives as you. 
+* If you set $P$ too high, $(P_{{rival}} - P)$ becomes negative, and you lose market share rapidly according to the formula above. 
+* If you set $P$ too low, you gain share but sacrifice margin.
+
+Find the Nash Equilibrium price—the price where neither you nor your rational competitors would want to change.
 
 ### Output Format:
-
-Respond with valid JSON only:
+You MUST respond with valid JSON first and only. Do not include any explanation or text:
 `{{"price": <number>}}`

@@ -12,30 +12,38 @@ from config.config import GameConfig
 class AgentResponse:
     """
     A standardized container for the response from any agent.
-    This includes the raw content, success status, and performance metadata.
+    
+    Attributes:
+        content: The cleaned answer text (JSON ready, NO thinking tags).
+        model: Model identifier.
+        success: Boolean status.
+        reasoning_content: The extracted reasoning/thinking text.
+        error: Error message if failed.
+        tokens_used: Total tokens (prompt + completion).
+        output_tokens: Completion tokens (includes thinking if model outputs it there).
+        thinking_tokens: Count of tokens used for reasoning (from API usage or estimated).
+        reasoning_char_count: Character count of the reasoning content.
+        response_time: Latency in seconds.
     """
     content: str
     model: str
     success: bool
+    reasoning_content: Optional[str] = None
     error: Optional[str] = None
     tokens_used: int = 0
     output_tokens: int = 0
     thinking_tokens: int = 0
+    reasoning_char_count: int = 0
     response_time: float = 0.0
 
 class BaseLLMAgent(ABC):
     """
-    An abstract base class that defines the common interface for all agents
-    in the simulation, whether they are LLM-based or baseline models like RandomAgent.
+    An abstract base class that defines the common interface for all agents.
     """
 
     def __init__(self, model_name: str, player_id: str):
         """
         Initializes the agent with a model name and a player ID.
-
-        Args:
-            model_name: The identifier for the model (e.g., "gemini-2.5-flash").
-            player_id: The unique identifier for the player in the game (e.g., "challenger").
         """
         self.model_name = model_name
         self.player_id = player_id
@@ -44,17 +52,6 @@ class BaseLLMAgent(ABC):
     @abstractmethod
     async def get_response(self, prompt: str, call_id: str, game_config: GameConfig, seed: Optional[int] = None) -> AgentResponse:
         """
-        The main method for an agent to generate a response. It takes a prompt and
-        returns a structured AgentResponse object.
-
-        Args:
-            prompt: The full text of the prompt to be sent to the agent.
-            call_id: A unique identifier for the API call, used for logging.
-            game_config: The complete configuration object for the current game,
-                         which can be used by baseline agents to determine their action.
-            seed: An optional random seed for reproducibility.
-
-        Returns:
-            An AgentResponse object containing the agent's action and metadata.
+        Generates a response from the agent.
         """
         pass

@@ -1,15 +1,11 @@
-# agents/__init__.py
-
 import logging
-from typing import Dict, Any
-
 from .base_agent import BaseLLMAgent, AgentResponse
 from .experiment_agent import ExperimentAgent
 from .random_agent import RandomAgent
 
-def create_agent(model_name: str, player_id: str, agent_type: str = 'experiment', mock_mode: bool = False, **kwargs) -> BaseLLMAgent:
+def create_agent(model_name: str, player_id: str, mock_mode: bool = False, **kwargs) -> BaseLLMAgent:
     """
-    Factory function to create an appropriate agent based on the model name and type.
+    Factory function to create an appropriate agent based on the model name.
     """
     logger = logging.getLogger(__name__)
 
@@ -17,22 +13,21 @@ def create_agent(model_name: str, player_id: str, agent_type: str = 'experiment'
         logger.info(f"🎭 MOCK MODE: Creating RandomAgent for {model_name} as {player_id}")
         return RandomAgent(model_name="random_mock", player_id=player_id)
 
-    # Default to experiment agent
+    # 1. Baseline Agents
     if model_name == 'random_agent':
         logger.info(f"🎲 Creating RandomAgent baseline for {model_name} as {player_id}")
         return RandomAgent(model_name=model_name, player_id=player_id)
     
-    elif 'gemini' in model_name.lower():
-        logger.info(f"🤖 Creating ExperimentAgent for {model_name} as {player_id}")
-        return ExperimentAgent(model_name, player_id, **kwargs)
-    
+    # 2. Experiment Agents (OpenAI-Compatible / vLLM)
+    # (Qwen, Llama) go through the ExperimentAgent which uses the OpenAI SDK.
     else:
-        raise ValueError(f"Unknown model or agent type specified: '{model_name}'")
+        logger.info(f"🤖 Creating ExperimentAgent for {model_name} as {player_id}")
+        return ExperimentAgent(model_name=model_name, player_id=player_id)
 
 __all__ = [
     "BaseLLMAgent",
     "AgentResponse",
-    "ExperimentAgent"
+    "ExperimentAgent",
     "RandomAgent",
     "create_agent"
 ]

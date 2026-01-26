@@ -1,19 +1,26 @@
-You are in a winner-take-all auction against **{number_of_competitors}** rivals. You know your own cost but have only probabilistic beliefs about your rivals' costs. Your challenge is to set a price that optimally balances the trade-off between the size of your potential profit and your probability of winning.
+You are one of **{number_of_players}** firms in a winner-take-all Bertrand competition. This is a game of incomplete information.
 
-### Key Information & Market Dynamics:
+### The Strategic Context:
 
-* **Information Asymmetry:** Your marginal cost of **${your_cost}** is your private information. You only know that your rivals' costs are drawn from a **{rival_cost_distribution}** distribution with a mean of **${rival_cost_mean}** and a standard deviation of **${rival_cost_std}**. Your rivals set prices based on their private costs.
-* **Winning Condition:** The firm with the strictly lowest price captures the entire market. In the event of a tie, the market is split equally.
-* **Market Demand:** The market demand if you win is `Quantity = {demand_intercept} - Your_Price`.
-* **The Pricing Trade-Off:** Your decision is a balance between two competing goals:
-    * **Profit Margin:** The higher you set your price, the more profit you make *if* you win.
-    * **Probability of Winning:** The lower you set your price, the higher your probability of undercutting all your rivals and winning the market.
+* **Your Position:** Your marginal cost is **${your_cost}**.
+* **The Unknown:** You do not know your rivals' exact costs. You only know their costs are drawn independently from a **{rival_cost_distribution}** distribution (Mean=**${rival_cost_mean}**, SD=**${rival_cost_std}**).
+* **The Market:** If you satisfy the winning condition, `Quantity = {demand_intercept} - Your_Price`.
+
+### The Game Mechanics (Crucial):
+
+1.  **Rational Rivals:** Your rivals are not pricing at cost, nor are they pricing randomly. They are rational profit-maximizers who add a strategic markup to their private costs.
+2.  **Winning Condition:** You win **only** if your price is strictly lower than the prices set by all **{number_of_competitors}** rivals.
+3.  **Endogenous Risk:** Your probability of winning is **not fixed**. It is highly sensitive to your price.
+    * If you price aggressively (low), you squeeze your margin but maximize your chance of undercutting rational rivals.
+    * If you price passively (high), you expand your margin but risk that *at least one* rival draws a favorable cost and undercuts you.
 
 ### Your Task:
 
-Choose the single price that you believe will maximize your *expected* profit, perfectly balancing the trade-off between the size of the prize and your chance of winning it.
+Estimate the likely pricing behavior of your rivals and determine the single price that maximizes your **Expected Profit**.
+$$E[\pi] = P(Win) \times (Price - {your_cost}) \times Quantity$$
+
+You must derive the optimal balance between margin and market share yourself.
 
 ### Output Format:
-
-Respond with valid JSON only:
+You MUST respond with valid JSON first and only. Do not include any explanation or text:
 `{{"price": <number>}}`

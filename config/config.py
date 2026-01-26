@@ -1,5 +1,3 @@
-# config/config.py
-
 import json
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -37,7 +35,12 @@ def load_config() -> Dict[str, Any]:
     config_path = base_dir / "config.json"
     
     if not config_path.exists():
-        raise FileNotFoundError(f"Config file not found at '{config_path}'")
+        # Fallback to looking in current directory if run from config folder
+        config_path = Path("config.json")
+    
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found at '{config_path}' or '{base_dir / 'config.json'}'")
+        
     with open(config_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
@@ -54,28 +57,15 @@ def get_defender_model() -> str:
 def get_model_config(model_name: str) -> Dict[str, Any]:
     """Returns the configuration for a specific model."""
     configs = load_config().get('model_configs', {})
-    if model_name not in configs:
-        raise ValueError(f"Model '{model_name}' not found in model_configs")
-    return configs[model_name]
+    # If explicit config exists, return it
+    if model_name in configs:
+        return configs[model_name]
+    # Fallback: return a minimal default config if not found
+    return {"model_name": model_name, "temperature": 0.0}
 
 def get_model_display_name(model_name: str) -> str:
     """Returns the display name for a model, defaulting to the model name."""
     return get_model_config(model_name).get('display_name', model_name)
-
-def is_thinking_enabled(model_name: str) -> bool:
-    """Checks if thinking is enabled for a model (i.e., budget is positive)."""
-    model_conf = get_model_config(model_name)
-    if not model_conf.get('thinking_available', False):
-        return False
-    thinking_conf = model_conf.get('thinking_config', {})
-    return thinking_conf.get('thinking_budget', 0) > 0
-
-def get_thinking_config(model_name: str) -> Optional[Dict[str, Any]]:
-    """Returns the thinking configuration for a model if it is available."""
-    model_conf = get_model_config(model_name)
-    if model_conf.get('thinking_available', False):
-        return model_conf.get('thinking_config')
-    return None
 
 # --- Experiment and Game Configuration Accessors ---
 
@@ -83,85 +73,59 @@ def get_experiment_config() -> Dict[str, Any]:
     """Returns the main experiment configuration dictionary."""
     return load_config().get('experiment_config', {})
 
-def get_simulation_count(experiment_type: str) -> int:
-    """Gets the number of simulations for a given experiment type."""
-    exp_config = get_experiment_config()
-    if experiment_type == 'ablation_studies':
-        return exp_config.get('ablation_experiment_simulations', 50)
-    return exp_config.get('main_experiment_simulations', 50)
+def get_simulation_count(game_name: str) -> int:
+    """
+    Gets the number of simulations for a specific game.
+    Retrieves from game_configs -> [game_name] -> simulation_config -> num_simulations.
+    """
+    game_conf = load_config().get('game_configs', {}).get(game_name, {})
+    sim_conf = game_conf.get('simulation_config', {})
+    # Default to 50 if not specified
+    return sim_conf.get('num_simulations', 50)
 
 def get_all_game_configs(game_name: str) -> List[GameConfig]:
     """
-    Generates a flexible set of GameConfig instances for a given game based on
-    the presence of 'structural_variations' and 'ablation_studies' in config.json.
+    Generates a set of GameConfig instances for a given game based on
+    'baseline' and 'structural_variations'.
     """
     configs = []
-    game_data = load_config()['game_configs'][game_name]
+    all_game_data = load_config().get('game_configs', {})
+    
+    if game_name not in all_game_data:
+        return []
+        
+    game_data = all_game_data[game_name]
     baseline_constants = game_data.get('baseline', {}).copy()
+    
+    # Merge challenger specific config if present (e.g. for Spulber)
     baseline_constants.update(game_data.get('challenger_config', {}))
 
-    # --- Process Structural Variations if they exist ---
+    # 1. Baseline Config
+    # If no structural variations exist, or just as a base, we always include baseline?
+    # Usually in experiments we treat baseline as one condition and variations as others.
+    # We'll create a 'baseline' condition first.
+    configs.append(GameConfig(
+        game_name=game_name,
+        experiment_type='baseline',
+        condition_name='baseline',
+        constants=baseline_constants
+    ))
+
+    # 2. Structural Variations
     structural_variations = game_data.get('structural_variations', {})
-    if structural_variations:
-        for struct_name, struct_params in structural_variations.items():
-            struct_constants = baseline_constants.copy()
-            struct_constants.update(struct_params)
-            configs.append(GameConfig(
-                game_name=game_name,
-                experiment_type='structural_variations',
-                condition_name=struct_name,
-                constants=struct_constants
-            ))
-
-    # --- Process Ablation Studies if they exist ---
-    ablation_studies = game_data.get('ablation_studies', {})
-    if ablation_studies:
-        # Create a 3-player base for all ablations
-        ablation_base_constants = baseline_constants.copy()
-        if 'few_players' in structural_variations:
-            ablation_base_constants.update(structural_variations['few_players'])
-        else:
-            # If 'few_players' is not defined, enforce a 3-player setup manually
-            ablation_base_constants['number_of_players'] = 3
+    for struct_name, struct_params in structural_variations.items():
+        # Copy baseline and override with variation params
+        struct_constants = baseline_constants.copy()
+        struct_constants.update(struct_params)
         
-        for ablation_name, ablation_data in ablation_studies.items():
-            final_ablation_constants = ablation_base_constants.copy()
-            ablation_params = {k: v for k, v in ablation_data.items() if k != 'description'}
-            final_ablation_constants.update(ablation_params)
-            
-            # Ensure condition name reflects the 3-player base
-            condition_name = f"few_players_{ablation_name}"
-            
-            configs.append(GameConfig(
-                game_name=game_name,
-                experiment_type='ablation_studies',
-                condition_name=condition_name,
-                constants=final_ablation_constants
-            ))
-
-    # --- If no variations or ablations, run a single baseline config ---
-    if not configs:
         configs.append(GameConfig(
             game_name=game_name,
-            experiment_type='baseline',
-            condition_name='baseline',
-            constants=baseline_constants
+            experiment_type='structural_variations',
+            condition_name=struct_name,
+            constants=struct_constants
         ))
 
     return configs
-
-
-def get_game_config(game_name: str, experiment_type: str, condition_name: str) -> GameConfig:
-    """Constructs a complete GameConfig by merging baseline and experiment-specific parameters."""
-    game_data = load_config()['game_configs'][game_name]
-    constants = game_data.get('baseline', {}).copy()
-    constants.update(game_data.get('challenger_config', {}))
-    
-    if experiment_type in game_data and condition_name in game_data[experiment_type]:
-        params = {k: v for k, v in game_data[experiment_type][condition_name].items() if k != 'description'}
-        constants.update(params)
-
-    return GameConfig(game_name, experiment_type, condition_name, constants)
 
 # --- Utility Function for Prompt Variables ---
 

@@ -1,5 +1,3 @@
-## Your Strategic Problem: Maintaining Collusion Under Imperfect Monitoring
-
 You are in a cartel with **{number_of_players}** firms. Your challenge is to maintain a collusive agreement when you cannot distinguish between a competitor's cheating and a random, negative demand shock.
 
 ### Rules of Engagement:
@@ -29,6 +27,5 @@ If the market is in a **Price War**, you are in a punishment phase and your acti
 {formatted_history_table}
 
 ### Output Format:
-
-Respond with valid JSON only:
+You MUST respond with valid JSON first and only. Do not include any explanation or text:
 `{{"action": "Cooperate" | "Defect"}}`

@@ -1,10 +1,12 @@
-# run_analysis.py
-
-import logging
 import sys
+import logging
 from pathlib import Path
 
-# --- Pre-flight Check for Dependencies ---
+# 1. Setup Python Path immediately
+# This ensures we can import from config/ and analysis/ even if running from root
+sys.path.append(str(Path(__file__).parent))
+
+# 2. Pre-flight Check for Dependencies
 try:
     import pandas
     import numpy
@@ -19,10 +21,7 @@ except ImportError as e:
     print("="*80)
     sys.exit(1)
 
-
-# Ensure the project root is in the Python path
-sys.path.append(str(Path(__file__).parent))
-
+# 3. Import Local Modules
 from config.config import get_experiments_dir, get_analysis_dir
 from analysis.engine.analyze_metrics import MetricsAnalyzer
 from analysis.engine.create_summary_csvs import SummaryCreator
@@ -55,7 +54,7 @@ def main():
     logger.info(f"Saving analysis output to:    {analysis_dir}")
     logger.info("=" * 80)
 
-    # --- UPDATED LOGIC: Check for experiment results ---
+    # --- Check for experiment results ---
     if not experiments_dir.exists() or not any(experiments_dir.iterdir()):
         logger.critical(f"❌ CRITICAL ERROR: Experiment results directory is missing or empty: '{experiments_dir}'")
         logger.critical("Please run the experiment script first by executing: python run_experiments.py")
@@ -64,19 +63,19 @@ def main():
     try:
         # Step 1: Calculate metrics from raw results
         logger.info("[Step 1/4] Analyzing metrics from simulation results...")
-        MetricsAnalyzer(results_dir=str(experiments_dir), output_dir=str(analysis_dir)).analyze_all_games()
+        MetricsAnalyzer().analyze_all_games()
         logger.info("[Step 1/4] ✅ Metrics analysis complete.")
 
         # Step 2: Create flattened summary CSV files
         logger.info("-" * 80)
         logger.info("[Step 2/4] Creating summary CSV files...")
-        SummaryCreator(analysis_dir=str(analysis_dir)).create_all_summaries()
+        SummaryCreator().create_all_summaries()
         logger.info("[Step 2/4] ✅ Summary CSV creation complete.")
         
         # Step 3: Analyze correlations between metrics
         logger.info("-" * 80)
         logger.info("[Step 3/4] Analyzing correlations between metrics...")
-        CorrelationAnalyzer(analysis_dir=str(analysis_dir)).analyze_all_correlations()
+        CorrelationAnalyzer().analyze_all_correlations()
         logger.info("[Step 3/4] ✅ Correlation analysis complete.")
 
         # --- Check for necessary CSV files before visualization ---
@@ -92,7 +91,6 @@ def main():
             logger.error("="*80)
             sys.exit(1)
 
-
         # Step 4: Generate visualizations
         logger.info("-" * 80)
         logger.info("[Step 4/4] Generating visualizations...")
@@ -106,7 +104,6 @@ def main():
 
     except Exception as e:
         logger.error(f"❌ An error occurred during the analysis pipeline: {e}", exc_info=True)
-
 
 if __name__ == "__main__":
     main()
