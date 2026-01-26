@@ -1,0 +1,838 @@
+{
+  "game_name": "salop",
+  "experiment_type": "baseline",
+  "condition_name": "baseline",
+  "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+  "simulation_results": [
+    {
+      "simulation_id": 0,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 15.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 3275.0,
+        "defender_2": 3275.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 750.0,
+          "defender_2": 750.0
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 15.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9889910221099854
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9763650894165039
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9773159027099609
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 1,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8516178131103516
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9578728675842285
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9519689083099365
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 2,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 15.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 3275.0,
+        "defender_2": 3275.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 750.0,
+          "defender_2": 750.0
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 15.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8039369583129883
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9674100875854492
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.936232328414917
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 3,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8346881866455078
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9781589508056641
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9773597717285156
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 4,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 15.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 3275.0,
+        "defender_2": 3275.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 750.0,
+          "defender_2": 750.0
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 15.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8179769515991211
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.185647964477539
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9787840843200684
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 5,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 15.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 3275.0,
+        "defender_2": 3275.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 750.0,
+          "defender_2": 750.0
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 15.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8189001083374023
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9532470703125
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9540319442749023
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 6,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8101658821105957
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9490399360656738
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.991995096206665
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 7,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.7996470928192139
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9713609218597412
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.03668212890625
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 8,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8284990787506104
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9280438423156738
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9305448532104492
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 9,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "Qwen/Qwen3-14B-Thinking-Off",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": -100.0,
+        "defender_1": 2524.9999999999995,
+        "defender_2": 2524.9999999999995
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 0,
+          "defender_1": 583.3333333333333,
+          "defender_2": 583.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "Qwen/Qwen3-14B-Thinking-Off",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 594,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.7968120574951172
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9729070663452148
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9729709625244141
+          }
+        }
+      }
+    }
+  ]
+}

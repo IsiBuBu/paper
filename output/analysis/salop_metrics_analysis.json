@@ -1,0 +1,723 @@
+{
+  "game_name": "salop",
+  "challenger_models": [
+    "Qwen/Qwen3-14B-Thinking-Off",
+    "Qwen/Qwen3-32B-Thinking-Off",
+    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "random_agent"
+  ],
+  "defender_model": "google/gemma-3-4b-it",
+  "results": {
+    "random_agent": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.1,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 193.85666666666663,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 13.1632,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.13566666666666669,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.023999999999999966,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.13566666666666666,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.7754430379746836,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.3,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 600.3133333333335,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 13.096,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.25066666666666676,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.2293333333333334,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.25066666666666676,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.5545333333333333,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-32B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": -100.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.8,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.0,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.0,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.0,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.6835443037974683,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": -100.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 13.9,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.0,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.0,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.0,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.9666666666666666,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-14B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 66.66666666666679,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.599999999999998,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.18333333333333357,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.0,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.18333333333333357,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.5569620253164558,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": -100.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 13.133333333333335,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.0,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.0,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.0,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.7200000000000001,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": -100.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 11.599999999999998,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.14999999999999983,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.8000000000000002,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.15,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.0,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": -100.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 11.0,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.08333333333333337,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.6666666666666667,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.08333333333333337,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.0,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2000.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.2,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.8500000000000002,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.19999999999999982,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.85,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.30379746835443033,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of achieving the highest profit/NPV",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2400.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.0,
+            "description": "Average Market Price (Collusion Indicator)",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9166666666666666,
+            "description": "Best Response Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.33333333333333337,
+            "description": "Nash Equilibrium Finding",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.9166666666666666,
+            "description": "Implied Rival Prediction",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.26666666666666666,
+            "description": "Collusive Pricing Degree",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    }
+  }
+}

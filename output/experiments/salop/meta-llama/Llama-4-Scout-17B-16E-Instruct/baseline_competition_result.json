@@ -1,0 +1,838 @@
+{
+  "game_name": "salop",
+  "experiment_type": "baseline",
+  "condition_name": "baseline",
+  "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+  "simulation_results": [
+    {
+      "simulation_id": 0,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9314579963684082
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.018805980682373
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9617228507995605
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 1,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9618611335754395
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.979619026184082
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0144069194793701
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 2,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9626739025115967
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.4469170570373535
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0068130493164062
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 3,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9643659591674805
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9501638412475586
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0104541778564453
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 4,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.96307373046875
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0115818977355957
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9722590446472168
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 5,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.949462890625
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0364110469818115
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0026800632476807
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 6,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9494829177856445
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.970966100692749
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0308737754821777
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 7,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9600670337677002
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9981298446655273
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0324149131774902
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 8,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.955024003982544
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.002364158630371
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.000852346420288
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 9,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 11.0
+        },
+        "defender_1": {
+          "price": 12.5
+        },
+        "defender_2": {
+          "price": 12.5
+        }
+      },
+      "payoffs": {
+        "challenger": 2400.0,
+        "defender_1": 650.0,
+        "defender_2": 650.0
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 3.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 833.3333333333333,
+          "defender_1": 166.66666666666666,
+          "defender_2": 166.66666666666666
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{ \"price\": 11 }",
+            "model": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 541,
+            "output_tokens": 8,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.958500862121582
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9723091125488281
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.5}",
+            "model": "google/gemma-3-4b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 591,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0298759937286377
+          }
+        }
+      }
+    }
+  ]
+}
