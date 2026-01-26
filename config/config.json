@@ -1,6 +1,10 @@
 {
   "models": {
     "challenger_models": [
+      "Qwen/Qwen3-14B-Thinking-Off",
+      "Qwen/Qwen3-32B-Thinking-Off",
+      "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      "meta-llama/Llama-4-Scout-17B-16E-Instruct",
       "random_agent"
     ],
     "defender_model": "google/gemma-3-4b-it"
@@ -152,8 +156,8 @@
         "num_rounds": 1
       },
       "baseline": {
-        "transport_cost": 1.5,
-        "reservation_price": 15,
+        "transport_cost": 3.0,
+        "reservation_price": 25,
         "marginal_cost": 8,
         "fixed_cost": 100,
         "market_size": 1000,
