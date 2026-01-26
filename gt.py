@@ -6,7 +6,7 @@ from pathlib import Path
 from openai import OpenAI
 
 # --- CONFIGURATION ---
-API_KEY = "nay79qYyoAEJ34wJesbL69WGZkOJtdB3"  # Replace with actual key
+#API_KEY = "nay79qYyoAEJ34wJesbL69WGZkOJtdB3"  # Replace with actual key
 BASE_URL = "https://api.deepinfra.com/v1/openai"
 MODEL = "Qwen/Qwen3-14B"  # Replace with desired model
 OUTPUT_FILE = "reasoning_results_round50.json"
