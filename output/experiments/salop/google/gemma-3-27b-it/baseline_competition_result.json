@@ -1,0 +1,838 @@
+{
+  "game_name": "salop",
+  "experiment_type": "baseline",
+  "condition_name": "baseline",
+  "challenger_model": "google/gemma-3-27b-it",
+  "simulation_results": [
+    {
+      "simulation_id": 0,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5889101028442383
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3042340278625488
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5670506954193115
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 1,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5552656650543213
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5592560768127441
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5533459186553955
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 2,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3014650344848633
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.300382137298584
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5552608966827393
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 3,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3011410236358643
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5577337741851807
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.557755708694458
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 4,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5051629543304443
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5922880172729492
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2983312606811523
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 5,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5046048164367676
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5861549377441406
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5033316612243652
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 6,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.297847032546997
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2957289218902588
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2922320365905762
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 7,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.588805913925171
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5621240139007568
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.4972608089447021
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 8,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5022258758544922
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5502407550811768
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5813910961151123
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 9,
+      "game_name": "salop",
+      "experiment_type": "baseline",
+      "condition_name": "baseline",
+      "challenger_model": "google/gemma-3-27b-it",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 12.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 3,
+          "distance_to_neighbor": 0.3333333333333333
+        },
+        "player_quantities": {
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2956397533416748
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2933471202850342
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 610,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.5605628490447998
+          }
+        }
+      }
+    }
+  ]
+}

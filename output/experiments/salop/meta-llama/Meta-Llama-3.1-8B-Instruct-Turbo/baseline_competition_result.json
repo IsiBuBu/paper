@@ -17,23 +17,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -43,46 +43,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.808452844619751
+            "response_time": 0.8933889865875244
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8729526996612549
+            "response_time": 1.5144259929656982
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8582801818847656
+            "response_time": 1.5162699222564697
           }
         }
       }
@@ -100,23 +100,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 16.666666666666668
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
         "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "defender_1": 2011.1111111111113,
+        "defender_2": 2011.1111111111113
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -126,46 +126,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 0,
+          "defender_1": 527.7777777777778,
+          "defender_2": 527.7777777777778
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 16.666666666666668}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 575,
+            "output_tokens": 12,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8619530200958252
+            "response_time": 0.9507410526275635
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8735387325286865
+            "response_time": 1.5160460472106934
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8371658325195312
+            "response_time": 0.92287278175354
           }
         }
       }
@@ -183,23 +183,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -209,46 +209,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8350541591644287
+            "response_time": 0.8991789817810059
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.7959108352661133
+            "response_time": 0.8253209590911865
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.885869026184082
+            "response_time": 0.9018018245697021
           }
         }
       }
@@ -266,23 +266,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -292,46 +292,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8172991275787354
+            "response_time": 0.867149829864502
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8900971412658691
+            "response_time": 0.8976230621337891
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.7794229984283447
+            "response_time": 0.8251869678497314
           }
         }
       }
@@ -349,23 +349,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -375,46 +375,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8787758350372314
+            "response_time": 0.8139700889587402
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8460631370544434
+            "response_time": 0.898813009262085
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8472719192504883
+            "response_time": 0.8744080066680908
           }
         }
       }
@@ -432,23 +432,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -458,46 +458,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8989582061767578
+            "response_time": 0.8257381916046143
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8456697463989258
+            "response_time": 0.8734021186828613
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8895969390869141
+            "response_time": 2.7414751052856445
           }
         }
       }
@@ -515,23 +515,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -541,46 +541,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8896229267120361
+            "response_time": 0.9281558990478516
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8085510730743408
+            "response_time": 0.8966898918151855
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.83319091796875
+            "response_time": 0.8691520690917969
           }
         }
       }
@@ -598,23 +598,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -624,46 +624,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8339767456054688
+            "response_time": 0.8700041770935059
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8687012195587158
+            "response_time": 2.738024950027466
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8424472808837891
+            "response_time": 0.9861748218536377
           }
         }
       }
@@ -681,23 +681,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -707,46 +707,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8393452167510986
+            "response_time": 0.8747730255126953
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.913567066192627
+            "response_time": 1.0927979946136475
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8776388168334961
+            "response_time": 1.5097153186798096
           }
         }
       }
@@ -764,23 +764,23 @@
       ],
       "actions": {
         "challenger": {
-          "price": 8.0
+          "price": 12.0
         },
         "defender_1": {
-          "price": 12.5
+          "price": 12.0
         },
         "defender_2": {
-          "price": 12.5
+          "price": 12.0
         }
       },
       "payoffs": {
-        "challenger": -100.0,
-        "defender_1": 650.0,
-        "defender_2": 650.0
+        "challenger": 1233.3333333333333,
+        "defender_1": 1233.3333333333333,
+        "defender_2": 1233.3333333333333
       },
       "game_data": {
         "constants": {
-          "transport_cost": 3.0,
+          "transport_cost": 12.0,
           "reservation_price": 25,
           "marginal_cost": 8,
           "fixed_cost": 100,
@@ -790,46 +790,46 @@
           "distance_to_neighbor": 0.3333333333333333
         },
         "player_quantities": {
-          "challenger": 1000.0,
-          "defender_1": 166.66666666666666,
-          "defender_2": 166.66666666666666
+          "challenger": 333.3333333333333,
+          "defender_1": 333.3333333333333,
+          "defender_2": 333.3333333333333
         },
         "llm_metadata": {
           "challenger": {
-            "content": "{\n  \"price\": 8.0\n}",
+            "content": "{\"price\": 12.0}",
             "model": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 556,
-            "output_tokens": 11,
+            "tokens_used": 571,
+            "output_tokens": 8,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8754737377166748
+            "response_time": 0.9171702861785889
           },
           "defender_1": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.8583850860595703
+            "response_time": 0.8906753063201904
           },
           "defender_2": {
-            "content": "{\"price\": 12.5}",
-            "model": "google/gemma-3-4b-it",
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
             "success": true,
             "reasoning_content": null,
             "error": null,
-            "tokens_used": 591,
+            "tokens_used": 610,
             "output_tokens": 10,
             "thinking_tokens": 0,
             "reasoning_char_count": 0,
-            "response_time": 0.9111900329589844
+            "response_time": 1.079899787902832
           }
         }
       }

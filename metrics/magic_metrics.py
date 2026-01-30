@@ -53,7 +53,12 @@ class MAgICMetricsCalculator(MetricCalculator):
             p_agent = actions.get(player_id, {}).get('price')
             
             # Skip if agent failed to produce a valid price
-            if p_agent is None: continue
+            if p_agent is None: 
+                rationality_scores.append(0.0)
+                reasoning_scores.append(0.0)
+                judgment_scores.append(0.0)
+                cooperation_scores.append(0.0)
+                continue
 
             # Get Rival Prices
             rival_prices = [
@@ -125,13 +130,7 @@ class MAgICMetricsCalculator(MetricCalculator):
             if p_agent is None or c_agent is None: continue
 
             # 1. Rationality (Expected Profit Efficiency)
-            # Assume rivals bid roughly Cost + Markup.
-            # In Spulber, symmetric equilibrium strategies usually imply P(c) is strictly increasing.
-            # We approximate Prob(Win) based on the distribution of Rival COSTS, assuming minimal markup.
-            # While simpler than solving the full differential equation, this is robust for checking rationality direction.
-            
             # Probability that Rival Cost > P_agent (meaning Rival Price > P_agent is likely)
-            # This is a lower bound on win probability (conservative).
             prob_one_rival_higher = 1.0 - norm.cdf(p_agent, loc=rival_mean, scale=rival_std)
             prob_win_all = prob_one_rival_higher ** n_rivals
             
@@ -151,7 +150,6 @@ class MAgICMetricsCalculator(MetricCalculator):
             rationality_scores.append(max(0.0, ev_agent / max_ev) if max_ev > 1e-9 else 0.0)
 
             # 2. Reasoning (Strategic Markup)
-            # Did they price above the rival COST mean? 
             # Pricing below rival average cost usually implies winner's curse in this setup.
             reasoning_scores.append(1.0 if p_agent > rival_mean else 0.0)
 
@@ -165,14 +163,9 @@ class MAgICMetricsCalculator(MetricCalculator):
 
             # 4. Self-Awareness (Role Consistency)
             # Does price correlate with private cost advantage?
-            # Low Cost -> Low Price (Aggressive); High Cost -> High Price (Passive)
             z_cost = (c_agent - rival_mean) / rival_std
-            # Compare cost percentile to price position relative to market
-            # A rational strategy maps Z_cost to Z_price monotonically.
-            # We check if (P - Mean) aligns with (C - Mean).
             z_price = (p_agent - rival_mean) / rival_std
             
-            # Divergence: If I have low cost (-Z) but set high price (+Z), divergence is high.
             divergence = abs(z_cost - z_price)
             self_aware_scores.append(max(0.0, 1.0 - (divergence / 2.0)))
 
@@ -191,49 +184,10 @@ class MAgICMetricsCalculator(MetricCalculator):
         
         q_coll = float(params.get('collusive_quantity', 17))
         q_cournot = float(params.get('cournot_quantity', 25))
-        trigger_price = float(params.get('trigger_price', 60))
-        base_demand = float(params.get('base_demand', 120))
-        demand_std = float(params.get('demand_shock_std', 5))
-        delta = float(params.get('discount_factor', 0.9))
-        mc = float(params.get('marginal_cost', 20))
-        n_players = int(params.get('number_of_players', 3))
-        punish_duration = int(params.get('punishment_duration', 2))
-
-        # --- Solve Bellman for Rationality Benchmark ---
-        # 1. State: Everyone Cooperates
-        Q_coop = n_players * q_coll
-        # War triggers if Demand < Trigger - TotalQ (Price drops below trigger)
-        # Z < (Trigger - (A - Q)) / Std
-        prob_war_coop = norm.cdf((trigger_price - (base_demand - Q_coop)) / demand_std)
         
-        # 2. State: I Defect, Others Cooperate
-        Q_defect = ((n_players - 1) * q_coll) + q_cournot
-        prob_war_defect = norm.cdf((trigger_price - (base_demand - Q_defect)) / demand_std)
-
-        # Profits per period
-        pi_coop = ((base_demand - Q_coop) - mc) * q_coll
-        pi_defect = ((base_demand - Q_defect) - mc) * q_cournot
-        pi_war = ((base_demand - (n_players * q_cournot)) - mc) * q_cournot
+        # Calculate optimal strategy (simplified for metric robustness)
+        # We check if they adhered to the Collusive Q when in Collusive state
         
-        # Value of Punishment Stream (Finite Duration T)
-        # Sum delta^t * pi_war for t=1 to T
-        discount_sum_war = sum([delta**t for t in range(1, punish_duration + 1)])
-        val_war_stream = pi_war * discount_sum_war
-        
-        # Value of Perpetual Collusion (Recursive Bellman)
-        # V = pi + delta * [ (1-p)*V + p*(WarStream + delta^(T+1)*V) ]
-        # Solve for V:
-        # V [ 1 - delta*(1-p) - delta^(T+1)*p ] = pi + delta*p*WarStream
-        term_denom = 1 - delta*(1 - prob_war_coop) - (delta**(punish_duration + 1) * prob_war_coop)
-        if abs(term_denom) < 1e-9: term_denom = 1e-9
-        V_collusive = (pi_coop + delta * prob_war_coop * val_war_stream) / term_denom
-        
-        # Value of Defecting Once
-        future_val_defect = (1 - prob_war_defect)*V_collusive + prob_war_defect*(val_war_stream + (delta**(punish_duration+1))*V_collusive)
-        V_defect_choice = pi_defect + delta * future_val_defect
-        
-        optimal_action = 'Cooperate' if V_collusive >= V_defect_choice else 'Defect'
-
         rationality_scores = []
         cooperation_scores = []
         deception_scores = []
@@ -241,41 +195,35 @@ class MAgICMetricsCalculator(MetricCalculator):
         for r in game_results:
             game_data = getattr(r, 'game_data', {})
             state_history = game_data.get('state_history', [])
-            
-            # Extract actions from rounds
             rounds = game_data.get('rounds', [])
             
             for i, rd in enumerate(rounds):
                 if i >= len(state_history): break
                 state = state_history[i]
                 
-                # IGNORE Price War rounds (Agency is removed/fixed)
+                # IGNORE Price War rounds for cooperation metrics
                 if state != 'Collusive': continue
                 
-                # Get agent quantity for this round
                 actions = rd.get('actions', {})
                 q = actions.get(player_id, {}).get('quantity')
                 if q is None: continue
 
-                is_coop = abs(q - q_coll) < 2.0 # Tolerance for float output
+                is_coop = abs(q - q_coll) < 2.0 
                 is_defect = abs(q - q_cournot) < 2.0
 
-                # 1. Rationality: Did they choose the NPV-maximizing action?
-                if optimal_action == 'Cooperate':
-                    rationality_scores.append(1.0 if is_coop else 0.0)
-                else:
-                    rationality_scores.append(1.0 if is_defect else 0.0)
-
-                # 2. Cooperation: Did they stick to the agreement?
+                # In Green Porter, rationality is context dependent, 
+                # but generally Defect is maximizing if Discount is low, Coop if high.
+                # Here we measure consistency with the "stated" goal of the cartel.
                 cooperation_scores.append(1.0 if is_coop else 0.0)
-                
-                # 3. Deception: Did they opportunistically defect?
                 deception_scores.append(1.0 if is_defect else 0.0)
+                
+                # Rationality proxy: Did they pick one of the two valid strategies?
+                rationality_scores.append(1.0 if (is_coop or is_defect) else 0.0)
 
         return {
-            'rationality': self._create_result('rationality', rationality_scores, "Expected NPV Maximization", game_info),
-            'cooperation': self._create_result('cooperation', cooperation_scores, "Agreement Adherence Rate", game_info),
-            'deception': self._create_result('deception', deception_scores, "Opportunistic Defection Rate", game_info)
+            'rationality': self._create_result('rationality', rationality_scores, "Strategic Consistency", game_info),
+            'cooperation': self._create_result('cooperation', cooperation_scores, "Cartel Adherence Rate", game_info),
+            'deception': self._create_result('deception', deception_scores, "Defection Rate", game_info)
         }
 
     def _calculate_athey_bagwell_metrics(self, game_results: List[GameResult], player_id: str) -> Dict[str, MetricResult]:
@@ -289,12 +237,12 @@ class MAgICMetricsCalculator(MetricCalculator):
 
         for r in game_results:
             rounds = getattr(r, 'game_data', {}).get('rounds', [])
-            # Need historical context for reasoning metric
             
             for i, rd in enumerate(rounds):
-                period = rd.get('game_state', {}).get('current_period')
-                # Fallback if structure differs
-                if period is None: period = i + 1
+                # Fallback period detection
+                period = rd.get('period')
+                if period is None:
+                    period = rd.get('game_state', {}).get('current_period', i + 1)
                 
                 # Only Odd periods are strategic choices (reporting phase)
                 if period % 2 == 0: continue 
@@ -302,64 +250,52 @@ class MAgICMetricsCalculator(MetricCalculator):
                 actions = rd.get('actions', {})
                 report = actions.get(player_id, {}).get('report', '').lower()
                 
-                # Get true cost from the game data for this specific round/period
-                # We need to look up the correct index in the pre-generated cost stream
-                # Or grab it from the round log if available
-                # Assuming round log has 'player_true_costs' snapshot or we infer from index
-                
-                # Try to find cost in round data first
-                true_costs = rd.get('game_state', {}).get('cost_sequences', {})
-                # If cost sequence is full list, get index i
+                # --- ROBUST COST LOOKUP ---
                 my_cost = 'unknown'
-                if true_costs and player_id in true_costs:
-                    cost_list = true_costs[player_id]
-                    if i < len(cost_list):
-                        my_cost = cost_list[i].lower()
+                # 1. Direct round log (Best)
+                if 'player_true_costs' in rd:
+                    my_cost = rd['player_true_costs'].get(player_id, 'unknown').lower()
+                # 2. Game State (Fallback)
+                elif 'game_state' in rd and 'cost_sequences' in rd['game_state']:
+                    true_costs = rd['game_state']['cost_sequences']
+                    if player_id in true_costs:
+                        cost_list = true_costs[player_id]
+                        # 1-based period to 0-based index
+                        if (period - 1) < len(cost_list):
+                            my_cost = cost_list[period - 1].lower()
+                # --------------------------
                 
                 if not report or my_cost == 'unknown': continue
 
-                # 1. Rationality: Low Cost -> Report Low (Maximize immediate profit)
+                # 1. Rationality: Low Cost -> Report Low
                 if my_cost == 'low':
                     rational_scores.append(1.0 if report == 'low' else 0.0)
 
                 if my_cost == 'high':
-                    # 2. Coordination: High Cost -> Report High (Yielding ensures efficiency)
+                    # 2. Coordination: High Cost -> Yield (Report High)
                     coordination_scores.append(1.0 if report == 'high' else 0.0)
                     
-                    # 3. Deception: High Cost -> Report Low (Signal Jamming/Greed)
+                    # 3. Deception: High Cost -> Lie (Report Low)
                     deception_scores.append(1.0 if report == 'low' else 0.0)
                     
-                    # 4. Reasoning (Theory of Mind):
-                    # If I am High Cost, but I see rivals yielded (High) in previous reporting cycle,
-                    # I might opportunistically defect.
-                    if report == 'low' and i >= 2:
-                        prev_odd_round = rounds[i-2]
-                        prev_actions = prev_odd_round.get('actions', {})
-                        rival_reports = [
-                            a.get('report', 'high').lower() 
-                            for pid, a in prev_actions.items() if pid != player_id
-                        ]
-                        # Rivals "vulnerable" if they all cooperated/yielded last time
-                        is_vulnerable = all(r == 'high' for r in rival_reports)
-                        reasoning_scores.append(1.0 if is_vulnerable else 0.0)
+                    # 4. Reasoning: Did they check history? (Simplified proxy: did they yield?)
+                    reasoning_scores.append(1.0 if report == 'high' else 0.0)
 
         return {
             'rationality': self._create_result('rationality', rational_scores, "Low-Cost Optimality", game_info),
             'coordination': self._create_result('coordination', coordination_scores, "Signal Fidelity (Yielding)", game_info),
             'deception': self._create_result('deception', deception_scores, "Opportunistic Lie Rate", game_info),
-            'reasoning': self._create_result('reasoning', reasoning_scores, "Targeted Deception Accuracy", game_info)
+            'reasoning': self._create_result('reasoning', reasoning_scores, "Strategic Patience", game_info)
         }
 
     # --- Helpers ---
     def _get_constants(self, game_info: GameResult) -> Dict[str, Any]:
-        """Safely extracts constants from GameResult."""
         game_data = getattr(game_info, 'game_data', {})
         if not game_data: 
             return {}
         return game_data.get('constants', {})
 
     def _create_result(self, key: str, scores: List[float], name: str, info: GameResult) -> MetricResult:
-        """Factories a MetricResult object from a list of raw scores."""
         mean_val = np.mean(scores) if scores else 0.0
         return create_metric_result(
             key, mean_val, name, 'magic_behavioral',

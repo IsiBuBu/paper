@@ -1,16 +1,12 @@
 {
   "models": {
     "challenger_models": [
-      "Qwen/Qwen3-14B-Thinking-Off",
-      "Qwen/Qwen3-32B-Thinking-Off",
-      "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      "random_agent"
+      "Qwen/Qwen3-32B-Thinking-On"
     ],
-    "defender_model": "google/gemma-3-4b-it"
+    "defender_model": "google/gemma-3-27b-it"
   },
   "model_configs": {
-    "random_agent": {                                  
+    "random_agent": {                              
       "model_name": "random_agent",
       "display_name": "Random Baseline",
       "model_family": "none",
@@ -18,11 +14,11 @@
       "reasoning_output": "none",
       "forced_json_response": false,
       "temperature": 0.0
-  },
-    "google/gemma-3-4b-it": {
-      "model_name": "google/gemma-3-4b-it",
-      "display_name": "gemma-3-4b-it",
-      "model_family": "none",
+    },
+    "google/gemma-3-27b-it": {
+      "model_name": "google/gemma-3-27b-it",
+      "display_name": "google/gemma-3-27b-it",
+      "model_family": "gemma",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
       "forced_json_response": true,
@@ -147,30 +143,10 @@
     }
   },
   "experiment_config": {
-    "random_seed": 42
+    "random_seed": 123
   },
-"game_configs": {
-    "salop": {
-      "simulation_config": {
-        "num_simulations": 10,
-        "num_rounds": 1
-      },
-      "baseline": {
-        "transport_cost": 3.0,
-        "reservation_price": 25,
-        "marginal_cost": 8,
-        "fixed_cost": 100,
-        "market_size": 1000,
-        "circumference": 1.0,
-        "number_of_players": 3
-      },
-      "structural_variations": {
-        "more_players": {
-          "number_of_players": 5
-        }
-      }
-    },
-    "spulber": {
+  "game_configs": {
+  "spulber": {
       "simulation_config": {
         "num_simulations": 100,
         "num_rounds": 1
@@ -179,63 +155,12 @@
         "demand_intercept": 100,
         "demand_slope": 1,
         "rival_cost_mean": 50,
-        "rival_cost_std": 10.0,
+        "rival_cost_std": 15.0,
         "rival_cost_distribution": "normal",
         "number_of_players": 3
       },
       "challenger_config": {
         "your_cost": 40
-      },
-      "structural_variations": {
-        "more_players": {
-          "number_of_players": 5
-        }
-      }
-    },
-    "green_porter": {
-      "simulation_config": {
-        "num_simulations": 50,
-        "num_rounds": 25
-      },
-      "baseline": {
-        "base_demand": 120,
-        "demand_slope": 1,
-        "marginal_cost": 20,
-        "demand_shock_mean": 0,
-        "demand_shock_std": 5,
-        "demand_shock_distribution": "normal",
-        "trigger_price": 60,
-        "punishment_duration": 5,
-        "discount_factor": 0.9,
-        "time_horizon": 25,
-        "number_of_players": 3,
-        "collusive_quantity": 17,
-        "cournot_quantity": 25
-      },
-      "structural_variations": {
-        "more_players": {
-          "number_of_players": 5,
-          "collusive_quantity": 10,
-          "cournot_quantity": 17
-        }
-      }
-    },
-    "athey_bagwell": {
-      "simulation_config": {
-        "num_simulations": 50,
-        "num_rounds": 25
-      },
-      "baseline": {
-        "persistence_probability": 0.7,
-        "cost_types": {
-          "high": 25,
-          "low": 15
-        },
-        "market_price": 40,
-        "market_size": 100,
-        "discount_factor": 0.9,
-        "time_horizon": 25,
-        "number_of_players": 3
       },
       "structural_variations": {
         "more_players": {

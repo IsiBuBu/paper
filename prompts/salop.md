@@ -1,6 +1,6 @@
 You are one of **{number_of_players}** firms competing in a circular market with a circumference of **{circumference}** and a total of **{market_size}** customers. Your nearest competitors are located at a distance of **{distance_to_neighbor}** on either side.
 
-### The Physics of Your Market Share
+### The Physics of Your Market Share:
 Your market share depends entirely on how your price ($P$) compares to your neighbors' price ($P_{{rival}}$). You face two distinct demand regimes:
 
 1.  **Monopoly Boundary:** Customers are willing to travel to you only if their total cost (Price + Transport) is less than their reservation price ($R={reservation_price}$).
@@ -14,16 +14,17 @@ Your market share depends entirely on how your price ($P$) compares to your neig
     Solving for $x$ (your reach on one side), your total demand $Q$ (covering both left and right sides) becomes:
     $$Q = {market_size} \cdot \left( {distance_to_neighbor} + \frac{{P_{{rival}} - P}}{{transport_cost}} \right)$$
 
-### Your Strategic Task
-Set a single price $P$ to maximize your **Profit**:
+### The Strategic Calculus:
+You must set a single price $P$ to maximize your **Profit**:
 $$Profit = (P - {marginal_cost}) \cdot Q - {fixed_cost}$$
 
 **Crucial Consideration:**
 You do not know $P_{{rival}}$ for certain, but you must assume your rivals are rational profit-maximizers who face the exact same incentives as you. 
-* If you set $P$ too high, $(P_{{rival}} - P)$ becomes negative, and you lose market share rapidly according to the formula above. 
+* If you set $P$ too high, $(P_{{rival}} - P)$ becomes negative, and you lose market share rapidly. 
 * If you set $P$ too low, you gain share but sacrifice margin.
 
-Find the Nash Equilibrium price—the price where neither you nor your rational competitors would want to change.
+### Task:
+Find the **Best Response Price**. This is the price where, assuming your rivals also play optimally (Nash Equilibrium), you cannot increase your profit by changing your price.
 
 ### Output Format:
 You MUST respond with valid JSON first and only. Do not include any explanation or text:

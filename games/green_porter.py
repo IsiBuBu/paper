@@ -44,14 +44,14 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
             'profit_history': {pid: [] for pid in player_ids}
         }
 
+    
     def generate_player_prompt(self, player_id: str, game_state: Dict, game_config: GameConfig) -> str:
-        """Generates a prompt for a player with current market conditions and explicit state history."""
+        """Generates a prompt for a player with current market conditions."""
         current_period = game_state.get('current_period', 1)
         price_history = game_state.get('price_history', [])
         state_history = game_state.get('state_history', [])
         
         # --- 1. Format History Table ---
-        # Determine history length to display (e.g., last 10 periods)
         history_limit = 10
         start_index = max(0, len(price_history) - history_limit)
         
@@ -60,7 +60,6 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         
         history_lines = []
         for i, (price, state) in enumerate(zip(recent_prices, recent_states)):
-            # Calculate the actual period number for this entry
             period_num = start_index + i + 1
             history_lines.append(f"Period {period_num} | {state} | ${price:.2f}")
             
@@ -75,37 +74,35 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         num_players = constants.get('number_of_players', 3) 
         q_collusive = constants.get('collusive_quantity', 17)
 
-        # A. Expected Price War Price (assuming all play Cournot)
-        # Price = A - B * (N * Q_cournot)
+        # A. Expected Price War Profit (All Cournot)
         total_q_war = q_cournot * num_players
         price_war_price = max(0, base_demand - (slope * total_q_war))
-        
-        # B. Expected Price War Profit
-        # Profit = (Price - MC) * Q_cournot
         price_war_profit = (price_war_price - mc) * q_cournot
 
-        # C. Immediate Defect Profit (assuming others Cooperate)
-        # Price = A - B * ( (N-1)*Q_collusive + Q_defect )
-        # The defecting firm plays Cournot (25) while N-1 firms play Collusive (17)
+        # B. Immediate Defect Profit (You Cournot, Others Collusive)
         total_q_defect = ((num_players - 1) * q_collusive) + q_cournot
         defect_price = max(0, base_demand - (slope * total_q_defect))
         immediate_defect_profit = (defect_price - mc) * q_cournot
+        
+        # C. Expected Cooperate Profit (All Collusive) - NEW CALCULATION
+        total_q_coop = q_collusive * num_players
+        expected_price_coop = max(0, base_demand - (slope * total_q_coop))
+        expected_cooperate_profit = (expected_price_coop - mc) * q_collusive
 
         variables = get_prompt_variables(
             game_config,
             player_id=player_id,
             current_round=current_period,
-            current_market_state=game_state.get('market_state', 'Collusive'),
-            price_history=price_history,
-            price_history_length=len(price_history)
+            current_market_state=game_state.get('market_state', 'Collusive')
         )
         
-        # Inject new variables
+        # Inject variables for the prompt formatter
         variables.update({
             'formatted_history_table': formatted_history_table,
             'expected_price_war_price': f"{price_war_price:.2f}",
             'expected_price_war_profit': f"{price_war_profit:.2f}",
-            'immediate_defect_profit': f"{immediate_defect_profit:.2f}"
+            'immediate_defect_profit': f"{immediate_defect_profit:.2f}",
+            'expected_cooperate_profit': f"{expected_cooperate_profit:.2f}"  # ADD THIS LINE
         })
         
         return self.prompt_template.format(**variables)

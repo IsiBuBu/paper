@@ -224,38 +224,43 @@ class Competition:
     async def _run_athey_bagwell_game(self, game, agents, config, game_state, challenger_model: str):
         time_horizon = config.constants.get('time_horizon', 50)
         all_rounds_data = []
-        last_period_reports = {}
 
         for period in range(1, time_horizon + 1):
             game_state['current_period'] = period
             
-            if period % 2 != 0: # Odd
+            if period % 2 != 0: # Odd Period (Strategic)
+                # 1. Get reports from agents
                 reports, responses = await self._get_all_actions(game, agents, config, game_state, stage=1)
-                last_period_reports = reports
                 
-                low_reporters = [pid for pid, a in reports.items() if a.get('report') == 'low']
-                share = 1.0 / len(low_reporters) if low_reporters else 1.0 / len(agents)
-                market_shares = {pid: (share if pid in low_reporters or not low_reporters else 0.0) for pid in agents}
+                # 2. Calculate payoffs
+                # FIX: We pass the 'reports' directly to the game class. 
+                # The game class extracts 'low'/'high' reports and handles market share logic internally.
+                payoffs = game.calculate_payoffs(reports, config, game_state)
                 
-                actions_calc = {pid: {'quantity': s} for pid, s in market_shares.items()}
-                payoffs = game.calculate_payoffs(actions_calc, config, game_state)
-                
+                # 3. Log data
                 round_data = game.get_game_data_for_logging(reports, payoffs, config, game_state)
                 round_data['llm_metadata'] = {pid: resp.__dict__ for pid, resp in responses.items()}
                 all_rounds_data.append(round_data)
 
-            else: # Even (Enforcement)
-                low_reporters = [pid for pid, a in last_period_reports.items() if a.get('report') == 'low']
-                eligible = [pid for pid in agents if pid not in low_reporters]
-                if not eligible or len(eligible) == len(agents): eligible = list(agents.keys())
+                # 4. Update Game State
+                # FIX: Explicitly call update_game_state so that 'report_history' is populated.
+                game_state = game.update_game_state(game_state, reports, config, payoffs)
+
+            else: # Even Period (Enforcement)
+                # 1. No actions required from agents in this phase
+                actions = {}
                 
-                share = 1.0 / len(eligible)
-                market_shares = {pid: (share if pid in eligible else 0.0) for pid in agents}
-                actions = {pid: {'quantity': s} for pid, s in market_shares.items()}
+                # 2. Calculate payoffs
+                # The game class uses the history from the previous ODD period to determine enforcement allocations.
                 payoffs = game.calculate_payoffs(actions, config, game_state)
                 
+                # 3. Log data
                 round_data = game.get_game_data_for_logging(actions, payoffs, config, game_state)
                 all_rounds_data.append(round_data)
+                
+                # 4. Update Game State
+                # Records 'enforcement' placeholder in history
+                game_state = game.update_game_state(game_state, actions, config, payoffs)
 
         profit_streams = defaultdict(list)
         for round_data in all_rounds_data:

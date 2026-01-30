@@ -1,21 +1,27 @@
 {
   "game_name": "athey_bagwell",
   "challenger_models": [
-    "Qwen/Qwen3-14B-Thinking-Off",
+    "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "Qwen/Qwen3-30B-A3B-Thinking-Off",
     "Qwen/Qwen3-32B-Thinking-Off",
-    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "Qwen/Qwen3-14B-Thinking-Off",
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
     "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "google/gemma-3-27b-it",
     "random_agent"
   ],
-  "defender_model": "google/gemma-3-4b-it",
+  "defender_model": "google/gemma-3-27b-it",
   "results": {
     "random_agent": {
       "more_players": {
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.88,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -23,7 +29,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 3625.4912707895564,
+            "value": 2964.856110825472,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -33,7 +39,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -43,7 +49,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.5366666666666666,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -52,7 +58,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 0.52,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -61,7 +67,7 @@
           },
           "deception": {
             "name": "deception",
-            "value": 0.0,
+            "value": 0.48,
             "description": "Opportunistic Lie Rate",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -70,8 +76,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 0.52,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -84,8 +90,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.26,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.92,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -93,7 +99,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 6042.485451315926,
+            "value": 3283.3103271526397,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -103,7 +109,149 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.5066666666666667,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 0.5542857142857143,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.44571428571428573,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.5542857142857143,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "google/gemma-3-27b-it": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.18,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 960.0237626490879,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.34,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1600.0396044151466,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -122,7 +270,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -140,8 +288,150 @@
           },
           "reasoning": {
             "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-235B-A22B-Instruct-2507": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.96,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4274.991735980032,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.9,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4362.512915524267,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -156,8 +446,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.96,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -165,7 +455,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 3625.4912707895564,
+            "value": 3697.5437436190723,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -175,7 +465,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -185,7 +475,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.9,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -194,7 +484,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -212,8 +502,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 1.0,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -226,8 +516,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.26,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.88,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -235,7 +525,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 6042.485451315926,
+            "value": 3884.0644150340268,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -245,7 +535,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -255,7 +545,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.75,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -264,7 +554,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -282,8 +572,150 @@
           },
           "reasoning": {
             "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-30B-A3B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.86,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 3838.191735980032,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9566666666666667,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.9,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4362.057134926506,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9966666666666667,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 0.9971428571428571,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.002857142857142857,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9971428571428571,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -298,8 +730,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.74,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -307,7 +739,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 3625.4912707895564,
+            "value": 2545.943762649088,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -317,7 +749,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -327,7 +759,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.12,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -336,7 +768,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -354,8 +786,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 1.0,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -368,8 +800,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.26,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.56,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -377,7 +809,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 6042.485451315926,
+            "value": 2720.0396044151466,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -387,7 +819,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -397,7 +829,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.08,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -406,7 +838,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -424,8 +856,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 1.0,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -440,8 +872,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.94,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -449,7 +881,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 3625.4912707895564,
+            "value": 2583.1628295208957,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -459,7 +891,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -469,7 +901,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.7733333333333333,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -478,7 +910,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 0.8771428571428571,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -487,7 +919,7 @@
           },
           "deception": {
             "name": "deception",
-            "value": 0.0,
+            "value": 0.12285714285714286,
             "description": "Opportunistic Lie Rate",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -496,8 +928,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 0.8771428571428571,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -510,8 +942,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.26,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 0.86,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -519,7 +951,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 6042.485451315926,
+            "value": 3049.532718230187,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -529,7 +961,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -539,7 +971,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.8466666666666667,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -548,7 +980,291 @@
           },
           "coordination": {
             "name": "coordination",
+            "value": 0.9914285714285714,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.008571428571428572,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9914285714285714,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.98,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4433.122733080576,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
             "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 0.7085714285714285,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.2914285714285714,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.7085714285714285,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.98,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4455.135128562346,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 0.62,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.38,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.62,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.96,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4274.991735980032,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.9,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4362.512915524267,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -566,8 +1282,150 @@
           },
           "reasoning": {
             "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.96,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4274.991735980032,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.9,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 4362.512915524267,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "productive_efficiency": {
+            "name": "productive_efficiency",
+            "value": 0.0,
+            "description": "Productive Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "Low-Cost Optimality",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Signal Fidelity (Yielding)",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Opportunistic Lie Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "athey_bagwell",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 1.0,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -582,8 +1440,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -591,7 +1449,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 3625.4912707895564,
+            "value": 3539.287677845504,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -601,7 +1459,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -611,7 +1469,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.62,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -620,7 +1478,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 0.7285714285714285,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -629,7 +1487,7 @@
           },
           "deception": {
             "name": "deception",
-            "value": 0.0,
+            "value": 0.2714285714285714,
             "description": "Opportunistic Lie Rate",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -638,8 +1496,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 0.7285714285714285,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "structural_variations",
@@ -652,8 +1510,8 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.26,
-            "description": "Frequency of achieving the highest profit/NPV",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -661,7 +1519,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 6042.485451315926,
+            "value": 3744.3530674176,
             "description": "Mean NPV",
             "metric_type": "performance",
             "game_name": "athey_bagwell",
@@ -671,7 +1529,7 @@
           "productive_efficiency": {
             "name": "productive_efficiency",
             "value": 0.0,
-            "description": "Productive Efficiency (Low-Cost Market Share)",
+            "description": "Productive Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",
@@ -681,7 +1539,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.6033333333333334,
             "description": "Low-Cost Optimality",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -690,7 +1548,7 @@
           },
           "coordination": {
             "name": "coordination",
-            "value": 0.0,
+            "value": 0.7514285714285714,
             "description": "Signal Fidelity (Yielding)",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -699,7 +1557,7 @@
           },
           "deception": {
             "name": "deception",
-            "value": 0.0,
+            "value": 0.24857142857142858,
             "description": "Opportunistic Lie Rate",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
@@ -708,8 +1566,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Targeted Deception Accuracy",
+            "value": 0.7514285714285714,
+            "description": "Strategic Patience",
             "metric_type": "magic_behavioral",
             "game_name": "athey_bagwell",
             "experiment_type": "baseline",

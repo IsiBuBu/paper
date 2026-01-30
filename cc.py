@@ -8,7 +8,7 @@ from pathlib import Path
 # 1. Setup Python Path
 sys.path.append(str(Path(__file__).parent))
 
-from config.config import load_config, get_all_game_configs
+from config.config import load_config, get_all_game_configs, get_data_dir
 from agents import create_agent
 from games import create_game
 
@@ -30,8 +30,8 @@ CRITICAL_PARAMS = {
 
 async def run_test():
     """
-    Runs a smoke test for ALL games/models and outputs a JSON report to stdout.
-    Now includes the INPUT PROMPT in the output.
+    Runs a smoke test for ALL games/models using MASTER DATA and outputs a JSON report.
+    Running 2 iterations (Simulation ID 0 and 1) per configuration.
     """
     
     # Data container for final JSON output
@@ -40,16 +40,39 @@ async def run_test():
         "results": []
     }
 
+    # 1. Load Configuration
     try:
         full_config = load_config()
     except FileNotFoundError:
         logger.critical("❌ Could not load config/config.json.")
         return
 
+    # 2. Load Master Datasets
+    try:
+        try:
+            data_dir = get_data_dir()
+        except ImportError:
+            data_dir = Path(__file__).parent / "output" / "data"
+            
+        dataset_path = data_dir / "master_datasets.json"
+        
+        if not dataset_path.exists():
+             dataset_path = Path("output/data/master_datasets.json")
+
+        with open(dataset_path, 'r') as f:
+            master_datasets = json.load(f)
+        logger.info(f"✅ Loaded Master Datasets from {dataset_path}")
+    except Exception as e:
+        logger.warning(f"⚠️ Could not load master_datasets.json: {e}. Tests may use random data.")
+        master_datasets = {}
+
     challenger_models = full_config['models']['challenger_models']
     all_game_names = list(full_config.get('game_configs', {}).keys())
     
-    test_report["summary"]["total"] = len(all_game_names) * len(challenger_models)
+    # Simulation Iterations
+    NUM_RUNS = 1
+    
+    test_report["summary"]["total"] = len(all_game_names) * len(challenger_models) * NUM_RUNS
     
     for game_name in all_game_names:
         logger.info(f"🧪 TESTING GAME: {game_name.upper()}")
@@ -61,97 +84,133 @@ async def run_test():
             
         config = game_configs[0]
         
-        # Initialize Game & Mock State
-        try:
-            game = create_game(game_name)
-            game_state = game.initialize_game_state(config, simulation_id=0)
-            
-            # Mock Data Injection
-            if game_name == 'athey_bagwell':
-                game_state['current_period'] = 1
-                game_state['cost_sequences'] = {'challenger': ['low'] * 50}
-                game_state['report_history'] = {'challenger': [], 'defender_1': []}
-            elif game_name == 'spulber':
-                game_state['player_private_costs'] = {'challenger': config.constants.get('your_cost', 10)}
-            elif game_name == 'green_porter':
-                game_state['price_history'] = [55.0, 60.0]
-                game_state['state_history'] = ['Collusive', 'Collusive']
-            
-        except Exception as e:
-            logger.exception(f"❌ Failed to initialize game {game_name}")
-            continue
+        # --- RUN LOOP (0, 1) ---
+        for sim_id in range(NUM_RUNS):
+            logger.info(f"  > Simulation Run #{sim_id}")
 
-        # Parameter Validation
-        state_constants = game_state.get('constants', config.constants)
-        missing_params = []
-        for param in CRITICAL_PARAMS.get(game_name, []):
-            if state_constants.get(param) is None and game_state.get(param) is None:
-                if param != "expected_price_war_profit": # Skip derived
-                    missing_params.append(param)
-        
-        if missing_params:
-            logger.error(f"❌ Missing params in {game_name}: {missing_params}")
-            # Log failure for all models in this game
+            # Initialize Game & State
+            try:
+                game = create_game(game_name)
+                # Initialize with specific Simulation ID
+                game_state = game.initialize_game_state(config, simulation_id=sim_id)
+                
+                # --- INJECT MASTER DATA (Specific Sim ID) ---
+                dataset_key = f"{config.game_name}_{config.experiment_type}_{config.condition_name}"
+                dataset = master_datasets.get(dataset_key, {})
+
+                if game_name == 'athey_bagwell':
+                    game_state['current_period'] = 1
+                    if 'player_true_costs' in dataset:
+                        costs_data = dataset['player_true_costs']
+                        sim_costs = {}
+                        for player, costs_matrix in costs_data.items():
+                            if len(costs_matrix) > sim_id: # Use specific Sim ID
+                                sim_costs[player] = costs_matrix[sim_id]
+                        game_state['cost_sequences'] = sim_costs
+                    else:
+                        game_state['cost_sequences'] = {'challenger': ['low'] * 50}
+                    
+                    game_state['report_history'] = {pid: [] for pid in game_state.get('cost_sequences', {})}
+
+                elif game_name == 'spulber':
+                    if 'player_private_costs' in dataset:
+                        costs_data = dataset['player_private_costs']
+                        sim_costs = {}
+                        for player, costs in costs_data.items():
+                            if isinstance(costs, list) and len(costs) > sim_id: # Use specific Sim ID
+                                sim_costs[player] = costs[sim_id] 
+                            else:
+                                sim_costs[player] = costs
+                        game_state['player_private_costs'] = sim_costs
+                    else:
+                        game_state['player_private_costs'] = {'challenger': config.constants.get('your_cost', 40)}
+
+                elif game_name == 'green_porter':
+                    game_state['price_history'] = []
+                    game_state['state_history'] = ['Collusive']
+                    if 'demand_shocks' in dataset:
+                        shocks_matrix = dataset['demand_shocks']
+                        if len(shocks_matrix) > sim_id: # Use specific Sim ID
+                            game_state['demand_shocks'] = shocks_matrix[sim_id]
+
+                # -------------------------------------
+                
+            except Exception as e:
+                logger.exception(f"❌ Failed to initialize game {game_name} Sim {sim_id}")
+                continue
+
+            # Parameter Validation
+            state_constants = game_state.get('constants', config.constants)
+            missing_params = []
+            for param in CRITICAL_PARAMS.get(game_name, []):
+                if state_constants.get(param) is None and game_state.get(param) is None:
+                    if param != "expected_price_war_profit": 
+                        missing_params.append(param)
+            
+            if missing_params:
+                logger.error(f"❌ Missing params in {game_name} Sim {sim_id}: {missing_params}")
+                # Log failures for all models for this invalid config
+                for model_name in challenger_models:
+                    test_report["results"].append({
+                        "game": game_name,
+                        "model": model_name,
+                        "simulation_id": sim_id,
+                        "status": "config_error",
+                        "error": f"Missing params: {missing_params}"
+                    })
+                continue
+
+            # Run Model Tests for this Simulation ID
             for model_name in challenger_models:
-                test_report["results"].append({
+                logger.info(f"    🤖 Model: {model_name} [Sim {sim_id}]")
+                
+                result_entry = {
                     "game": game_name,
                     "model": model_name,
-                    "status": "config_error",
-                    "error": f"Missing params: {missing_params}"
-                })
-            continue
+                    "simulation_id": sim_id,
+                    "status": "unknown",
+                    "metrics": {},
+                    "input": {}, 
+                    "output": {}
+                }
 
-        # Run Model Tests
-        for model_name in challenger_models:
-            logger.info(f"🤖 Model: {model_name}")
-            
-            result_entry = {
-                "game": game_name,
-                "model": model_name,
-                "status": "unknown",
-                "metrics": {},
-                "input": {},  # <--- New Field
-                "output": {}
-            }
+                try:
+                    agent = create_agent(model_name, "challenger", mock_mode=False)
+                    
+                    prompt = game.generate_player_prompt("challenger", game_state, config)
+                    result_entry["input"]["prompt_text"] = prompt
+                    
+                    call_id = f"test-{game_name}-{sim_id}-{model_name.split('/')[-1]}"
+                    
+                    response = await agent.get_response(prompt, call_id, config)
+                    
+                    if response.success:
+                        result_entry["status"] = "success"
+                        test_report["summary"]["passed"] += 1
+                        
+                        result_entry["metrics"] = {
+                            "response_time_sec": round(response.response_time, 2),
+                            "tokens_used": response.tokens_used,
+                            "thinking_tokens": response.thinking_tokens,
+                            "reasoning_char_count": response.reasoning_char_count
+                        }
+                        
+                        result_entry["output"] = {
+                            "json_content": response.content,
+                            "reasoning_content": response.reasoning_content if response.reasoning_content else None
+                        }
+                    else:
+                        result_entry["status"] = "api_error"
+                        result_entry["error"] = response.error
+                        test_report["summary"]["failed"] += 1
 
-            try:
-                agent = create_agent(model_name, "challenger", mock_mode=False)
-                
-                # Generate and capture Prompt
-                prompt = game.generate_player_prompt("challenger", game_state, config)
-                result_entry["input"]["prompt_text"] = prompt  # <--- Store Prompt
-                
-                call_id = f"test-{game_name}-{model_name.split('/')[-1]}"
-                
-                response = await agent.get_response(prompt, call_id, config)
-                
-                if response.success:
-                    result_entry["status"] = "success"
-                    test_report["summary"]["passed"] += 1
-                    
-                    result_entry["metrics"] = {
-                        "response_time_sec": round(response.response_time, 2),
-                        "tokens_used": response.tokens_used,
-                        "thinking_tokens": response.thinking_tokens,
-                        "reasoning_char_count": response.reasoning_char_count
-                    }
-                    
-                    result_entry["output"] = {
-                        "json_content": response.content,
-                        "reasoning_content": response.reasoning_content if response.reasoning_content else None
-                    }
-                else:
-                    result_entry["status"] = "api_error"
-                    result_entry["error"] = response.error
+                except Exception as e:
+                    logger.exception(f"💥 Critical error on {model_name} Sim {sim_id}")
+                    result_entry["status"] = "critical_error"
+                    result_entry["error"] = str(e)
                     test_report["summary"]["failed"] += 1
-
-            except Exception as e:
-                logger.exception(f"💥 Critical error on {model_name}")
-                result_entry["status"] = "critical_error"
-                result_entry["error"] = str(e)
-                test_report["summary"]["failed"] += 1
-            
-            test_report["results"].append(result_entry)
+                
+                test_report["results"].append(result_entry)
 
     # OUTPUT FINAL JSON TO STDOUT
     print(json.dumps(test_report, indent=2))

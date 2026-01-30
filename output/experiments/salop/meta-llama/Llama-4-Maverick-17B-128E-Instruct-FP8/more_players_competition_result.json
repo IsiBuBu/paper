@@ -1,0 +1,1198 @@
+{
+  "game_name": "salop",
+  "experiment_type": "structural_variations",
+  "condition_name": "more_players",
+  "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+  "simulation_results": [
+    {
+      "simulation_id": 0,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8615779876708984
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.1866540908813477
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8104379177093506
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.850600004196167
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8226518630981445
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 1,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8608150482177734
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.181654930114746
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9007329940795898
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3474361896514893
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3487961292266846
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 2,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8507189750671387
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8499088287353516
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8732850551605225
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.1810810565948486
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8201448917388916
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 3,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8522779941558838
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8925700187683105
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8169960975646973
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9295563697814941
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3467249870300293
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 4,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0089333057403564
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0345070362091064
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.228837013244629
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8591258525848389
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.3621819019317627
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 5,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9534976482391357
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2197458744049072
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8619461059570312
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8582372665405273
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9448127746582031
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 6,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9488329887390137
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8924069404602051
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0299649238586426
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0576298236846924
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0334179401397705
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 7,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9461209774017334
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8641340732574463
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2179808616638184
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8890280723571777
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.904221773147583
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 8,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.947749137878418
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9297730922698975
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.9615223407745361
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.0455312728881836
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.031937837600708
+          }
+        }
+      }
+    },
+    {
+      "simulation_id": 9,
+      "game_name": "salop",
+      "experiment_type": "structural_variations",
+      "condition_name": "more_players",
+      "challenger_model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "players": [
+        "challenger",
+        "defender_1",
+        "defender_2",
+        "defender_3",
+        "defender_4"
+      ],
+      "actions": {
+        "challenger": {
+          "price": 14.0
+        },
+        "defender_1": {
+          "price": 12.0
+        },
+        "defender_2": {
+          "price": 12.0
+        },
+        "defender_3": {
+          "price": 12.0
+        },
+        "defender_4": {
+          "price": 12.0
+        }
+      },
+      "payoffs": {
+        "challenger": 100.00000000000014,
+        "defender_1": 1033.3333333333333,
+        "defender_2": 700.0,
+        "defender_3": 700.0,
+        "defender_4": 1033.3333333333333
+      },
+      "game_data": {
+        "constants": {
+          "transport_cost": 12.0,
+          "reservation_price": 25,
+          "marginal_cost": 8,
+          "fixed_cost": 100,
+          "market_size": 1000,
+          "circumference": 1.0,
+          "number_of_players": 5,
+          "distance_to_neighbor": 0.2
+        },
+        "player_quantities": {
+          "challenger": 33.33333333333336,
+          "defender_1": 283.3333333333333,
+          "defender_2": 200.0,
+          "defender_3": 200.0,
+          "defender_4": 283.3333333333333
+        },
+        "llm_metadata": {
+          "challenger": {
+            "content": "{\"price\": 14.0}",
+            "model": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 542,
+            "output_tokens": 9,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.002758264541626
+          },
+          "defender_1": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2275550365447998
+          },
+          "defender_2": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.2196791172027588
+          },
+          "defender_3": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 0.8810579776763916
+          },
+          "defender_4": {
+            "content": "{\"price\": 12.0}",
+            "model": "google/gemma-3-27b-it",
+            "success": true,
+            "reasoning_content": null,
+            "error": null,
+            "tokens_used": 565,
+            "output_tokens": 10,
+            "thinking_tokens": 0,
+            "reasoning_char_count": 0,
+            "response_time": 1.023003339767456
+          }
+        }
+      }
+    }
+  ]
+}

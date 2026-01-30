@@ -1,30 +1,29 @@
-You are in a cartel with **{number_of_players}** firms. Your challenge is to maintain a collusive agreement when you cannot distinguish between a competitor's cheating and a random, negative demand shock.
+You are in a cartel with **{number_of_players}** firms. Your only goal is to maximize the Net Present Value (NPV) of your own profits.
 
-### Rules of Engagement:
+### Cartel Rules:
+* **The Noise:** The market price is volatile due to random demand shocks (std dev: **{demand_shock_std}**). 
+* **The Deterrent:** If the price falls below **${trigger_price}**, the cartel collapses into a **Price War** for **{punishment_duration}** rounds.
+* **The War:** During a Price War, the expected market price drops to **${expected_price_war_price}**, and your profits drop significantly to **~${expected_price_war_profit}** per round.
 
-* **Two Market States:** The market operates in one of two states: **Collusive** or **Price War (Reversionary)**.
-* **Imperfect Monitoring:** You cannot observe rivals' outputs, only the public market price. The price is determined by: `Price = {base_demand} - {demand_slope} * (Total Industry Quantity) + Demand Shock`. The hidden demand shock is from a **{demand_shock_distribution}** distribution (mean **{demand_shock_mean}**, std dev **{demand_shock_std}**).
-* **Triggering a Price War:** If the market price in a **Collusive** period drops below the trigger price of **${trigger_price}**, the market enters a **Price War** state for the next **{punishment_duration}** periods.
-* **Price War Behavior:** During a **Price War**, all firms revert to the noncooperative Cournot quantity of **{cournot_quantity}**. In this state, the expected market price drops to **${expected_price_war_price}**, yielding a lower per-period profit of approximately **${expected_price_war_profit}**.
+### The Strategic Calculus:
+You must weigh the stability of the cartel against the temptation of immediate liquidity. Future profits are discounted by **{discount_factor}**.
 
-### Your Task:
+1. **Cooperate** (Produce **{collusive_quantity}**):
+   - **Reward:** You expect a profit of **~${expected_cooperate_profit}** today.
+   - **Risk:** Even if you cooperate, a negative demand shock could hit the **${trigger_price}** trigger, starting a war through no fault of your own.
 
-Choose your action for this period. Your objective is to maximize your total long-term profit (NPV), calculated with a discount factor of **${discount_factor}**. Your marginal cost is **${marginal_cost}**.
-
-If the market is Collusive, you must choose between two actions:
-
-* **Cooperate:** Produce the agreed-upon collusive quantity of **{collusive_quantity}**. This maximizes long-term group profit but offers a lower immediate payoff.
-
-* **Defect:** Produce the noncooperative Cournot quantity of **{cournot_quantity}** immediately. This yields a higher immediate profit of approximately **${immediate_defect_profit}** today, but significantly increases the risk of triggering a Price War starting in the next period.
-
-If the market is in a **Price War**, you are in a punishment phase and your action is fixed at the Cournot quantity.
+2. **Defect** (Produce **{cournot_quantity}**):
+   - **Reward:** You capture an immediate profit bonus, totaling **~${immediate_defect_profit}**.
+   - **Risk:** You significantly increase the mathematical probability of a market collapse, sacrificing **{punishment_duration}** rounds of future high-margin income.
 
 ### Current Game State:
-
 * **Period:** {current_round}
-* **Current State:** {current_market_state}
-* **History (Period | State | Market Price):**
+* **Market Status:** {current_market_state}
+* **History:**
 {formatted_history_table}
+
+### Task:
+Which action maximizes your firm's expected NPV?
 
 ### Output Format:
 You MUST respond with valid JSON first and only. Do not include any explanation or text:
