@@ -1,6 +1,7 @@
 {
   "game_name": "spulber",
   "challenger_models": [
+    "random_agent",
     "Qwen/Qwen3-235B-A22B-Instruct-2507",
     "Qwen/Qwen3-30B-A3B-Thinking-Off",
     "Qwen/Qwen3-32B-Thinking-Off",
@@ -10,8 +11,7 @@
     "meta-llama/Llama-3.3-70B-Instruct-Turbo",
     "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    "google/gemma-3-27b-it",
-    "random_agent"
+    "google/gemma-3-27b-it"
   ],
   "defender_model": "google/gemma-3-27b-it",
   "results": {
@@ -49,7 +49,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.10271487462542661,
+            "value": 0.10271813104741359,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -58,8 +58,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.42,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9729195714285713,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -119,7 +119,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.19441737334283682,
+            "value": 0.19442353705584833,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -128,8 +128,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.46,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9756261428571429,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -191,7 +191,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.9743400079013754,
+            "value": 0.9743708978989158,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -200,8 +200,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9983848714285715,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -261,7 +261,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.9757846179827118,
+            "value": 0.9758155537794615,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -270,8 +270,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9984264714285714,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -333,7 +333,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.9894188581653706,
+            "value": 0.9894502262153807,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -342,8 +342,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.998926571428571,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -403,7 +403,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.9894188581653706,
+            "value": 0.9894502262153807,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -412,8 +412,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.998926571428571,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -475,7 +475,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8597815245988641,
+            "value": 0.8598087826904595,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -484,8 +484,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9964785714285717,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -545,7 +545,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8207037166810143,
+            "value": 0.8207297358689613,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -554,8 +554,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.27,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9956571428571429,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -583,12 +583,12 @@
         "dynamic_metrics": {}
       }
     },
-    "Qwen/Qwen3-30B-A3B-Thinking-Off": {
+    "Qwen/Qwen3-14B-Thinking-On": {
       "more_players": {
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.86,
+            "value": 0.89,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -597,7 +597,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 236.5,
+            "value": 275.495616,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -606,7 +606,7 @@
           },
           "allocative_efficiency": {
             "name": "allocative_efficiency",
-            "value": 0.3,
+            "value": 0.28,
             "description": "Allocative Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "spulber",
@@ -617,7 +617,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8571348973706848,
+            "value": 0.9106542723058968,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -626,8 +626,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9971377714285714,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -635,7 +635,7 @@
           },
           "judgment": {
             "name": "judgment",
-            "value": 0.8451266666666669,
+            "value": 0.8661466666666668,
             "description": "Clearing Price Accuracy",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -644,7 +644,7 @@
           },
           "self_awareness": {
             "name": "self_awareness",
-            "value": 0.8333333333333331,
+            "value": 0.8096933333333333,
             "description": "Cost-Strategy Consistency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -658,7 +658,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.91,
+            "value": 0.88,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -667,7 +667,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 250.25,
+            "value": 390.45399899999995,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -687,7 +687,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8571348973706848,
+            "value": 0.9991732290584381,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -696,8 +696,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9997932428571427,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -705,7 +705,149 @@
           },
           "judgment": {
             "name": "judgment",
-            "value": 0.8209000000000002,
+            "value": 0.91833,
+            "description": "Clearing Price Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "self_awareness": {
+            "name": "self_awareness",
+            "value": 0.7102633333333334,
+            "description": "Cost-Strategy Consistency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-30B-A3B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.89,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 244.75,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "allocative_efficiency": {
+            "name": "allocative_efficiency",
+            "value": 0.29,
+            "description": "Allocative Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.8571620715549091,
+            "description": "Expected Profit Efficiency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9964285714285716,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.8452966666666668,
+            "description": "Clearing Price Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "self_awareness": {
+            "name": "self_awareness",
+            "value": 0.8333333333333331,
+            "description": "Cost-Strategy Consistency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.92,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 253.0,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "allocative_efficiency": {
+            "name": "allocative_efficiency",
+            "value": 0.41,
+            "description": "Allocative Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.8571620715549091,
+            "description": "Expected Profit Efficiency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9964285714285716,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.8239100000000001,
             "description": "Clearing Price Accuracy",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -725,12 +867,12 @@
         "dynamic_metrics": {}
       }
     },
-    "Qwen/Qwen3-14B-Thinking-Off": {
+    "Qwen/Qwen3-30B-A3B-Thinking-On": {
       "more_players": {
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.04,
+            "value": 0.89,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -739,7 +881,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 0.0,
+            "value": 261.111365,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -748,7 +890,7 @@
           },
           "allocative_efficiency": {
             "name": "allocative_efficiency",
-            "value": 0.71,
+            "value": 0.3,
             "description": "Allocative Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "spulber",
@@ -759,7 +901,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.7222045985200534,
+            "value": 0.8694821224248654,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -768,8 +910,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9967669714285712,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -777,7 +919,7 @@
           },
           "judgment": {
             "name": "judgment",
-            "value": 0.7838666666666667,
+            "value": 0.8578966666666668,
             "description": "Clearing Price Accuracy",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -786,7 +928,7 @@
           },
           "self_awareness": {
             "name": "self_awareness",
-            "value": 0.5,
+            "value": 0.8220533333333332,
             "description": "Cost-Strategy Consistency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -800,7 +942,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.16,
+            "value": 0.86,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -809,7 +951,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 47.25,
+            "value": 367.40972,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "spulber",
@@ -818,7 +960,7 @@
           },
           "allocative_efficiency": {
             "name": "allocative_efficiency",
-            "value": 0.71,
+            "value": 0.44,
             "description": "Allocative Efficiency",
             "metric_type": "market_dynamics",
             "game_name": "spulber",
@@ -829,7 +971,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.7222045985200534,
+            "value": 0.979579718289121,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -838,8 +980,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9996806571428571,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -847,7 +989,7 @@
           },
           "judgment": {
             "name": "judgment",
-            "value": 0.80545,
+            "value": 0.9147499999999998,
             "description": "Clearing Price Accuracy",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -856,7 +998,149 @@
           },
           "self_awareness": {
             "name": "self_awareness",
-            "value": 0.5,
+            "value": 0.7221400000000001,
+            "description": "Cost-Strategy Consistency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-32B-Thinking-On": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.73,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 234.27153199999998,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "allocative_efficiency": {
+            "name": "allocative_efficiency",
+            "value": 0.34,
+            "description": "Allocative Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.856447811560612,
+            "description": "Expected Profit Efficiency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9964680571428572,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.8464033333333333,
+            "description": "Clearing Price Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "self_awareness": {
+            "name": "self_awareness",
+            "value": 0.7414933333333333,
+            "description": "Cost-Strategy Consistency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.88,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 361.3341757901235,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "allocative_efficiency": {
+            "name": "allocative_efficiency",
+            "value": 0.43,
+            "description": "Allocative Efficiency",
+            "metric_type": "market_dynamics",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9579563833726807,
+            "description": "Expected Profit Efficiency",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.9993499634920633,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "judgment": {
+            "name": "judgment",
+            "value": 0.8931825925925925,
+            "description": "Clearing Price Accuracy",
+            "metric_type": "magic_behavioral",
+            "game_name": "spulber",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "self_awareness": {
+            "name": "self_awareness",
+            "value": 0.7305774074074075,
             "description": "Cost-Strategy Consistency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -910,8 +1194,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9864285714285717,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -971,7 +1255,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.7799927566073233,
+            "value": 0.7800174851149673,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -980,8 +1264,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9956085714285716,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -1043,7 +1327,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.24865097883490525,
+            "value": 0.24865886194353512,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1052,8 +1336,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9855714285714288,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -1113,7 +1397,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.2596013581097943,
+            "value": 0.25960958838387577,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1122,8 +1406,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9857714285714289,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -1194,8 +1478,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9882405714285716,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -1264,8 +1548,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9882633714285717,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -1327,7 +1611,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.21001124156103498,
+            "value": 0.2100178996543933,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1336,8 +1620,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.97,
-            "description": "Strategic Markup Recognition",
+            "value": 0.983301542857143,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -1397,7 +1681,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.23360250849998423,
+            "value": 0.2336099145192943,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1406,8 +1690,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9836964285714285,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",
@@ -1469,7 +1753,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8777799826653865,
+            "value": 0.8778078113712655,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1478,8 +1762,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9961064285714284,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "structural_variations",
@@ -1539,7 +1823,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.8863458889792609,
+            "value": 0.8863739892544311,
             "description": "Expected Profit Efficiency",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
@@ -1548,8 +1832,8 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.9,
-            "description": "Strategic Markup Recognition",
+            "value": 0.9963214285714284,
+            "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "spulber",
             "experiment_type": "baseline",

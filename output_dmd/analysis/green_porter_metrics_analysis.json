@@ -1,0 +1,1383 @@
+{
+  "game_name": "green_porter",
+  "challenger_models": [
+    "random_agent",
+    "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "Qwen/Qwen3-30B-A3B-Thinking-Off",
+    "Qwen/Qwen3-32B-Thinking-Off",
+    "Qwen/Qwen3-14B-Thinking-Off",
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    "google/gemma-3-27b-it"
+  ],
+  "defender_model": "google/gemma-3-27b-it",
+  "results": {
+    "random_agent": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1730.2875499117465,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0992,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.5184094256259205,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.5184094256259205,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.48159057437407954,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2837.2645945431777,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.1048,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.4924698795180723,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.4924698795180723,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.5075301204819277,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "google/gemma-3-27b-it": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1490.6057916008638,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.08,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2622.6576695577414,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0888,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-235B-A22B-Instruct-2507": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1607.2911792223922,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0808,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9626288659793815,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.9626288659793815,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.037371134020618556,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2622.6576695577414,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0888,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-32B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1490.6057916008638,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.08,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2622.6576695577414,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0888,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-30B-A3B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1834.0614297050497,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.088,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.736986301369863,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.736986301369863,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.26301369863013696,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2868.8609056756213,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.096,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.7902298850574713,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.7902298850574713,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.20977011494252873,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "Qwen/Qwen3-14B-Thinking-Off": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1490.6057916008638,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.08,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2622.6576695577414,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0888,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1622.7393606236158,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.096,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.6196581196581197,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.6196581196581197,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.3803418803418803,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2783.5860270696307,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.1,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.5997045790251108,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.5997045790251108,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.40029542097488924,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1490.6848495143245,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.08,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9961587708066582,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.9961587708066582,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0038412291933418692,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2622.6576695577414,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0888,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 1.0,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 1.0,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.0,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1869.7828114495435,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.088,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.8057455540355677,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.8057455540355677,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.19425444596443228,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2868.55286132264,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0952,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.8573466476462197,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.8573466476462197,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.14265335235378032,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1907.1490001667917,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0984,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.4654919236417034,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.4654919236417034,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.5345080763582967,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2912.8096303357966,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.104,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.5546995377503852,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.5546995377503852,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.4453004622496148,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    },
+    "meta-llama/Llama-4-Scout-17B-16E-Instruct": {
+      "more_players": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1687.232750571254,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0832,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9395532194480947,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.9395532194480947,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.06044678055190539,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "structural_variations",
+            "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 1.0,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 2742.1908972689257,
+            "description": "Mean NPV",
+            "metric_type": "performance",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reversion_frequency": {
+            "name": "reversion_frequency",
+            "value": 0.0912,
+            "description": "Price War Frequency",
+            "metric_type": "market_dynamics",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.9573002754820936,
+            "description": "NPV Maximization",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.9573002754820936,
+            "description": "Cartel Adherence",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "deception": {
+            "name": "deception",
+            "value": 0.04269972451790634,
+            "description": "Secret Defection Rate",
+            "metric_type": "magic_behavioral",
+            "game_name": "green_porter",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "dynamic_metrics": {}
+      }
+    }
+  }
+}

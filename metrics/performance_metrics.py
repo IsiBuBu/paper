@@ -130,37 +130,62 @@ class PerformanceMetricsCalculator(MetricCalculator):
             )
 
         if game_name == 'athey_bagwell':
-            efficient_vol = 0.0
-            total_vol = 0.0
+            efficient_allocations = 0
+            total_allocations = 0
             
             for r in game_results:
                 rounds = r.game_data.get('rounds', [])
+                # Recover cost sequences from game state if needed for robust lookup
+                cost_sequences = r.game_data.get('state', {}).get('cost_sequences', {})
+                
                 for i, rd in enumerate(rounds):
-                    outcomes = rd.get('game_outcomes', {})
-                    shares = outcomes.get('player_market_shares', {})
-                    
-                    # --- ROBUST COST LOOKUP (Matched to Magic Metrics) ---
-                    costs = {}
+                    # 1. Get Costs for this round
+                    period_costs = {}
+                    # Try direct log first
                     if 'player_true_costs' in rd:
-                        costs = rd['player_true_costs']
-                    elif 'game_state' in rd and 'cost_sequences' in rd['game_state']:
-                        period = rd.get('period', i + 1) 
-                        cost_seqs = rd['game_state']['cost_sequences']
-                        for pid, seq in cost_seqs.items():
-                            if (period - 1) < len(seq):
-                                costs[pid] = seq[period - 1]
-                    # -----------------------------------------------------
+                        period_costs = rd['player_true_costs']
+                    # Fallback to sequence reconstruction
+                    elif cost_sequences:
+                        # Assuming period index corresponds to round index
+                        for pid, seq in cost_sequences.items():
+                            if i < len(seq):
+                                period_costs[pid] = seq[i]
                     
-                    for pid, share in shares.items():
-                        if share > 0:
-                            total_vol += share
-                            p_cost = costs.get(pid, 'high') 
-                            if isinstance(p_cost, str) and p_cost.lower() == 'low':
-                                efficient_vol += share
+                    if not period_costs: continue
+
+                    # 2. Get Winners (Positive Payoff = Market Share)
+                    payoffs = rd.get('payoffs', {})
+                    winners = [pid for pid, prof in payoffs.items() if prof > 0]
+                    
+                    if not winners: continue
+
+                    # 3. Determine Market Min Cost (The Efficient Cost)
+                    # Convert to numeric for comparison (Low=10, High=30 or similar)
+                    # We just use string comparison 'low' < 'high' roughly works if normalized
+                    # Better: map to int.
+                    def cost_val(c_str):
+                        return 0 if str(c_str).lower() == 'low' else 1
+                    
+                    costs_in_market = [cost_val(c) for c in period_costs.values()]
+                    min_market_cost = min(costs_in_market)
+                    
+                    # 4. Check Efficiency
+                    # Efficient if ALL winners are producing at the min_market_cost
+                    # (i.e., we didn't give volume to a High cost firm when a Low cost one existed)
+                    round_is_efficient = True
+                    for pid in winners:
+                        p_cost = cost_val(period_costs.get(pid, 'high'))
+                        if p_cost > min_market_cost:
+                            round_is_efficient = False
+                            break
+                    
+                    total_allocations += 1
+                    if round_is_efficient:
+                        efficient_allocations += 1
             
             metrics['productive_efficiency'] = create_metric_result(
                 'productive_efficiency', 
-                self.safe_divide(efficient_vol, total_vol), 
+                self.safe_divide(efficient_allocations, total_allocations), 
                 "Productive Efficiency", 
                 'market_dynamics', game_info.game_name, game_info.experiment_type, game_info.condition_name
             )

@@ -101,7 +101,7 @@ def get_all_game_configs(game_name: str) -> List[GameConfig]:
     baseline_constants.update(game_data.get('challenger_config', {}))
 
     # 1. Baseline Config
-    # If no structural variations exist, or just as a base, we always include baseline?
+     #If no structural variations exist, or just as a base, we always include baseline?
     # Usually in experiments we treat baseline as one condition and variations as others.
     # We'll create a 'baseline' condition first.
     configs.append(GameConfig(

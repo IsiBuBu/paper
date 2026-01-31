@@ -1,0 +1,9 @@
+Game,Condition,MAgIC Metric,Performance Metric,r-value,p-value,n
+green_porter,pooled,cooperation,win_rate,0.0,1.0,10
+green_porter,pooled,cooperation,average_profit,-0.8075914950622372,0.0047196672684861,10
+green_porter,pooled,deception,win_rate,0.0,1.0,10
+green_porter,pooled,deception,average_profit,0.8075914950622372,0.0047196672684861,10
+green_porter,more_players,cooperation,win_rate,0.0,1.0,10
+green_porter,more_players,cooperation,average_profit,-0.8075914950622372,0.0047196672684861,10
+green_porter,more_players,deception,win_rate,0.0,1.0,10
+green_porter,more_players,deception,average_profit,0.8075914950622372,0.0047196672684861,10
