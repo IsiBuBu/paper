@@ -1,0 +1,13 @@
+model,display_name,win_rate_mean,win_rate_std,win_rate_count,average_profit_mean,average_profit_std,average_profit_count
+Qwen/Qwen3-14B-Thinking-Off,Qwen3-14B (Thinking Off),0.5667,0.4346,6,1657.5891,1106.8994,6
+Qwen/Qwen3-14B-Thinking-On,Qwen3-14B (Thinking On),0.8738,0.085,8,1907.0382,1656.0189,8
+Qwen/Qwen3-235B-A22B-Instruct-2507,Qwen3-235B-A22B-Instruct-2507,0.7388,0.3679,8,1767.1232,1756.8004,8
+Qwen/Qwen3-30B-A3B-Thinking-Off,Qwen3-30B-A3B (Thinking Off),0.7538,0.3148,8,1898.708,1608.0376,8
+Qwen/Qwen3-30B-A3B-Thinking-On,Qwen3-30B-A3B (Thinking On),0.8988,0.0514,8,1925.8319,1642.9309,8
+Qwen/Qwen3-32B-Thinking-Off,Qwen3-32B (Thinking Off),0.6912,0.4087,8,1512.2035,1645.5484,8
+Qwen/Qwen3-32B-Thinking-On,Qwen3-32B (Thinking On),0.9062,0.0993,8,1986.6695,1647.8747,8
+meta-llama/Llama-3.3-70B-Instruct-Turbo,Llama-3.3-70B-Instruct,0.4775,0.5111,8,1582.5532,2015.6418,8
+meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8,Llama-4-Maverick-17B-128E-Instruct,0.5312,0.463,8,1697.0626,1895.5713,8
+meta-llama/Llama-4-Scout-17B-16E-Instruct,Llama-4-Scout-17B-16E-Instruct,0.525,0.5102,8,1433.6746,1643.2248,8
+meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo,Llama-3.1-70B-Instruct,0.505,0.4846,8,1642.6425,1961.8186,8
+meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo,Llama-3.1-8B-Instruct,0.57,0.474,8,1212.8135,1377.7725,8
