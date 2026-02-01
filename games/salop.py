@@ -1,7 +1,7 @@
 # games/salop.py
 
 from typing import Dict, Any, Optional, List
-from config.config import GameConfig, get_prompt_variables
+from config.config import GameConfig, get_prompt_variables, load_config
 from games.base_game import StaticGame, PriceParsingMixin
 
 class SalopGame(StaticGame, PriceParsingMixin):
@@ -18,6 +18,15 @@ class SalopGame(StaticGame, PriceParsingMixin):
         CRITICAL FIX: Calculates derived geometric variables like 'distance_to_neighbor'.
         """
         constants = game_config.constants.copy()
+        
+        # NEW: Apply parameter_sweep from config if present
+        raw_config = load_config()
+        sweep = raw_config.get('game_configs', {}).get('salop', {}).get('parameter_sweep', {})
+        if 'transport_cost' in sweep:
+            sweep_values = sweep['transport_cost']
+            if sweep_values:
+                idx = simulation_id % len(sweep_values)
+                constants['transport_cost'] = sweep_values[idx]
         
         # Calculate derived variables required by the prompt
         circumference = constants.get('circumference', 1.0)
@@ -56,13 +65,13 @@ class SalopGame(StaticGame, PriceParsingMixin):
 
     def calculate_payoffs(self, actions: Dict[str, Any], game_config: GameConfig, game_state: Optional[Dict] = None) -> Dict[str, float]:
         """Calculates player payoffs using the Market Share Algorithm."""
-        constants = game_state.get('constants', game_config.constants)
+        constants = game_state.get('constants', game_config.constants) if game_state else game_config.constants
         
         marginal_cost = constants.get('marginal_cost', 8)
         fixed_cost = constants.get('fixed_cost', 100)
-        transport_cost = constants.get('transport_cost', 1.5)
+        transport_cost = constants.get('transport_cost', 12)
         market_size = constants.get('market_size', 1000)
-        v = constants.get('reservation_price', 30)
+        v = constants.get('reservation_price', 25)
         
         # Determine active players from actions to support partial lists if needed
         # But generally we assume N players in a circle

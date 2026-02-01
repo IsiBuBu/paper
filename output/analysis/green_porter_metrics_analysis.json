@@ -1,7 +1,7 @@
 {
   "game_name": "green_porter",
   "challenger_models": [
-    "Qwen/Qwen3-235B-A22B-Thinking-2507"
+    "Qwen/Qwen3-32B-Thinking-On"
   ],
   "defender_model": "google/gemma-3-27b-it",
   "results": {

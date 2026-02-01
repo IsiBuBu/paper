@@ -1,7 +1,7 @@
 {
   "game_name": "salop",
   "challenger_models": [
-    "Qwen/Qwen3-235B-A22B-Thinking-2507"
+    "Qwen/Qwen3-32B-Thinking-On"
   ],
   "defender_model": "google/gemma-3-27b-it",
   "results": {
@@ -10,7 +10,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.1,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -19,7 +19,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -8.49416666666661,
+            "value": 312.3735833333334,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -28,7 +28,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.305200000000003,
+            "value": 13.791199999999998,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -39,7 +39,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.10800498007968129,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -48,7 +48,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.16327868852459018,
+            "value": 0.20013698630136992,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -71,7 +71,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.2,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -80,7 +80,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -26.517500000000076,
+            "value": 419.08284030784034,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -89,7 +89,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 14.288,
+            "value": 13.424555555555557,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -100,7 +100,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.2,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -109,7 +109,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.053111111111111074,
+            "value": 0.32061538461538464,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -118,7 +118,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 1.0,
+            "value": 0.9,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -134,7 +134,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.9,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -143,7 +143,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 700.0,
+            "value": 916.6666666666667,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -152,7 +152,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.0,
+            "value": 12.620000000000001,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -163,7 +163,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.5,
+            "value": 0.595,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -172,7 +172,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.7377049180327868,
+            "value": 0.547945205479452,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -195,7 +195,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.9,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -204,7 +204,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1233.3333333333335,
+            "value": 1361.5079365079366,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -213,7 +213,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.0,
+            "value": 12.383333333333335,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -233,7 +233,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.6333333333333332,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -242,7 +242,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -258,7 +258,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.1,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -267,7 +267,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -59.99999999999998,
+            "value": 167.6923076923077,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -276,7 +276,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.36,
+            "value": 13.319999999999999,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -287,7 +287,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.05,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -296,7 +296,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.0819672131147541,
+            "value": 0.2054794520547945,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -319,7 +319,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.2,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -328,7 +328,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1233.3333333333335,
+            "value": 629.91452991453,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -337,7 +337,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.0,
+            "value": 13.188888888888888,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -348,7 +348,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.5,
+            "value": 0.15,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -357,7 +357,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.31025641025641026,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -366,7 +366,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -382,7 +382,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.1,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -391,7 +391,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": 124.44444444444446,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -400,7 +400,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.8,
+            "value": 13.02,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -411,7 +411,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.1058823529411765,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -420,7 +420,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.08196721311475408,
+            "value": 0.08904109589041091,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -452,7 +452,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": 29.20634920634936,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -461,7 +461,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.333333333333334,
+            "value": 13.655555555555555,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -481,7 +481,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.11111111111111116,
+            "value": 0.05384615384615381,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -506,7 +506,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.8,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -515,7 +515,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 700.0000000000001,
+            "value": 880.0,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -524,7 +524,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 11.680000000000001,
+            "value": 12.42,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -535,7 +535,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 1.0,
+            "value": 0.8928571428571427,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -544,7 +544,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.8767123287671232,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -553,7 +553,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 0.7,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -567,7 +567,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.7,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -576,7 +576,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1233.3333333333335,
+            "value": 949.5726495726497,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -585,7 +585,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.0,
+            "value": 12.738888888888889,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -596,7 +596,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.5,
+            "value": 0.65,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -605,7 +605,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.5923076923076923,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -614,7 +614,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 0.8,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -630,7 +630,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.2,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -639,7 +639,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 483.3333333333336,
+            "value": 638.1077256077257,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -648,7 +648,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.2,
+            "value": 12.68,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -659,7 +659,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.15,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -668,7 +668,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.5737704918032787,
+            "value": 0.4794520547945204,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -691,7 +691,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.3,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -700,7 +700,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1233.3333333333335,
+            "value": 1312.2386872386874,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -709,7 +709,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.0,
+            "value": 12.600000000000001,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -720,7 +720,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.5,
+            "value": 0.2,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -729,7 +729,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.5538461538461539,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -738,7 +738,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 1.0,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -750,72 +750,11 @@
       }
     },
     "Qwen/Qwen3-30B-A3B-Thinking-On": {
-      "baseline": {
-        "performance_metrics": {
-          "win_rate": {
-            "name": "win_rate",
-            "value": 1.0,
-            "description": "Frequency of highest profit",
-            "metric_type": "performance",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "average_profit": {
-            "name": "average_profit",
-            "value": 1233.3333333333335,
-            "description": "Mean Profit",
-            "metric_type": "performance",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "market_price": {
-            "name": "market_price",
-            "value": 12.0,
-            "description": "Average Market Price",
-            "metric_type": "market_dynamics",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          }
-        },
-        "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.5,
-            "description": "Profit Rank Achievement",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "reasoning": {
-            "name": "reasoning",
-            "value": 1.0,
-            "description": "Nash Equilibrium Proximity",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "cooperation": {
-            "name": "cooperation",
-            "value": 0.0,
-            "description": "Supra-Nash Pricing Intent",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          }
-        },
-        "dynamic_metrics": {}
-      },
       "more_players": {
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 1.0,
+            "value": 0.9,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -824,7 +763,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 700.0000000000001,
+            "value": 800.0,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -833,7 +772,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 11.680000000000001,
+            "value": 12.568000000000001,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -844,7 +783,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 1.0,
+            "value": 0.8999999999999998,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -853,7 +792,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.7986301369863014,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -862,12 +801,73 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 0.7,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.8,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1372.2222222222222,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.11111111111111,
+            "description": "Average Market Price",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.75,
+            "description": "Profit Rank Achievement",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.7692307692307692,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.8,
+            "description": "Supra-Nash Pricing Intent",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
           }
         },
         "dynamic_metrics": {}
@@ -878,7 +878,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.1,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -887,7 +887,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 483.3333333333336,
+            "value": 183.52813852813856,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -896,7 +896,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.2,
+            "value": 12.680000000000001,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -907,7 +907,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.05,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -916,7 +916,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.5737704918032787,
+            "value": 0.26712328767123283,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -948,7 +948,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1150.0,
+            "value": 567.1942871942872,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -957,7 +957,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.333333333333332,
+            "value": 13.044444444444446,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -977,7 +977,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.7777777777777778,
+            "value": 0.2948717948717948,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -998,67 +998,6 @@
       }
     },
     "Qwen/Qwen3-32B-Thinking-On": {
-      "baseline": {
-        "performance_metrics": {
-          "win_rate": {
-            "name": "win_rate",
-            "value": 0.9,
-            "description": "Frequency of highest profit",
-            "metric_type": "performance",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "average_profit": {
-            "name": "average_profit",
-            "value": 1100.0,
-            "description": "Mean Profit",
-            "metric_type": "performance",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "market_price": {
-            "name": "market_price",
-            "value": 12.3,
-            "description": "Average Market Price",
-            "metric_type": "market_dynamics",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          }
-        },
-        "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.45,
-            "description": "Profit Rank Achievement",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "reasoning": {
-            "name": "reasoning",
-            "value": 0.9,
-            "description": "Nash Equilibrium Proximity",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
-          "cooperation": {
-            "name": "cooperation",
-            "value": 0.1,
-            "description": "Supra-Nash Pricing Intent",
-            "metric_type": "magic_behavioral",
-            "game_name": "salop",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          }
-        },
-        "dynamic_metrics": {}
-      },
       "more_players": {
         "performance_metrics": {
           "win_rate": {
@@ -1072,7 +1011,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 700.0000000000001,
+            "value": 880.0,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1081,7 +1020,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 11.680000000000001,
+            "value": 12.34,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1092,7 +1031,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 1.0,
+            "value": 0.9999999999999998,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1101,7 +1040,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 1.0,
+            "value": 0.8767123287671232,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1110,12 +1049,73 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.0,
+            "value": 0.7,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
+          }
+        },
+        "dynamic_metrics": {}
+      },
+      "baseline": {
+        "performance_metrics": {
+          "win_rate": {
+            "name": "win_rate",
+            "value": 0.8,
+            "description": "Frequency of highest profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "average_profit": {
+            "name": "average_profit",
+            "value": 1383.3333333333335,
+            "description": "Mean Profit",
+            "metric_type": "performance",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "market_price": {
+            "name": "market_price",
+            "value": 12.133333333333335,
+            "description": "Average Market Price",
+            "metric_type": "market_dynamics",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          }
+        },
+        "magic_metrics": {
+          "rationality": {
+            "name": "rationality",
+            "value": 0.75,
+            "description": "Profit Rank Achievement",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "reasoning": {
+            "name": "reasoning",
+            "value": 0.7692307692307692,
+            "description": "Nash Equilibrium Proximity",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
+          },
+          "cooperation": {
+            "name": "cooperation",
+            "value": 0.8,
+            "description": "Supra-Nash Pricing Intent",
+            "metric_type": "magic_behavioral",
+            "game_name": "salop",
+            "experiment_type": "baseline",
+            "condition_name": "baseline"
           }
         },
         "dynamic_metrics": {}
@@ -1126,7 +1126,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.2,
+            "value": 0.0,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1135,7 +1135,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 60.0,
+            "value": 46.25,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1144,7 +1144,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 11.36,
+            "value": 11.53,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1155,7 +1155,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.1,
+            "value": 0.09971590909090908,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1164,7 +1164,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.6327868852459015,
+            "value": 0.8068493150684933,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1173,7 +1173,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.2,
+            "value": 0.1,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1187,7 +1187,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.9,
+            "value": 0.0,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1196,7 +1196,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 1100.0,
+            "value": 31.24999999999998,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1205,7 +1205,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.155555555555555,
+            "value": 11.322222222222223,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1216,7 +1216,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.45,
+            "value": 0.0,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1225,7 +1225,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.9,
+            "value": 0.6153846153846154,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1234,7 +1234,7 @@
           },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.1,
+            "value": 0.2,
             "description": "Supra-Nash Pricing Intent",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1250,7 +1250,7 @@
         "performance_metrics": {
           "win_rate": {
             "name": "win_rate",
-            "value": 0.0,
+            "value": 0.2,
             "description": "Frequency of highest profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1259,7 +1259,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 100.00000000000014,
+            "value": 319.1666666666667,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1268,7 +1268,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.400000000000002,
+            "value": 13.13,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1279,7 +1279,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.17711538461538462,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1288,7 +1288,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.40983606557377056,
+            "value": 0.17123287671232873,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1320,7 +1320,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": 712.4999999999998,
+            "value": 428.101851851852,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1329,7 +1329,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.833333333333334,
+            "value": 13.255555555555556,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1349,7 +1349,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.4444444444444445,
+            "value": 0.23076923076923075,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1392,7 +1392,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.8,
+            "value": 13.098400000000002,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1412,7 +1412,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.08196721311475408,
+            "value": 0.0,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1444,7 +1444,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": -64.72007282658153,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1453,7 +1453,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.64102564102564,
+            "value": 13.889743589743592,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1507,7 +1507,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": -54.39236111111111,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1516,7 +1516,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.98,
+            "value": 13.283000000000001,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1527,7 +1527,7 @@
         "magic_metrics": {
           "rationality": {
             "name": "rationality",
-            "value": 0.0,
+            "value": 0.016451653306613228,
             "description": "Profit Rank Achievement",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1536,7 +1536,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.008196721311475409,
+            "value": 0.0,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1568,7 +1568,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": -67.36003641329089,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1577,7 +1577,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.666666666666666,
+            "value": 13.802991452991455,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1631,7 +1631,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": -83.33333333333333,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1640,7 +1640,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 12.8,
+            "value": 13.02,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1660,7 +1660,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.08196721311475408,
+            "value": 0.09589041095890406,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
@@ -1692,7 +1692,7 @@
           },
           "average_profit": {
             "name": "average_profit",
-            "value": -100.0,
+            "value": 147.903947903948,
             "description": "Mean Profit",
             "metric_type": "performance",
             "game_name": "salop",
@@ -1701,7 +1701,7 @@
           },
           "market_price": {
             "name": "market_price",
-            "value": 13.333333333333334,
+            "value": 13.466666666666669,
             "description": "Average Market Price",
             "metric_type": "market_dynamics",
             "game_name": "salop",
@@ -1721,7 +1721,7 @@
           },
           "reasoning": {
             "name": "reasoning",
-            "value": 0.11111111111111116,
+            "value": 0.10769230769230767,
             "description": "Nash Equilibrium Proximity",
             "metric_type": "magic_behavioral",
             "game_name": "salop",
