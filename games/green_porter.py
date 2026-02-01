@@ -73,8 +73,6 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         q_cournot = constants.get('cournot_quantity', 25)
         num_players = constants.get('number_of_players', 3) 
         q_collusive = constants.get('collusive_quantity', 17)
-        time_horizon = constants.get('time_horizon', 25)
-        punishment_duration = constants.get('punishment_duration', 5)
 
         # A. Expected Price War Profit (All Cournot)
         total_q_war = q_cournot * num_players
@@ -86,14 +84,10 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         defect_price = max(0, base_demand - (slope * total_q_defect))
         immediate_defect_profit = (defect_price - mc) * q_cournot
         
-        # C. Expected Cooperate Profit (All Collusive)
+        # C. Expected Cooperate Profit (All Collusive) - NEW CALCULATION
         total_q_coop = q_collusive * num_players
         expected_price_coop = max(0, base_demand - (slope * total_q_coop))
         expected_cooperate_profit = (expected_price_coop - mc) * q_collusive
-
-        # D. NEW: End-game dynamics
-        rounds_remaining = time_horizon - current_period + 1
-        effective_punishment_periods = min(punishment_duration, rounds_remaining)
 
         variables = get_prompt_variables(
             game_config,
@@ -108,19 +102,14 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
             'expected_price_war_price': f"{price_war_price:.2f}",
             'expected_price_war_profit': f"{price_war_profit:.2f}",
             'immediate_defect_profit': f"{immediate_defect_profit:.2f}",
-            'expected_cooperate_profit': f"{expected_cooperate_profit:.2f}",
-            # NEW VARIABLES FOR END-GAME DYNAMICS
-            'rounds_remaining': rounds_remaining,
-            'time_horizon': time_horizon,
-            'effective_punishment_periods': effective_punishment_periods,
+            'expected_cooperate_profit': f"{expected_cooperate_profit:.2f}"  # ADD THIS LINE
         })
         
         return self.prompt_template.format(**variables)
 
     def parse_llm_response(self, response: str, player_id: str, call_id: str, stage: int = 1) -> Optional[Dict[str, Any]]:
         """
-        Parses the LLM's action decision and returns the corresponding quantity.
-        Accepts both old (Cooperate/Defect) and new (Restrain/Expand) action names.
+        Parses the LLM's 'Cooperate' or 'Defect' decision and returns the corresponding quantity.
         """
         if not self.game_config:
             self.logger.error("Game config not initialized. Cannot map action to quantity.")
@@ -134,21 +123,19 @@ class GreenPorterGame(DynamicGame, QuantityParsingMixin):
         json_action = self.robust_json_parse(response)
         if json_action and 'action' in json_action and isinstance(json_action['action'], str):
             action_str = json_action['action'].lower()
-            # Accept both old and new action names
-            if action_str in ['cooperate', 'restrain']:
+            if action_str == 'cooperate':
                 return {'quantity': collusive_quantity}
-            if action_str in ['defect', 'expand']:
+            if action_str == 'defect':
                 return {'quantity': cournot_quantity}
 
         # Fallback to simple keyword search
         text_lower = response.lower()
-        # Check new names first, then old names
-        if 'restrain' in text_lower or 'cooperate' in text_lower:
+        if 'cooperate' in text_lower:
             return {'quantity': collusive_quantity}
-        if 'expand' in text_lower or 'defect' in text_lower:
+        if 'defect' in text_lower:
             return {'quantity': cournot_quantity}
 
-        self.logger.warning(f"[{call_id}] Could not parse a valid action for {player_id}. Defaulting to restrain.")
+        self.logger.warning(f"[{call_id}] Could not parse a valid action for {player_id}. Defaulting to cooperation.")
         return {'quantity': collusive_quantity}
 
 

@@ -1,45 +1,30 @@
-You operate in a **quantity-setting oligopoly** with {number_of_players} firms. Market price depends on total industry output.
+You are in a cartel with **{number_of_players}** firms. Your only goal is to maximize the Net Present Value (NPV) of your own profits.
 
-### Production Options
-Choose ONE output level this period:
+### Cartel Rules:
+* **The Noise:** The market price is volatile due to random demand shocks (std dev: **{demand_shock_std}**). 
+* **The Deterrent:** If the price falls below **${trigger_price}**, the cartel collapses into a **Price War** for **{punishment_duration}** rounds.
+* **The War:** During a Price War, the expected market price drops to **${expected_price_war_price}**, and your profits drop significantly to **~${expected_price_war_profit}** per round.
 
-| Option | Your Output | Market Impact |
-|--------|-------------|---------------|
-| **Restrain** | {collusive_quantity} units | Lower supply → higher price |
-| **Expand** | {cournot_quantity} units | More output → more units sold |
+### The Strategic Calculus:
+You must weigh the stability of the cartel against the temptation of immediate liquidity. Future profits are discounted by **{discount_factor}**.
 
-### Market Mechanics
-- **Base demand:** {base_demand}
-- **Your cost:** ${marginal_cost} per unit
-- **Price volatility:** Random demand shocks (std dev: {demand_shock_std})
+1. **Cooperate** (Produce **{collusive_quantity}**):
+   - **Reward:** You expect a profit of **~${expected_cooperate_profit}** today.
+   - **Risk:** Even if you cooperate, a negative demand shock could hit the **${trigger_price}** trigger, starting a war through no fault of your own.
 
-### The Price Monitoring System
-The industry monitors a **trigger price of ${trigger_price}**.
-- If market price falls below this trigger → **Low-output phase** for {punishment_duration} periods
-- During this phase: expected price ~${expected_price_war_price}, profit ~${expected_price_war_profit}/period
+2. **Defect** (Produce **{cournot_quantity}**):
+   - **Reward:** You capture an immediate profit bonus, totaling **~${immediate_defect_profit}**.
+   - **Risk:** You significantly increase the mathematical probability of a market collapse, sacrificing **{punishment_duration}** rounds of future high-margin income.
 
-### Expected Profits (This Period)
-- **Restrain** (if others also restrain): ~${expected_cooperate_profit}
-- **Expand** (if others restrain): ~${immediate_defect_profit}
-- Expanding increases the risk of triggering a price collapse
-
-### What You Don't Know
-- Your {number_of_competitors} rivals choose **simultaneously**
-- They may also be considering expansion
-- Multiple expansions → more severe price drop
-- **Rival strategies are uncertain**
-
-### Game Progress
-- **Period:** {current_round} of {time_horizon}
-- **Rounds remaining:** {rounds_remaining}
-- **Status:** {current_market_state}
-
-### End-Game Effect
-With {rounds_remaining} rounds left, a {punishment_duration}-period punishment covers {effective_punishment_periods} of your remaining periods. The threat of future punishment diminishes as the game nears its end.
-
-### Recent History
+### Current Game State:
+* **Period:** {current_round}
+* **Market Status:** {current_market_state}
+* **History:**
 {formatted_history_table}
 
-### Output Format
-Respond with valid JSON only:
-`{{"action": "Restrain" | "Expand"}}`
+### Task:
+Which action maximizes your firm's expected NPV?
+
+### Output Format:
+You MUST respond with valid JSON first and only. Do not include any explanation or text:
+`{{"action": "Cooperate" | "Defect"}}`

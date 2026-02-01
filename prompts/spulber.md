@@ -1,35 +1,24 @@
-You are bidding in a **sealed-price competition**. The lowest bidder wins all market demand.
+You are one of **{number_of_players}** firms in a winner-take-all Bertrand competition. This is a game of incomplete information.
 
-### Your Position
-- **Your production cost:** ${your_cost} per unit
-- **If you win:** Quantity sold = {demand_intercept} − Your Price
+### The Strategic Context:
+* **Your Position:** Your marginal cost is **${your_cost}**.
+* **The Unknown:** You do not know your rivals' exact costs. You only know their costs are drawn independently from a **{rival_cost_distribution}** distribution (Mean=**${rival_cost_mean}**, SD=**${rival_cost_std}**).
+* **The Market:** If you satisfy the winning condition, `Quantity = {demand_intercept} - Your_Price`.
 
-### The Competition
-- **Number of bidders:** {number_of_players}
-- **Rival costs:** Unknown. Each drawn from a {rival_cost_distribution} distribution (mean=${rival_cost_mean}, std=${rival_cost_std})
-- **Rival strategies:** Unknown. They see the same information about YOU that you see about them.
+### The Game Mechanics (Crucial):
+1.  **Rational Rivals:** Your rivals are not pricing at cost, nor are they pricing randomly. They are rational profit-maximizers.
+2.  **Winning Condition:** You win **only** if your price is strictly lower than the prices set by all **{number_of_competitors}** rivals.
+3.  **Endogenous Risk:** Your probability of winning is **not fixed**. It is highly sensitive to your price.
+    * If you price aggressively (low), you squeeze your margin but maximize your chance of undercutting rational rivals.
+    * If you price passively (high), you expand your margin but risk that *at least one* rival draws a favorable cost and undercuts you.
 
-### The Bidding Trade-Off
+### The Strategic Calculus:
+You must estimate the likely pricing behavior of your rivals and determine the single price that maximizes your **Expected Profit**.
+$$E[\pi] = P(Win) \times (Price - {your_cost}) \times Quantity$$
 
-**Bid LOW:**
-- More likely to win
-- Smaller margin if you win
-- Risk: Winning at a loss (bidding below your cost ${your_cost})
+### Task:
+Find the optimal price that balances your profit margin against the probability of undercutting your rivals.
 
-**Bid HIGH:**
-- Larger margin if you win
-- Less likely to beat rivals
-- Risk: Losing to someone with higher costs who bid more aggressively
-
-### Key Insight
-Your rivals don't know your cost either. A rival with cost $60 might bid $55 (aggressive) or $75 (conservative). You're trying to undercut their unknown bids while staying above your cost.
-
-### Winning Condition
-You win **only if** your price is strictly lower than ALL {number_of_competitors} other bidders.
-
-### Your Decision
-Submit one price. Your profit if you win = (Price − ${your_cost}) × Quantity
-
-### Output Format
-Respond with valid JSON only:
+### Output Format:
+You MUST respond with valid JSON first and only. Do not include any explanation or text:
 `{{"price": <number>}}`

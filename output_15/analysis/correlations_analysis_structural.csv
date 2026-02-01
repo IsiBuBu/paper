@@ -1,9 +1,0 @@
-condition_type,game_name,magic_metric,performance_metric,correlation_coefficient,p_value,n_samples,ci_95_low,ci_95_high
-pooled,green_porter,cooperation,win_rate,0.0,1.0,10,0.0,0.0
-pooled,green_porter,cooperation,average_profit,-0.8075914950622372,0.0047196672684861815,10,-0.9527583992634563,-0.36207173811659604
-pooled,green_porter,deception,win_rate,0.0,1.0,10,0.0,0.0
-pooled,green_porter,deception,average_profit,0.8075914950622372,0.0047196672684861815,10,0.36207173811659604,0.9527583992634563
-more_players,green_porter,cooperation,win_rate,0.0,1.0,10,0.0,0.0
-more_players,green_porter,cooperation,average_profit,-0.8075914950622372,0.0047196672684861815,10,-0.9527583992634563,-0.36207173811659604
-more_players,green_porter,deception,win_rate,0.0,1.0,10,0.0,0.0
-more_players,green_porter,deception,average_profit,0.8075914950622372,0.0047196672684861815,10,0.36207173811659604,0.9527583992634563
