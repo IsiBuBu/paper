@@ -1,17 +1,7 @@
 {
   "game_name": "green_porter",
   "challenger_models": [
-    "random_agent",
-    "Qwen/Qwen3-235B-A22B-Instruct-2507",
-    "Qwen/Qwen3-30B-A3B-Thinking-Off",
-    "Qwen/Qwen3-32B-Thinking-Off",
-    "Qwen/Qwen3-14B-Thinking-Off",
-    "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-    "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-    "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-    "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    "google/gemma-3-27b-it"
+    "Qwen/Qwen3-235B-A22B-Thinking-2507"
   ],
   "defender_model": "google/gemma-3-27b-it",
   "results": {
@@ -47,28 +37,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.4903100775193798,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.4903100775193798,
-            "description": "Cartel Adherence",
+            "value": 0.4856532444164023,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.5096899224806202,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -108,28 +89,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.46693386773547096,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.46693386773547096,
-            "description": "Cartel Adherence",
+            "value": 0.4642557997557997,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.533066132264529,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -171,28 +143,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -232,28 +195,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -295,28 +249,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9471766848816029,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9471766848816029,
-            "description": "Cartel Adherence",
+            "value": 0.9486899693873377,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.052823315118397086,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.6499999999999999,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -356,28 +301,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -419,28 +355,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -480,28 +407,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9981412639405205,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9981412639405205,
-            "description": "Cartel Adherence",
+            "value": 0.9983333333333334,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0018587360594795538,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.986,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -543,28 +461,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.48023715415019763,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.48023715415019763,
-            "description": "Cartel Adherence",
+            "value": 0.4871383616383617,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.5197628458498024,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -604,28 +513,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.666,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.666,
-            "description": "Cartel Adherence",
+            "value": 0.6596379176379176,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.334,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.31400000000000006,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -667,28 +567,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.7351851851851852,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.7351851851851852,
-            "description": "Cartel Adherence",
+            "value": 0.7107646096593464,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.26481481481481484,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -728,28 +619,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.6111111111111112,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.6111111111111112,
-            "description": "Cartel Adherence",
+            "value": 0.5931670551670551,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.3888888888888889,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -791,28 +673,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.8560885608856088,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.8560885608856088,
-            "description": "Cartel Adherence",
+            "value": 0.8648163357110725,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.14391143911439114,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.45399999999999996,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -852,28 +725,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9207547169811321,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9207547169811321,
-            "description": "Cartel Adherence",
+            "value": 0.9214847783795154,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.07924528301886792,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.594,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -915,28 +779,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -976,28 +831,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1039,28 +885,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.20773930753564154,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.20773930753564154,
-            "description": "Cartel Adherence",
+            "value": 0.21825008325008322,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.7922606924643585,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1100,28 +937,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.26403326403326405,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.26403326403326405,
-            "description": "Cartel Adherence",
+            "value": 0.26563086913086914,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.735966735966736,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1163,28 +991,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.5125725338491296,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.5125725338491296,
-            "description": "Cartel Adherence",
+            "value": 0.5213949383949383,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.4874274661508704,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1224,28 +1043,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.928436911487759,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.928436911487759,
-            "description": "Cartel Adherence",
+            "value": 0.9324573029309872,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.07156308851224105,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.594,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1287,28 +1097,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9599271402550091,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9599271402550091,
-            "description": "Cartel Adherence",
+            "value": 0.9536031746031746,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.04007285974499089,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.7479999999999998,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1348,28 +1149,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9591078066914498,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9591078066914498,
-            "description": "Cartel Adherence",
+            "value": 0.9523800088800088,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.040892193308550186,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.7339999999999999,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1411,28 +1203,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.6797752808988764,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.6797752808988764,
-            "description": "Cartel Adherence",
+            "value": 0.6608805069199805,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.3202247191011236,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1472,28 +1255,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.7696737044145874,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.7696737044145874,
-            "description": "Cartel Adherence",
+            "value": 0.7566364804785857,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.23032629558541268,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1535,28 +1309,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.3391812865497076,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.3391812865497076,
-            "description": "Cartel Adherence",
+            "value": 0.31178121001805215,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.6608187134502924,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1596,28 +1361,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.33127572016460904,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.33127572016460904,
-            "description": "Cartel Adherence",
+            "value": 0.29969513819513816,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.668724279835391,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.30000000000000004,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
@@ -1659,28 +1415,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 0.9508196721311475,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "structural_variations",
-            "condition_name": "more_players"
-          },
           "cooperation": {
             "name": "cooperation",
-            "value": 0.9508196721311475,
-            "description": "Cartel Adherence",
+            "value": 0.9473561993561994,
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
             "condition_name": "more_players"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.04918032786885246,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 0.622,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "structural_variations",
@@ -1720,28 +1467,19 @@
           }
         },
         "magic_metrics": {
-          "rationality": {
-            "name": "rationality",
-            "value": 1.0,
-            "description": "NPV Maximization",
-            "metric_type": "magic_behavioral",
-            "game_name": "green_porter",
-            "experiment_type": "baseline",
-            "condition_name": "baseline"
-          },
           "cooperation": {
             "name": "cooperation",
             "value": 1.0,
-            "description": "Cartel Adherence",
+            "description": "Cartel Adherence Rate",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
             "condition_name": "baseline"
           },
-          "deception": {
-            "name": "deception",
-            "value": 0.0,
-            "description": "Secret Defection Rate",
+          "coordination": {
+            "name": "coordination",
+            "value": 1.0,
+            "description": "Defection Timing Alignment",
             "metric_type": "magic_behavioral",
             "game_name": "green_porter",
             "experiment_type": "baseline",
