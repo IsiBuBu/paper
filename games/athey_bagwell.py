@@ -74,6 +74,9 @@ class AtheyBagwellGame(DynamicGame, ReportParsingMixin):
             (prob_next_high * future_profit_if_high)
         )
 
+        # NEW: Calculate persistence as percentage for clearer display
+        persistence_probability_pct = int(persistence * 100)
+
         history_table_vars = self._format_history_tables(player_id, game_state)
         variables = get_prompt_variables(game_config, player_id=player_id, current_round=game_state['current_period'])
         
@@ -83,6 +86,7 @@ class AtheyBagwellGame(DynamicGame, ReportParsingMixin):
             "low_cost": cost_low,
             "high_cost": cost_high,
             "persistence_probability": persistence,
+            "persistence_probability_pct": persistence_probability_pct,  # NEW
             "discount_factor": discount,
             "your_cost_type": current_cost_type.capitalize(),
             "your_true_cost_value": f"{current_cost_val}",

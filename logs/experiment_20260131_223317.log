@@ -1,3 +1,0 @@
-2026-01-31 22:33:17,087 - root            - INFO     - Logging to: logs/experiment_20260131_223317.log
-2026-01-31 22:33:17,087 - Competition     - INFO     - 🚀 Concurrency initialized: Max 200 requests PER MODEL.
-2026-01-31 22:33:17,087 - Competition     - CRITICAL - ❌ CRITICAL ERROR: Input file not found at 'output/data/master_datasets.json'.

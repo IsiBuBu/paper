@@ -39,23 +39,19 @@ class RandomAgent(BaseLLMAgent):
             action = {"report": report}
 
         elif game_name == "green_porter":
-            # 50/50 split ensures they will eventually trigger the "Tight Trigger" (58)
-            chosen_action = rng.choice(["Cooperate", "Defect"])
+            # 50/50 split between Restrain and Expand (new neutral terminology)
+            chosen_action = rng.choice(["Restrain", "Expand"])
             action = {"action": chosen_action}
 
         elif game_name == "salop":
             # Random price between Cost and Max Willingness.
-            # In "Hard Mode" (Reservation=20, MC=8), this tight range allows
-            # us to see if they accidentally hit the optimal or drift.
             low = float(constants.get('marginal_cost', 8))
             high = float(constants.get('reservation_price', 30))
             price = rng.uniform(low, high)
             action = {"price": round(price, 2)}
 
         elif game_name == "spulber":
-            # CRITICAL UPDATE for Spulber:
-            # Random Agents do not know their private cost in this architecture (it's in game_state).
-            # Therefore, they bid randomly across the entire valid domain [0, Demand Intercept].
+            # Random Agents bid randomly across the entire valid domain [0, Demand Intercept].
             # This allows them to bid BELOW cost (Winner's Curse), which LLMs should avoid.
             low = 0.0 
             high = float(constants.get('demand_intercept', 100))

@@ -1,36 +1,50 @@
-You are in a cartel with **{number_of_players}** firms. The cartel uses an "Odd-Even" allocation scheme to ensure productive efficiency (the lowest cost firm serves).
+You are in a **market-sharing arrangement** with {number_of_players} firms. Each period, firms signal their production costs to determine market access.
 
-### The Scheme:
-* **Odd Periods:** Firms report costs.
-    * **Report "Low":** You claim the market *today*. You serve **{market_size}** units but are **barred** from the market in the next period.
-    * **Report "High":** You yield priority. You get **0** share now (unless everyone yields), but are guaranteed access to the market in the next period.
-* **Even Periods:** Market share is allocated to those who yielded (reported "High") in the previous period.
+### The Allocation System
 
-### Economic Context:
-* **Market Price:** **${market_price}**.
-* **Cost Structure:** Low Cost (**${low_cost}**) vs. High Cost (**${high_cost}**).
-* **Cost Persistence:** Your cost type is sticky. The probability of your cost staying the same in the next period is **{persistence_probability}**, regardless of whether it is Low or High.
+**Odd Periods (like Period {current_round}):**
+- Each firm signals either **"Low"** or **"High"**
+- Firms signaling "Low" → serve the market THIS period
+- Firms signaling "Low" → **excluded** from NEXT period
 
-### The Strategic Calculus:
-Your true cost this period is **{your_cost_type}** (${your_true_cost_value}). You must calculate if it is better to seize profit now or invest in the future (Discount Factor: **{discount_factor}**).
+**Even Periods:**
+- Market goes to firms that signaled "High" last period
+- Those who signaled "Low" sit out
 
-1.  **Report "Low" (Claim):**
-    * **Consequence:** You serve the market today.
-    * **Payoff:** You earn an immediate profit of **~${profit_claim_today}**.
-    * **Risk:** You are barred tomorrow. If your cost becomes Low tomorrow, you miss a massive opportunity.
+### Your Situation
+- **Your TRUE production cost:** {your_cost_type} (${your_true_cost_value})
+- **Market price:** ${market_price} per unit
+- **Market size:** {market_size} units
 
-2.  **Report "High" (Yield):**
-    * **Consequence:** You yield priority to Low-cost firms.
-    * **Payoff:** You likely earn **0** today, but you gain guaranteed access to the next period. 
-    * **Future Value:** Based on your cost probabilities, the Expected NPV of this future access is **~${expected_future_value}**.
+### Cost Persistence
+Your cost type tends to **persist**. There's a {persistence_probability_pct}% chance it stays the same next period.
+- Currently {your_cost_type} → likely {your_cost_type} again next period
 
-### Current Game State:
-* **Period:** {current_round}
-* **History of your past reports:** {your_reports_history_detailed}
+### Your Options
 
-### Task:
-Which report maximizes your firm's expected NPV given your current cost type?
+**Signal "Low" (Serve Now):**
+- Profit today: ~${profit_claim_today}
+- Excluded tomorrow (lose next period's opportunity)
+- Problem if your cost stays low → you miss a good period
 
-### Output Format:
-You MUST respond with valid JSON first and only. Do not include any explanation or text:
+**Signal "High" (Wait):**
+- Likely $0 today (unless ALL signal High)
+- Guaranteed market access tomorrow
+- Expected future value: ~${expected_future_value} (at discount factor {discount_factor})
+
+### The Strategic Question
+If your cost is LOW: signaling "Low" captures today's high margin, but signaling "High" saves access for tomorrow when you'll probably still be low-cost.
+
+If your cost is HIGH: signaling "Low" gets low-margin sales now, signaling "High" waits for tomorrow when you'll probably still be high-cost.
+
+### What You Don't Know
+- Your {number_of_competitors} rivals' true costs
+- What they will signal
+- They face the same persistence you do
+
+### Your History
+{your_reports_history_detailed}
+
+### Output Format
+Respond with valid JSON only:
 `{{"report": "high" | "low"}}`
