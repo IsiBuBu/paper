@@ -5,6 +5,27 @@ MAgIC Analysis Pipeline - Publication Version
 Usage:
     python analysis.py
 
+RANDOM AGENT INCLUSION STRATEGY:
+--------------------------------
+RQ1 (Performance Tables): INCLUDE random agent as baseline
+    - Shows LLMs beat random → validates strategic capability
+    - Tables: T_perf_win_rate, T_perf_avg_profit, T_perf_game_specific
+
+RQ2 (Behavioral Profiles): INCLUDE random agent for comparison
+    - Random should cluster separately from strategic models
+    - Tables: T_magic_{game}
+    - Figures: F_similarity_{game}, F_similarity_3v5
+
+RQ3 (Regressions): EXCLUDE random agent
+    - Random has no meaningful features for regression
+    - Tables: T_mlr_*, T5a/b_magic_to_perf, T6_pca_variance
+    - Figures: F_pca_scree
+
+RQ4 (Thinking Analysis): EXCLUDE random agent
+    - Random is not a thinking model, would add noise
+    - Tables: T8_thinking_*
+    - Figures: F5_think_vs_inst
+
 FEATURE MODELING:
 -----------------
 Model features used in MLR regression (Features → Performance):
@@ -129,8 +150,17 @@ class DataLoader:
         self.model_configs = {}
         self.display_names = {}
         self.family_encoder = None
+        
+        # Add display name for random agent
+        self.display_names['random_agent'] = 'Random'
     
-    def load(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def load(self, include_random: bool = False) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Load performance and MAgIC dataframes.
+        
+        Args:
+            include_random: If True, include random_agent in results (for RQ1/RQ2).
+                           If False, exclude random_agent (for RQ3/RQ4 regressions).
+        """
         perf_path = self.analysis_dir / "performance_metrics.csv"
         magic_path = self.analysis_dir / "magic_behavioral_metrics.csv"
         
@@ -140,8 +170,8 @@ class DataLoader:
         perf_df = pd.read_csv(perf_path)
         magic_df = pd.read_csv(magic_path)
         
-        perf_df = self._filter_models(perf_df)
-        magic_df = self._filter_models(magic_df)
+        perf_df = self._filter_models(perf_df, include_random=include_random)
+        magic_df = self._filter_models(magic_df, include_random=include_random)
         
         if self.config_path and self.config_path.exists():
             with open(self.config_path) as f:
@@ -150,7 +180,8 @@ class DataLoader:
                 for model_name, cfg in self.model_configs.items():
                     self.display_names[model_name] = cfg.get('display_name', model_name)
         
-        logger.info(f"Loaded {len(perf_df)} performance rows, {len(magic_df)} MAgIC rows")
+        random_status = "included" if include_random else "excluded"
+        logger.info(f"Loaded {len(perf_df)} performance rows, {len(magic_df)} MAgIC rows (random agent {random_status})")
         return perf_df, magic_df
     
     def load_token_data(self) -> pd.DataFrame:
@@ -240,10 +271,23 @@ class DataLoader:
             return self.display_names[model]
         return str(model).split('/')[-1]
     
-    def _filter_models(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _filter_models(self, df: pd.DataFrame, include_random: bool = False) -> pd.DataFrame:
+        """Filter models from dataframe.
+        
+        Args:
+            df: Input dataframe with 'model' column
+            include_random: If True, keep random_agent (for RQ1/RQ2 baseline comparison).
+                           Always excludes defender (gemma).
+        """
         def is_excluded(model: str) -> bool:
             m = str(model).lower()
-            return 'random' in m or 'gemma' in m
+            # Always exclude defender (gemma)
+            if 'gemma' in m:
+                return True
+            # Conditionally exclude random agent
+            if not include_random and 'random' in m:
+                return True
+            return False
         return df[~df['model'].apply(is_excluded)].copy()
     
     def extract_model_features(self, models: List[str]) -> pd.DataFrame:
@@ -305,10 +349,23 @@ class DataLoader:
 # =============================================================================
 
 class TableGenerator:
-    def __init__(self, perf_df: pd.DataFrame, magic_df: pd.DataFrame,
+    """Generate publication tables.
+    
+    RQ1 (Performance) and RQ2 (Behavioral) tables INCLUDE random agent as baseline.
+    RQ3 (Regressions) and RQ4 (Thinking) tables EXCLUDE random agent.
+    """
+    
+    def __init__(self, perf_df_with_random: pd.DataFrame, magic_df_with_random: pd.DataFrame,
+                 perf_df_no_random: pd.DataFrame, magic_df_no_random: pd.DataFrame,
                  features_df: pd.DataFrame, output_dir: Path, loader: DataLoader):
-        self.perf_df = perf_df
-        self.magic_df = magic_df
+        # Data WITH random agent (for RQ1 performance tables, RQ2 behavioral tables)
+        self.perf_df = perf_df_with_random
+        self.magic_df = magic_df_with_random
+        
+        # Data WITHOUT random agent (for RQ3 regressions, RQ4 thinking analysis)
+        self.perf_df_no_random = perf_df_no_random
+        self.magic_df_no_random = magic_df_no_random
+        
         self.features_df = features_df
         self.output_dir = output_dir
         self.loader = loader
@@ -470,7 +527,11 @@ class TableGenerator:
         return pd.DataFrame(records)
     
     def performance_win_rate_table(self):
-        logger.info("Generating Win Rate table...")
+        """Win rate table for RQ1.
+        
+        Note: Uses perf_df which INCLUDES random agent as performance baseline.
+        """
+        logger.info("Generating Win Rate table (includes random agent)...")
         direction = METRIC_DIRECTION.get('win_rate', '↑')
         table_df = self._build_metric_table_3v5(self.perf_df, 'win_rate')
         
@@ -490,7 +551,11 @@ class TableGenerator:
             pval_df.to_csv(self.output_dir / "T_perf_win_rate_pvalues.csv", index=False)
     
     def performance_avg_profit_table(self):
-        logger.info("Generating Average Profit table...")
+        """Average profit table for RQ1.
+        
+        Note: Uses perf_df which INCLUDES random agent as performance baseline.
+        """
+        logger.info("Generating Average Profit table (includes random agent)...")
         direction = METRIC_DIRECTION.get('average_profit', '↑')
         table_df = self._build_metric_table_3v5(self.perf_df, 'average_profit')
         
@@ -510,8 +575,11 @@ class TableGenerator:
             pval_df.to_csv(self.output_dir / "T_perf_avg_profit_pvalues.csv", index=False)
     
     def performance_game_specific_table(self):
-        """Table: Game-specific metrics WITH 3P vs 5P."""
-        logger.info("Generating Game-Specific metrics table (3P vs 5P)...")
+        """Game-specific metrics table for RQ1 (3P vs 5P).
+        
+        Note: Uses perf_df which INCLUDES random agent as performance baseline.
+        """
+        logger.info("Generating Game-Specific metrics table (includes random agent)...")
         
         records = []
         for model in self.perf_df['model'].unique():
@@ -583,7 +651,12 @@ class TableGenerator:
                                    "Performance: 3P vs 5P Statistical Comparison", bold_best=False)
     
     def magic_per_game_table(self, game: str):
-        logger.info(f"Generating MAgIC table for {game}...")
+        """MAgIC behavioral metrics table for RQ2.
+        
+        Note: Uses magic_df which INCLUDES random agent as behavioral baseline.
+        Random agent should show distinctive (often lower) behavioral scores.
+        """
+        logger.info(f"Generating MAgIC table for {game} (includes random agent)...")
         
         game_df = self.magic_df[self.magic_df['game'] == game]
         if game_df.empty:
@@ -644,13 +717,16 @@ class TableGenerator:
         return remaining, dropped
     
     def mlr_features_to_performance(self):
-        """MLR: Model Features → Performance Metrics."""
+        """MLR: Model Features → Performance Metrics.
+        
+        Note: Uses perf_df_no_random to exclude random agent from regressions.
+        """
         if not STATSMODELS_AVAILABLE:
             return
         
-        logger.info("Generating MLR: Features → Performance...")
+        logger.info("Generating MLR: Features → Performance (excluding random agent)...")
         
-        perf_pivot = self.perf_df.pivot_table(
+        perf_pivot = self.perf_df_no_random.pivot_table(
             index=['game', 'model', 'condition'], columns='metric', values='mean'
         ).reset_index()
         
@@ -709,17 +785,20 @@ class TableGenerator:
             logger.info(f"  Saved MLR Features→Perf: {len(df_out)} rows, {len(sig_df)} significant")
     
     def mlr_magic_to_performance(self):
-        """MLR: MAgIC → Performance (T5a, T5b)."""
+        """MLR: MAgIC → Performance (T5a, T5b).
+        
+        Note: Uses no_random dataframes to exclude random agent from regressions.
+        """
         if not STATSMODELS_AVAILABLE:
             return
         
-        logger.info("Generating T5: MAgIC → Performance...")
+        logger.info("Generating T5: MAgIC → Performance (excluding random agent)...")
         
-        magic_pivot = self.magic_df.pivot_table(
+        magic_pivot = self.magic_df_no_random.pivot_table(
             index=['game', 'model', 'condition'], columns='metric', values='mean'
         ).reset_index()
         
-        perf_pivot = self.perf_df.pivot_table(
+        perf_pivot = self.perf_df_no_random.pivot_table(
             index=['game', 'model', 'condition'], columns='metric', values='mean'
         ).reset_index()
         
@@ -791,14 +870,18 @@ class TableGenerator:
                                    "T5b: MAgIC → Performance Model Summary", bold_best=False)
     
     def pca_variance_table(self):
+        """PCA Variance analysis for RQ3 dimensionality validation.
+        
+        Note: Uses magic_df_no_random to exclude random agent.
+        """
         if not SKLEARN_AVAILABLE:
             return
         
-        logger.info("Generating T6: PCA Variance...")
+        logger.info("Generating T6: PCA Variance (excluding random agent)...")
         
         results = []
         for game, config in GAME_CONFIGS.items():
-            game_df = self.magic_df[self.magic_df['game'] == game]
+            game_df = self.magic_df_no_random[self.magic_df_no_random['game'] == game]
             if game_df.empty:
                 continue
             
@@ -828,12 +911,13 @@ class TableGenerator:
     def cost_benefit_table(self, token_df: pd.DataFrame):
         """Table 8: Think vs Inst comparison with mean±std and p-values.
         
+        Note: Uses perf_df_no_random to exclude random agent from RQ4 analysis.
         Output format: mean ± std for all metrics, t-test p-values for group comparisons.
         """
-        logger.info("Generating T8: Think vs Inst Comparison (mean±std, p-values)...")
+        logger.info("Generating T8: Think vs Inst Comparison (excluding random agent)...")
         
-        # Get profit data
-        profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        # Get profit data (excluding random agent)
+        profit_df = self.perf_df_no_random[self.perf_df_no_random['metric'] == 'average_profit'].copy()
         profit_df['is_thinking'] = profit_df['model'].apply(self.loader.get_thinking_status)
         profit_df['mode'] = profit_df['is_thinking'].map({True: 'Think', False: 'Inst'})
         profit_df['display_name'] = profit_df['model'].apply(self._display_name)
@@ -930,10 +1014,23 @@ class TableGenerator:
 # =============================================================================
 
 class FigureGenerator:
-    def __init__(self, perf_df: pd.DataFrame, magic_df: pd.DataFrame,
+    """Generate publication figures.
+    
+    RQ2 similarity figures INCLUDE random agent as baseline for comparison.
+    RQ3 PCA and RQ4 thinking figures EXCLUDE random agent.
+    """
+    
+    def __init__(self, perf_df_with_random: pd.DataFrame, magic_df_with_random: pd.DataFrame,
+                 perf_df_no_random: pd.DataFrame, magic_df_no_random: pd.DataFrame,
                  features_df: pd.DataFrame, output_dir: Path, loader: DataLoader):
-        self.perf_df = perf_df
-        self.magic_df = magic_df
+        # Data WITH random agent (for RQ2 similarity figures)
+        self.perf_df = perf_df_with_random
+        self.magic_df = magic_df_with_random
+        
+        # Data WITHOUT random agent (for RQ3 PCA, RQ4 thinking figures)
+        self.perf_df_no_random = perf_df_no_random
+        self.magic_df_no_random = magic_df_no_random
+        
         self.features_df = features_df
         self.output_dir = output_dir
         self.loader = loader
@@ -960,7 +1057,12 @@ class FigureGenerator:
             self.cost_benefit_scatter(token_df)
     
     def similarity_matrix_per_game(self, game: str):
-        logger.info(f"Generating similarity matrix for {game}...")
+        """Generate behavioral similarity matrix for a game (RQ2).
+        
+        Note: Uses magic_df which INCLUDES random agent as baseline for comparison.
+        Random agent should cluster separately from strategic models.
+        """
+        logger.info(f"Generating similarity matrix for {game} (includes random agent)...")
         
         game_df = self.magic_df[self.magic_df['game'] == game].copy()
         if game_df.empty:
@@ -983,8 +1085,11 @@ class FigureGenerator:
         plt.close()
     
     def similarity_3v5_scores(self):
-        """Single similarity score per game: 3P vs 5P."""
-        logger.info("Generating 3P vs 5P similarity scores...")
+        """Single similarity score per game: 3P vs 5P (RQ2).
+        
+        Note: Uses magic_df which INCLUDES random agent for comparison.
+        """
+        logger.info("Generating 3P vs 5P similarity scores (includes random agent)...")
         
         results = []
         
@@ -1054,7 +1159,11 @@ class FigureGenerator:
         plt.close()
     
     def pca_scree_plots(self):
-        logger.info("Generating PCA scree plots...")
+        """PCA scree plots for RQ3 dimensionality validation.
+        
+        Note: Uses magic_df_no_random to exclude random agent.
+        """
+        logger.info("Generating PCA scree plots (excluding random agent)...")
         
         games = [g for g, c in GAME_CONFIGS.items() if len(c['magic_metrics']) >= 2]
         if not games:
@@ -1065,7 +1174,7 @@ class FigureGenerator:
             axes = [axes]
         
         for ax, game in zip(axes, games):
-            game_df = self.magic_df[self.magic_df['game'] == game]
+            game_df = self.magic_df_no_random[self.magic_df_no_random['game'] == game]
             pivot = game_df.pivot_table(index='model', columns='metric', values='mean').dropna()
             available = [m for m in GAME_CONFIGS[game]['magic_metrics'] if m in pivot.columns]
             
@@ -1094,11 +1203,14 @@ class FigureGenerator:
         plt.close()
     
     def cost_benefit_scatter(self, token_df: pd.DataFrame):
-        """Figure 5: Think vs Inst performance comparison with p-values."""
-        logger.info("Generating F5: Think vs Inst Comparison...")
+        """Figure 5: Think vs Inst performance comparison with p-values.
         
-        # Get profit data
-        profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        Note: Uses perf_df_no_random to exclude random agent from RQ4 analysis.
+        """
+        logger.info("Generating F5: Think vs Inst Comparison (excluding random agent)...")
+        
+        # Get profit data (excluding random agent)
+        profit_df = self.perf_df_no_random[self.perf_df_no_random['metric'] == 'average_profit'].copy()
         profit_df['is_thinking'] = profit_df['model'].apply(self.loader.get_thinking_status)
         profit_df['mode'] = profit_df['is_thinking'].map({True: 'Think', False: 'Inst'})
         
@@ -1263,21 +1375,38 @@ def main():
             config_path if config_path.exists() else None,
             experiments_dir
         )
-        perf_df, magic_df = loader.load()
         
-        # Load token data for cost-benefit analysis
+        # Load data WITH random agent for RQ1 (performance) and RQ2 (behavioral profiles)
+        perf_df_with_random, magic_df_with_random = loader.load(include_random=True)
+        
+        # Load data WITHOUT random agent for RQ3 (regressions) and RQ4 (thinking analysis)
+        perf_df_no_random, magic_df_no_random = loader.load(include_random=False)
+        
+        # Load token data for cost-benefit analysis (excludes random by design)
         token_df = loader.load_token_data()
         
-        all_models = list(set(perf_df['model'].unique()) | set(magic_df['model'].unique()))
-        features_df = loader.extract_model_features(all_models)
+        # Extract features only for non-random models (for regressions)
+        all_models_no_random = list(set(perf_df_no_random['model'].unique()) | set(magic_df_no_random['model'].unique()))
+        features_df = loader.extract_model_features(all_models_no_random)
         
         logger.info("[Step 4/5] Generating tables...")
         pub_dir = analysis_dir / "publication"
-        tables = TableGenerator(perf_df, magic_df, features_df, pub_dir, loader)
+        
+        # RQ1 & RQ2 tables use data WITH random agent
+        # RQ3 & RQ4 tables use data WITHOUT random agent
+        tables = TableGenerator(
+            perf_df_with_random, magic_df_with_random,  # RQ1/RQ2: include random
+            perf_df_no_random, magic_df_no_random,      # RQ3/RQ4: exclude random
+            features_df, pub_dir, loader
+        )
         tables.generate_all(token_df)
         
         logger.info("[Step 5/5] Generating figures...")
-        figures = FigureGenerator(perf_df, magic_df, features_df, pub_dir, loader)
+        figures = FigureGenerator(
+            perf_df_with_random, magic_df_with_random,  # RQ1/RQ2: include random
+            perf_df_no_random, magic_df_no_random,      # RQ3/RQ4: exclude random  
+            features_df, pub_dir, loader
+        )
         figures.generate_all(token_df)
         
         logger.info("=" * 80)
