@@ -1,0 +1,4 @@
+Model,athey_bagwell_baseline,athey_bagwell_more_players,green_porter_baseline,green_porter_more_players,salop_baseline,salop_more_players,spulber_baseline,spulber_more_players
+Q3-14B (TE),8763 ± 3774,8232 ± 3668,24105 ± 4873,25015 ± 4487,36785 ± 6134,29361 ± 11652,18468 ± 3306,22484 ± 2664
+Qwen3-30B-A3B (TE),15752 ± 6278,15052 ± 6437,22210 ± 4670,22484 ± 4806,28290 ± 6264,25331 ± 7037,24396 ± 6250,24595 ± 6315
+Q3-32B (TE),16017 ± 8475,15882 ± 8284,28186 ± 5350,29293 ± 5412,19170 ± 4415,12416 ± 3050,19869 ± 8065,32149 ± 7098

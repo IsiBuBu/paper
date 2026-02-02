@@ -1,9 +1,0 @@
-game,condition,n_think,n_inst,profit_Think,profit_Inst,profit_diff,p_value,sig,reasoning_chars
-athey_bagwell,baseline,3,9,4362.95 ± 0.62,3922.52 ± 605.43,440.43,0.0736,,13511 ± 3359
-athey_bagwell,more_players,3,9,4282.48 ± 10.59,3718.03 ± 679.09,564.46,0.0466,*,13055 ± 3428
-green_porter,baseline,3,9,2636.03 ± 82.89,2636.62 ± 135.07,-0.59,0.9941,,24834 ± 2494
-green_porter,more_players,3,9,1518.91 ± 86.49,1554.79 ± 151.95,-35.88,0.6763,,25597 ± 2810
-salop,baseline,3,9,1235.04 ± 201.91,334.86 ± 427.79,900.18,0.0036,**,28082 ± 7193
-salop,more_players,3,9,853.33 ± 37.71,137.94 ± 220.39,715.39,0.0,***,22369 ± 7228
-spulber,baseline,3,9,373.07 ± 12.54,99.28 ± 155.62,273.79,0.001,**,20911 ± 2530
-spulber,more_players,3,9,256.96 ± 17.08,35.24 ± 202.54,221.72,0.0148,*,26409 ± 4149

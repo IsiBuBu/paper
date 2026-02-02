@@ -1,5 +1,0 @@
-game,metric,mean_3P,mean_5P,mean_diff,t_statistic,p_value,sig,n_models
-athey_bagwell,average_profit,3974.9908,3790.3485,184.6423,4.2071,0.001216426273332372,**,13
-green_porter,average_profit,2643.2056,1552.7653,1090.4403,75.7388,1.8686267639044708e-17,***,13
-salop,average_profit,549.0724,316.449,232.6233,3.2795,0.006585647717266786,**,13
-spulber,average_profit,93.4476,13.0266,80.421,1.9756,0.07165158249950639,,13

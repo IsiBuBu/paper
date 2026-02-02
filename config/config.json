@@ -1,7 +1,7 @@
 {
   "models": {
     "challenger_models": [
-     "Qwen/Qwen3-14B-Thinking-Off"
+     "Qwen/Qwen3-32B-Thinking-On"
     ],
     "defender_model": "google/gemma-3-27b-it"
   },
@@ -44,7 +44,7 @@
     },
     "Qwen/Qwen3-30B-A3B-Thinking-On": {
       "model_name": "Qwen/Qwen3-30B-A3B",
-      "display_name": "Qwen3-30B-A3B (Thinking On)",
+      "display_name": "Qwen3-30B-A3B (TE)",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "output_tokens",
@@ -53,7 +53,7 @@
     },
     "Qwen/Qwen3-30B-A3B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-30B-A3B",
-      "display_name": "Q3-30B Inst",
+      "display_name": "Qwen3-30B-A3B (TD)",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
@@ -62,7 +62,7 @@
     },
     "Qwen/Qwen3-32B-Thinking-On": {
       "model_name": "Qwen/Qwen3-32B",
-      "display_name": "Q3-32B Think",
+      "display_name": "Q3-32B (TE)",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "output_tokens",
@@ -71,7 +71,7 @@
     },
     "Qwen/Qwen3-32B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-32B",
-      "display_name": "Q3-32B Inst",
+      "display_name": "Q3-32B (TD)",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
@@ -80,7 +80,7 @@
     },
     "Qwen/Qwen3-14B-Thinking-On": {
       "model_name": "Qwen/Qwen3-14B",
-      "display_name": "Q3-14B Think",
+      "display_name": "Q3-14B (TE)",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "output_tokens",
@@ -89,7 +89,7 @@
     },
     "Qwen/Qwen3-14B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-14B",
-      "display_name": "Q3-14B Inst",
+      "display_name": "Q3-14B (TD)",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
