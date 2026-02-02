@@ -1,0 +1,97 @@
+game,condition,model,mode,avg_profit,avg_reasoning_chars
+athey_bagwell,baseline,L3.1-70B,Inst,4362.51 ± 2084.72,0
+athey_bagwell,baseline,L3.1-8B,Inst,3049.53 ± 1184.75,0
+athey_bagwell,baseline,L3.3-70B,Inst,4362.51 ± 2084.72,0
+athey_bagwell,baseline,L4-Maverick,Inst,4455.14 ± 2010.69,0
+athey_bagwell,baseline,L4-Scout,Inst,3744.35 ± 1691.94,0
+athey_bagwell,baseline,Q3-14B Inst,Inst,2720.04 ± 1722.83,0
+athey_bagwell,baseline,Q3-235B Inst,Inst,4362.51 ± 2084.72,0
+athey_bagwell,baseline,Q3-30B Inst,Inst,4362.06 ± 2085.57,0
+athey_bagwell,baseline,Q3-32B Inst,Inst,3884.06 ± 1550.51,0
+athey_bagwell,baseline,Q3-14B Think,Think,4362.51 ± 2084.72,8762
+athey_bagwell,baseline,Q3-32B Think,Think,4363.82 ± 2093.08,16017
+athey_bagwell,baseline,Qwen3-30B-A3B (Thinking On),Think,4362.51 ± 2084.72,15752
+athey_bagwell,more_players,L3.1-70B,Inst,4274.99 ± 2126.41,0
+athey_bagwell,more_players,L3.1-8B,Inst,2583.16 ± 1005.15,0
+athey_bagwell,more_players,L3.3-70B,Inst,4274.99 ± 2126.41,0
+athey_bagwell,more_players,L4-Maverick,Inst,4433.12 ± 2039.51,0
+athey_bagwell,more_players,L4-Scout,Inst,3539.29 ± 1689.61,0
+athey_bagwell,more_players,Q3-14B Inst,Inst,2545.94 ± 1559.19,0
+athey_bagwell,more_players,Q3-235B Inst,Inst,4274.99 ± 2126.41,0
+athey_bagwell,more_players,Q3-30B Inst,Inst,3838.19 ± 2402.79,0
+athey_bagwell,more_players,Q3-32B Inst,Inst,3697.54 ± 1446.53,0
+athey_bagwell,more_players,Q3-14B Think,Think,4274.99 ± 2126.41,8231
+athey_bagwell,more_players,Q3-32B Think,Think,4297.46 ± 2101.47,15881
+athey_bagwell,more_players,Qwen3-30B-A3B (Thinking On),Think,4274.99 ± 2126.41,15052
+green_porter,baseline,L3.1-70B,Inst,2835.54 ± 1070.32,0
+green_porter,baseline,L3.1-8B,Inst,2553.21 ± 797.99,0
+green_porter,baseline,L3.3-70B,Inst,2820.73 ± 1063.88,0
+green_porter,baseline,L4-Maverick,Inst,2541.22 ± 776.34,0
+green_porter,baseline,L4-Scout,Inst,2538.02 ± 776.07,0
+green_porter,baseline,Q3-14B Inst,Inst,2538.02 ± 776.07,0
+green_porter,baseline,Q3-235B Inst,Inst,2538.02 ± 776.07,0
+green_porter,baseline,Q3-30B Inst,Inst,2826.14 ± 1042.93,0
+green_porter,baseline,Q3-32B Inst,Inst,2538.63 ± 775.97,0
+green_porter,baseline,Q3-14B Think,Think,2599.65 ± 831.45,24105
+green_porter,baseline,Q3-32B Think,Think,2750.72 ± 985.33,28186
+green_porter,baseline,Qwen3-30B-A3B (Thinking On),Think,2557.71 ± 794.00,22210
+green_porter,more_players,L3.1-70B,Inst,1781.13 ± 836.68,0
+green_porter,more_players,L3.1-8B,Inst,1553.82 ± 701.02,0
+green_porter,more_players,L3.3-70B,Inst,1765.82 ± 828.82,0
+green_porter,more_players,L4-Maverick,Inst,1395.97 ± 525.40,0
+green_porter,more_players,L4-Scout,Inst,1524.72 ± 605.47,0
+green_porter,more_players,Q3-14B Inst,Inst,1390.80 ± 529.56,0
+green_porter,more_players,Q3-235B Inst,Inst,1474.88 ± 590.19,0
+green_porter,more_players,Q3-30B Inst,Inst,1715.18 ± 767.19,0
+green_porter,more_players,Q3-32B Inst,Inst,1390.80 ± 529.56,0
+green_porter,more_players,Q3-14B Think,Think,1523.62 ± 660.92,25015
+green_porter,more_players,Q3-32B Think,Think,1622.41 ± 740.55,29293
+green_porter,more_players,Qwen3-30B-A3B (Thinking On),Think,1410.70 ± 549.33,22483
+salop,baseline,L3.1-70B,Inst,-67.36 ± 94.31,0
+salop,baseline,L3.1-8B,Inst,31.25 ± 415.05,0
+salop,baseline,L3.3-70B,Inst,-64.72 ± 94.48,0
+salop,baseline,L4-Maverick,Inst,428.10 ± 469.76,0
+salop,baseline,L4-Scout,Inst,147.90 ± 372.22,0
+salop,baseline,Q3-14B Inst,Inst,567.19 ± 581.12,0
+salop,baseline,Q3-235B Inst,Inst,629.91 ± 746.31,0
+salop,baseline,Q3-30B Inst,Inst,1312.24 ± 163.14,0
+salop,baseline,Q3-32B Inst,Inst,29.21 ± 264.69,0
+salop,baseline,Q3-14B Think,Think,949.57 ± 683.73,36785
+salop,baseline,Q3-32B Think,Think,1383.33 ± 90.91,19170
+salop,baseline,Qwen3-30B-A3B (Thinking On),Think,1372.22 ± 87.84,28290
+salop,more_players,L3.1-70B,Inst,-54.39 ± 144.22,0
+salop,more_players,L3.1-8B,Inst,46.25 ± 462.48,0
+salop,more_players,L3.3-70B,Inst,-100.00 ± 0.00,0
+salop,more_players,L4-Maverick,Inst,319.17 ± 755.94,0
+salop,more_players,L4-Scout,Inst,-83.33 ± 52.70,0
+salop,more_players,Q3-14B Inst,Inst,183.53 ± 380.91,0
+salop,more_players,Q3-235B Inst,Inst,167.69 ± 377.14,0
+salop,more_players,Q3-30B Inst,Inst,638.11 ± 714.37,0
+salop,more_players,Q3-32B Inst,Inst,124.44 ± 476.67,0
+salop,more_players,Q3-14B Think,Think,880.00 ± 274.06,29361
+salop,more_players,Q3-32B Think,Think,880.00 ± 332.67,12415
+salop,more_players,Qwen3-30B-A3B (Thinking On),Think,800.00 ± 454.61,25330
+spulber,baseline,L3.1-70B,Inst,6.75 ± 67.50,0
+spulber,baseline,L3.1-8B,Inst,207.03 ± 168.57,0
+spulber,baseline,L3.3-70B,Inst,-197.89 ± 22.44,0
+spulber,baseline,L4-Maverick,Inst,3.78 ± 37.80,0
+spulber,baseline,L4-Scout,Inst,52.50 ± 168.02,0
+spulber,baseline,Q3-14B Inst,Inst,33.75 ± 147.85,0
+spulber,baseline,Q3-235B Inst,Inst,350.35 ± 123.79,0
+spulber,baseline,Q3-30B Inst,Inst,253.00 ± 74.98,0
+spulber,baseline,Q3-32B Inst,Inst,184.25 ± 129.96,0
+spulber,baseline,Q3-14B Think,Think,390.45 ± 146.83,18468
+spulber,baseline,Q3-32B Think,Think,361.33 ± 157.71,19869
+spulber,baseline,Qwen3-30B-A3B (Thinking On),Think,367.41 ± 161.30,24396
+spulber,more_players,L3.1-70B,Inst,1.97 ± 49.38,0
+spulber,more_players,L3.1-8B,Inst,-321.75 ± 32.50,0
+spulber,more_players,L3.3-70B,Inst,-201.03 ± 89.35,0
+spulber,more_players,L4-Maverick,Inst,0.00 ± 0.00,0
+spulber,more_players,L4-Scout,Inst,5.94 ± 59.38,0
+spulber,more_players,Q3-14B Inst,Inst,0.00 ± 0.00,0
+spulber,more_players,Q3-235B Inst,Inst,338.62 ± 137.31,0
+spulber,more_players,Q3-30B Inst,Inst,244.75 ± 86.48,0
+spulber,more_players,Q3-32B Inst,Inst,248.69 ± 84.15,0
+spulber,more_players,Q3-14B Think,Think,275.50 ± 98.26,22484
+spulber,more_players,Q3-32B Think,Think,234.27 ± 153.31,32148
+spulber,more_players,Qwen3-30B-A3B (Thinking On),Think,261.11 ± 102.30,24594

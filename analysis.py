@@ -4,6 +4,36 @@ MAgIC Analysis Pipeline - Publication Version
 
 Usage:
     python analysis.py
+
+FEATURE MODELING:
+-----------------
+Model features used in MLR regression (Features → Performance):
+
+1. thinking (binary: 0 or 1)
+   - Derived from config.json: model_configs[model].reasoning_output
+   - If reasoning_output in ['reasoning_tokens', 'output_tokens'] → thinking = 1
+   - If reasoning_output == 'none' → thinking = 0
+   
+2. architecture_moe (binary: 0 or 1)
+   - Derived from model name pattern (-A##B indicates MoE)
+   
+3. size_params (continuous)
+   - Extracted from model name (e.g., 32B → 32.0)
+   
+4. family_encoded (categorical)
+   - Model family: qwen, llama, gemma, etc.
+   
+5. version (continuous)
+   - Model generation (e.g., Qwen3 → 3.0, Llama4 → 4.0)
+
+TOKEN ANALYSIS (Table 8, Figure 5):
+-----------------------------------
+reasoning_char_count is extracted from experiment JSONs:
+- Static games (Salop, Spulber): game_data.llm_metadata.challenger.reasoning_char_count
+- Dynamic games (Green-Porter, Athey-Bagwell): game_data.rounds[].llm_metadata.challenger.reasoning_char_count
+
+Table 8 shows average reasoning chars per THINKING model per game/condition.
+Figure 5 shows bar chart of reasoning chars by game for thinking models.
 """
 
 import sys
@@ -124,73 +154,66 @@ class DataLoader:
         return perf_df, magic_df
     
     def load_token_data(self) -> pd.DataFrame:
-        """Extract reasoning_char_count and tokens_used from experiment files."""
+        """Extract reasoning_char_count from experiment JSON files.
+        
+        JSON Structure differs by game type:
+        - Static (Salop, Spulber): simulation_results[].game_data.llm_metadata.challenger
+        - Dynamic (Green-Porter, Athey-Bagwell): simulation_results[].game_data.rounds[].llm_metadata.challenger
+        """
         if not self.experiments_dir or not self.experiments_dir.exists():
             logger.warning("Experiments directory not available for token extraction")
             return pd.DataFrame()
         
         records = []
         
-        for exp_file in self.experiments_dir.glob("**/*.json"):
+        for exp_file in self.experiments_dir.rglob("*_competition_result*.json"):
             try:
                 with open(exp_file) as f:
                     data = json.load(f)
                 
-                # Extract metadata
-                model = data.get('model', data.get('challenger_model', ''))
-                game = data.get('game', data.get('game_name', ''))
-                condition = data.get('condition', data.get('condition_name', ''))
+                model = data.get('challenger_model', '')
+                game = data.get('game_name', '')
+                condition = data.get('condition_name', '')
                 
                 if not model or not game:
                     continue
                 
-                # Skip excluded models
+                # Skip random/defender
                 if 'random' in model.lower() or 'gemma' in model.lower():
                     continue
                 
-                # Aggregate token stats across simulations
-                simulations = data.get('simulations', data.get('results', []))
-                if not isinstance(simulations, list):
-                    simulations = [simulations]
+                sim_results = data.get('simulation_results', [])
+                all_reasoning_chars = []
                 
-                total_reasoning_chars = 0
-                total_tokens = 0
-                count = 0
-                
-                for sim in simulations:
-                    if not isinstance(sim, dict):
-                        continue
+                for sim in sim_results:
+                    game_data = sim.get('game_data', {})
                     
-                    # Check for round-level data
-                    rounds = sim.get('rounds', sim.get('round_results', []))
-                    if isinstance(rounds, list):
-                        for rnd in rounds:
-                            if isinstance(rnd, dict):
-                                # Look for challenger response data
-                                for key in ['challenger_response', 'response', 'agent_response']:
-                                    resp = rnd.get(key, {})
-                                    if isinstance(resp, dict):
-                                        total_reasoning_chars += resp.get('reasoning_char_count', 0)
-                                        total_tokens += resp.get('tokens_used', 0)
-                                        count += 1
+                    # STATIC GAMES: llm_metadata at game_data level (no rounds key)
+                    if 'llm_metadata' in game_data:
+                        llm_meta = game_data['llm_metadata']
+                        # Find challenger entry
+                        for pid, meta in llm_meta.items():
+                            if 'challenger' in pid.lower() and isinstance(meta, dict):
+                                all_reasoning_chars.append(meta.get('reasoning_char_count', 0))
+                                break
                     
-                    # Also check top-level metadata
-                    if 'reasoning_char_count' in sim:
-                        total_reasoning_chars += sim.get('reasoning_char_count', 0)
-                        count += 1
-                    if 'metadata' in sim and isinstance(sim['metadata'], dict):
-                        meta = sim['metadata']
-                        total_reasoning_chars += meta.get('total_reasoning_chars', 0)
-                        total_tokens += meta.get('total_tokens', 0)
+                    # DYNAMIC GAMES: llm_metadata in each round
+                    rounds = game_data.get('rounds', [])
+                    for rnd in rounds:
+                        llm_meta = rnd.get('llm_metadata', {})
+                        for pid, meta in llm_meta.items():
+                            if 'challenger' in pid.lower() and isinstance(meta, dict):
+                                all_reasoning_chars.append(meta.get('reasoning_char_count', 0))
+                                break
                 
-                if count > 0:
+                if all_reasoning_chars:
                     records.append({
                         'model': model,
                         'game': game,
                         'condition': condition,
-                        'reasoning_char_count': total_reasoning_chars / count,
-                        'tokens_used': total_tokens / count if total_tokens > 0 else 0,
-                        'n_observations': count
+                        'avg_reasoning_chars': round(np.mean(all_reasoning_chars), 1),
+                        'total_reasoning_chars': int(np.sum(all_reasoning_chars)),
+                        'n_observations': len(all_reasoning_chars)
                     })
                     
             except Exception as e:
@@ -199,17 +222,17 @@ class DataLoader:
         
         if records:
             df = pd.DataFrame(records)
-            # Aggregate by model/game/condition
-            df = df.groupby(['model', 'game', 'condition']).agg({
-                'reasoning_char_count': 'mean',
-                'tokens_used': 'mean',
-                'n_observations': 'sum'
-            }).reset_index()
-            logger.info(f"Loaded token data: {len(df)} rows")
+            logger.info(f"Loaded token data: {len(df)} model/game/condition combinations")
             return df
         
         logger.warning("No token data extracted from experiments")
         return pd.DataFrame()
+    
+    def get_thinking_status(self, model: str) -> bool:
+        """Check if model has thinking enabled based on config."""
+        cfg = self.model_configs.get(model, {})
+        reasoning_output = cfg.get('reasoning_output', 'none')
+        return reasoning_output != 'none'
     
     def get_display_name(self, model: str) -> str:
         """Get display name from config.json."""
@@ -803,77 +826,103 @@ class TableGenerator:
             self._save_table_as_png(df_out, "T6_pca_variance.png", "T6: PCA Variance Explained", bold_best=False)
     
     def cost_benefit_table(self, token_df: pd.DataFrame):
-        """Table 8: Cost-benefit analysis - Thinking On vs Off per game/condition."""
-        logger.info("Generating T8: Cost-Benefit (Tokens vs Performance)...")
+        """Table 8: Think vs Inst comparison with mean±std and p-values.
         
-        if token_df.empty:
-            logger.warning("No token data available for cost-benefit analysis")
-            return
+        Output format: mean ± std for all metrics, t-test p-values for group comparisons.
+        """
+        logger.info("Generating T8: Think vs Inst Comparison (mean±std, p-values)...")
         
-        # Merge with performance data
+        # Get profit data
         profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        profit_df['is_thinking'] = profit_df['model'].apply(self.loader.get_thinking_status)
+        profit_df['mode'] = profit_df['is_thinking'].map({True: 'Think', False: 'Inst'})
+        profit_df['display_name'] = profit_df['model'].apply(self._display_name)
         
-        # Add thinking flag from features_df
-        thinking_map = dict(zip(self.features_df['model'], self.features_df['thinking']))
+        # Merge with token data if available
+        if not token_df.empty:
+            profit_df = profit_df.merge(
+                token_df[['model', 'game', 'condition', 'avg_reasoning_chars']],
+                on=['model', 'game', 'condition'],
+                how='left'
+            )
+            profit_df['avg_reasoning_chars'] = profit_df['avg_reasoning_chars'].fillna(0)
+        else:
+            profit_df['avg_reasoning_chars'] = 0
         
-        merged = profit_df.merge(token_df, on=['model', 'game', 'condition'], how='inner')
-        merged['thinking'] = merged['model'].map(thinking_map).fillna(0).astype(int)
-        merged['thinking_mode'] = merged['thinking'].map({1: 'Think', 0: 'Inst'})
+        # Table 8a: Detail per model with mean±std format
+        detail_rows = []
+        for _, row in profit_df.iterrows():
+            profit_str = f"{row['mean']:.2f} ± {row.get('std', 0):.2f}"
+            detail_rows.append({
+                'game': row['game'],
+                'condition': row['condition'],
+                'model': row['display_name'],
+                'mode': row['mode'],
+                'avg_profit': profit_str,
+                'avg_reasoning_chars': int(row.get('avg_reasoning_chars', 0)),
+            })
         
-        if merged.empty:
-            logger.warning("No merged data for cost-benefit")
-            return
+        detail_df = pd.DataFrame(detail_rows)
+        detail_df = detail_df.sort_values(['game', 'condition', 'mode', 'model'])
+        detail_df.to_csv(self.output_dir / "T8_thinking_detail.csv", index=False)
         
-        results = []
-        for game in merged['game'].unique():
-            for condition in merged[merged['game'] == game]['condition'].unique():
-                subset = merged[(merged['game'] == game) & (merged['condition'] == condition)]
+        # Table 8b: Summary with mean±std and p-values
+        summary_rows = []
+        for game in profit_df['game'].unique():
+            for condition in profit_df[profit_df['game'] == game]['condition'].unique():
+                subset = profit_df[(profit_df['game'] == game) & (profit_df['condition'] == condition)]
                 
-                for mode in ['Think', 'Inst']:
-                    mode_data = subset[subset['thinking_mode'] == mode]
-                    if mode_data.empty:
-                        continue
-                    
-                    results.append({
-                        'game': game,
-                        'condition': condition,
-                        'mode': mode,
-                        'n_models': len(mode_data),
-                        'avg_profit': round(mode_data['mean'].mean(), 2),
-                        'std_profit': round(mode_data['mean'].std(), 2) if len(mode_data) > 1 else 0,
-                        'avg_reasoning_chars': round(mode_data['reasoning_char_count'].mean(), 0),
-                        'avg_tokens': round(mode_data['tokens_used'].mean(), 0) if 'tokens_used' in mode_data else 0,
-                    })
+                think_data = subset[subset['mode'] == 'Think']
+                inst_data = subset[subset['mode'] == 'Inst']
+                
+                think_profits = think_data['mean'].values
+                inst_profits = inst_data['mean'].values
+                think_chars = think_data['avg_reasoning_chars'].values
+                
+                # Calculate mean ± std
+                think_mean = np.mean(think_profits) if len(think_profits) > 0 else np.nan
+                think_std = np.std(think_profits) if len(think_profits) > 1 else 0
+                inst_mean = np.mean(inst_profits) if len(inst_profits) > 0 else np.nan
+                inst_std = np.std(inst_profits) if len(inst_profits) > 1 else 0
+                chars_mean = np.mean(think_chars) if len(think_chars) > 0 else 0
+                chars_std = np.std(think_chars) if len(think_chars) > 1 else 0
+                
+                # Calculate p-value (Welch's t-test)
+                p_value = np.nan
+                if len(think_profits) >= 2 and len(inst_profits) >= 2:
+                    from scipy.stats import ttest_ind
+                    try:
+                        _, p_value = ttest_ind(think_profits, inst_profits, equal_var=False)
+                    except:
+                        p_value = np.nan
+                
+                profit_diff = think_mean - inst_mean if pd.notna(think_mean) and pd.notna(inst_mean) else np.nan
+                
+                # Format as mean±std strings
+                think_str = f"{think_mean:.2f} ± {think_std:.2f}" if pd.notna(think_mean) else "N/A"
+                inst_str = f"{inst_mean:.2f} ± {inst_std:.2f}" if pd.notna(inst_mean) else "N/A"
+                chars_str = f"{chars_mean:.0f} ± {chars_std:.0f}" if chars_mean > 0 else "0"
+                
+                summary_rows.append({
+                    'game': game,
+                    'condition': condition,
+                    'n_think': len(think_profits),
+                    'n_inst': len(inst_profits),
+                    'profit_Think': think_str,
+                    'profit_Inst': inst_str,
+                    'profit_diff': round(profit_diff, 2) if pd.notna(profit_diff) else np.nan,
+                    'p_value': round(p_value, 4) if pd.notna(p_value) else np.nan,
+                    'sig': self._sig_stars(p_value) if pd.notna(p_value) else '',
+                    'reasoning_chars': chars_str,
+                })
         
-        if not results:
-            return
+        summary_df = pd.DataFrame(summary_rows)
+        summary_df.to_csv(self.output_dir / "T8_thinking_summary.csv", index=False)
         
-        df_out = pd.DataFrame(results)
+        self._save_table_as_png(summary_df, "T8_thinking_summary.png",
+                               "T8: Think vs Inst (mean±std, p-values)", bold_best=False)
         
-        # Calculate gain: Think profit - Inst profit per game/condition
-        pivot = df_out.pivot_table(
-            index=['game', 'condition'], 
-            columns='mode', 
-            values=['avg_profit', 'avg_reasoning_chars']
-        ).reset_index()
-        pivot.columns = ['_'.join(col).strip('_') for col in pivot.columns.values]
-        
-        if 'avg_profit_Think' in pivot.columns and 'avg_profit_Inst' in pivot.columns:
-            pivot['profit_gain'] = pivot['avg_profit_Think'] - pivot['avg_profit_Inst']
-            pivot['profit_gain_pct'] = ((pivot['avg_profit_Think'] / pivot['avg_profit_Inst'].replace(0, np.nan)) - 1) * 100
-            pivot['token_cost'] = pivot.get('avg_reasoning_chars_Think', 0)
-            pivot['efficiency'] = pivot['profit_gain'] / pivot['token_cost'].replace(0, np.nan)
-            
-            # Round values
-            for col in ['profit_gain', 'profit_gain_pct', 'token_cost', 'efficiency']:
-                if col in pivot.columns:
-                    pivot[col] = pivot[col].round(2)
-        
-        df_out.to_csv(self.output_dir / "T8_cost_benefit_detail.csv", index=False)
-        pivot.to_csv(self.output_dir / "T8_cost_benefit_summary.csv", index=False)
-        
-        self._save_table_as_png(pivot.round(2), "T8_cost_benefit_summary.png", 
-                               "T8: Cost-Benefit Analysis (Thinking vs Instruct)", bold_best=False)
+        logger.info(f"  T8: {len(detail_df)} detail rows, {len(summary_df)} summary rows")
 
 
 # =============================================================================
@@ -890,6 +939,10 @@ class FigureGenerator:
         self.loader = loader
         self.output_dir.mkdir(parents=True, exist_ok=True)
     
+    def _display_name(self, model: str) -> str:
+        """Get short display name for model."""
+        return self.loader.get_display_name(model)
+    
     def generate_all(self, token_df: pd.DataFrame = None):
         if not PLOT_AVAILABLE or not SKLEARN_AVAILABLE:
             return
@@ -905,9 +958,6 @@ class FigureGenerator:
         # Figure 5: Token usage vs outcome
         if token_df is not None and not token_df.empty:
             self.cost_benefit_scatter(token_df)
-    
-    def _display_name(self, model: str) -> str:
-        return self.loader.get_display_name(model)
     
     def similarity_matrix_per_game(self, game: str):
         logger.info(f"Generating similarity matrix for {game}...")
@@ -1044,142 +1094,142 @@ class FigureGenerator:
         plt.close()
     
     def cost_benefit_scatter(self, token_df: pd.DataFrame):
-        """Figure 5: Scatter plot of token usage vs average profit."""
-        logger.info("Generating F5: Token Usage vs Outcome scatter...")
+        """Figure 5: Think vs Inst performance comparison with p-values."""
+        logger.info("Generating F5: Think vs Inst Comparison...")
         
-        if token_df.empty:
-            logger.warning("No token data for scatter plot")
-            return
-        
-        # Merge with performance
+        # Get profit data
         profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        profit_df['is_thinking'] = profit_df['model'].apply(self.loader.get_thinking_status)
+        profit_df['mode'] = profit_df['is_thinking'].map({True: 'Think', False: 'Inst'})
         
-        # Add thinking flag
-        thinking_map = dict(zip(self.features_df['model'], self.features_df['thinking']))
+        # Merge with token data
+        if not token_df.empty:
+            profit_df = profit_df.merge(
+                token_df[['model', 'game', 'condition', 'avg_reasoning_chars']],
+                on=['model', 'game', 'condition'],
+                how='left'
+            )
+            profit_df['avg_reasoning_chars'] = profit_df['avg_reasoning_chars'].fillna(0)
+        else:
+            profit_df['avg_reasoning_chars'] = 0
         
-        merged = profit_df.merge(token_df, on=['model', 'game', 'condition'], how='inner')
-        merged['thinking'] = merged['model'].map(thinking_map).fillna(0).astype(int)
-        merged['thinking_mode'] = merged['thinking'].map({1: 'Think', 0: 'Inst'})
-        merged['display_name'] = merged['model'].apply(self._display_name)
-        
-        if merged.empty or 'reasoning_char_count' not in merged.columns:
-            logger.warning("Insufficient data for scatter plot")
-            return
-        
-        # Filter to only models with some reasoning chars (thinking models)
-        # Include all models but distinguish by color
-        
-        fig, axes = plt.subplots(2, 2, figsize=(14, 12))
-        axes = axes.flatten()
-        
-        games = list(merged['game'].unique())[:4]
-        colors = {'Think': 'coral', 'Inst': 'steelblue'}
-        
-        for idx, game in enumerate(games):
-            if idx >= 4:
-                break
-            ax = axes[idx]
-            game_data = merged[merged['game'] == game]
-            
-            for mode, color in colors.items():
-                mode_data = game_data[game_data['thinking_mode'] == mode]
-                if mode_data.empty:
-                    continue
+        # Calculate stats per game/condition
+        stats = []
+        for game in profit_df['game'].unique():
+            for condition in profit_df[profit_df['game'] == game]['condition'].unique():
+                subset = profit_df[(profit_df['game'] == game) & (profit_df['condition'] == condition)]
                 
-                ax.scatter(
-                    mode_data['reasoning_char_count'], 
-                    mode_data['mean'],
-                    c=color, 
-                    label=mode,
-                    alpha=0.7,
-                    s=100,
-                    edgecolors='black',
-                    linewidths=0.5
-                )
+                think_profits = subset[subset['mode'] == 'Think']['mean'].values
+                inst_profits = subset[subset['mode'] == 'Inst']['mean'].values
+                think_chars = subset[subset['mode'] == 'Think']['avg_reasoning_chars'].values
                 
-                # Add model labels for thinking models with significant reasoning
-                for _, row in mode_data.iterrows():
-                    if row['reasoning_char_count'] > 100:
-                        ax.annotate(
-                            row['display_name'],
-                            (row['reasoning_char_count'], row['mean']),
-                            fontsize=7,
-                            alpha=0.8,
-                            xytext=(5, 5),
-                            textcoords='offset points'
-                        )
-            
-            # Fit regression line if enough data points
-            think_data = game_data[game_data['thinking_mode'] == 'Think']
-            if len(think_data) >= 3 and think_data['reasoning_char_count'].std() > 0:
-                x = think_data['reasoning_char_count'].values
-                y = think_data['mean'].values
-                z = np.polyfit(x, y, 1)
-                p = np.poly1d(z)
-                x_line = np.linspace(x.min(), x.max(), 100)
-                ax.plot(x_line, p(x_line), 'r--', alpha=0.5, linewidth=2)
+                p_value = np.nan
+                if len(think_profits) >= 2 and len(inst_profits) >= 2:
+                    from scipy.stats import ttest_ind
+                    _, p_value = ttest_ind(think_profits, inst_profits, equal_var=False)
                 
-                # Calculate correlation
-                corr = np.corrcoef(x, y)[0, 1]
-                ax.text(0.95, 0.05, f'r={corr:.2f}', transform=ax.transAxes, 
-                       fontsize=10, ha='right', va='bottom',
-                       bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+                stats.append({
+                    'game': game,
+                    'condition': condition,
+                    'think_mean': np.mean(think_profits) if len(think_profits) > 0 else 0,
+                    'think_std': np.std(think_profits) if len(think_profits) > 1 else 0,
+                    'inst_mean': np.mean(inst_profits) if len(inst_profits) > 0 else 0,
+                    'inst_std': np.std(inst_profits) if len(inst_profits) > 1 else 0,
+                    'p_value': p_value,
+                    'avg_chars': np.mean(think_chars) if len(think_chars) > 0 else 0,
+                })
+        
+        stats_df = pd.DataFrame(stats)
+        
+        # Create grouped bar chart
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        
+        # Left: Performance comparison
+        ax1 = axes[0]
+        games = sorted(stats_df['game'].unique())
+        x = np.arange(len(games))
+        width = 0.35
+        
+        for i, condition in enumerate(['baseline', 'more_players']):
+            cond_data = stats_df[stats_df['condition'] == condition]
             
-            ax.set_xlabel('Reasoning Characters')
-            ax.set_ylabel('Average Profit')
-            ax.set_title(f'{game.replace("_", " ").title()}')
-            ax.legend(loc='upper left')
-            ax.grid(True, alpha=0.3)
+            think_means = [cond_data[cond_data['game'] == g]['think_mean'].values[0] 
+                          if len(cond_data[cond_data['game'] == g]) > 0 else 0 for g in games]
+            think_stds = [cond_data[cond_data['game'] == g]['think_std'].values[0] 
+                         if len(cond_data[cond_data['game'] == g]) > 0 else 0 for g in games]
+            inst_means = [cond_data[cond_data['game'] == g]['inst_mean'].values[0] 
+                         if len(cond_data[cond_data['game'] == g]) > 0 else 0 for g in games]
+            inst_stds = [cond_data[cond_data['game'] == g]['inst_std'].values[0] 
+                        if len(cond_data[cond_data['game'] == g]) > 0 else 0 for g in games]
+            p_values = [cond_data[cond_data['game'] == g]['p_value'].values[0] 
+                       if len(cond_data[cond_data['game'] == g]) > 0 else np.nan for g in games]
+            
+            offset = (i - 0.5) * width * 2.5
+            
+            bars_think = ax1.bar(x + offset - width/2, think_means, width, 
+                                label=f'Think ({condition})', yerr=think_stds, capsize=3,
+                                color='coral' if i == 0 else 'salmon', alpha=0.8)
+            bars_inst = ax1.bar(x + offset + width/2, inst_means, width,
+                               label=f'Inst ({condition})', yerr=inst_stds, capsize=3,
+                               color='steelblue' if i == 0 else 'lightblue', alpha=0.8)
+            
+            # Add significance stars
+            for j, (think_m, inst_m, p) in enumerate(zip(think_means, inst_means, p_values)):
+                if pd.notna(p):
+                    max_val = max(think_m, inst_m)
+                    sig = ''
+                    if p < 0.001:
+                        sig = '***'
+                    elif p < 0.01:
+                        sig = '**'
+                    elif p < 0.05:
+                        sig = '*'
+                    if sig:
+                        ax1.text(x[j] + offset, max_val + 50, sig, ha='center', fontsize=10, fontweight='bold')
         
-        # Hide unused subplots
-        for idx in range(len(games), 4):
-            axes[idx].set_visible(False)
+        ax1.set_xlabel('Game')
+        ax1.set_ylabel('Average Profit')
+        ax1.set_title('Think vs Inst Performance (* p<.05, ** p<.01, *** p<.001)')
+        ax1.set_xticks(x)
+        ax1.set_xticklabels([g.replace('_', ' ').title() for g in games], rotation=15)
+        ax1.legend(loc='upper right', fontsize=8)
+        ax1.grid(True, alpha=0.3, axis='y')
+        ax1.axhline(0, color='black', linewidth=0.5)
         
-        plt.suptitle('Figure 5: Token Usage vs Performance Outcome', fontsize=14, fontweight='bold')
+        # Right: Reasoning chars for thinking models
+        ax2 = axes[1]
+        
+        for i, condition in enumerate(['baseline', 'more_players']):
+            cond_data = stats_df[stats_df['condition'] == condition]
+            chars = [cond_data[cond_data['game'] == g]['avg_chars'].values[0] 
+                    if len(cond_data[cond_data['game'] == g]) > 0 else 0 for g in games]
+            
+            offset = (i - 0.5) * width
+            ax2.bar(x + offset, chars, width, label=condition,
+                   color='coral' if i == 0 else 'salmon', alpha=0.8)
+        
+        ax2.set_xlabel('Game')
+        ax2.set_ylabel('Avg Reasoning Characters')
+        ax2.set_title('Reasoning Token Usage (Thinking Models)')
+        ax2.set_xticks(x)
+        ax2.set_xticklabels([g.replace('_', ' ').title() for g in games], rotation=15)
+        ax2.legend(loc='upper right')
+        ax2.grid(True, alpha=0.3, axis='y')
+        
+        plt.suptitle('Figure 5: Thinking vs Instruct Analysis', fontsize=14, fontweight='bold')
         plt.tight_layout(rect=[0, 0, 1, 0.96])
-        plt.savefig(self.output_dir / "F5_token_vs_outcome.png", dpi=300, bbox_inches='tight')
+        plt.savefig(self.output_dir / "F5_think_vs_inst.png", dpi=300, bbox_inches='tight')
         plt.close()
         
-        # Also create a combined scatter
-        self._combined_token_scatter(merged)
-    
-    def _combined_token_scatter(self, merged: pd.DataFrame):
-        """Single combined scatter plot across all games."""
-        fig, ax = plt.subplots(figsize=(12, 8))
-        
-        game_markers = {'salop': 'o', 'spulber': 's', 'green_porter': '^', 'athey_bagwell': 'D'}
-        colors = {'Think': 'coral', 'Inst': 'steelblue'}
-        
-        for game in merged['game'].unique():
-            game_data = merged[merged['game'] == game]
-            marker = game_markers.get(game, 'o')
-            
-            for mode, color in colors.items():
-                mode_data = game_data[game_data['thinking_mode'] == mode]
-                if mode_data.empty:
-                    continue
-                
-                ax.scatter(
-                    mode_data['reasoning_char_count'],
-                    mode_data['mean'],
-                    c=color,
-                    marker=marker,
-                    label=f'{game.replace("_", " ").title()} ({mode})',
-                    alpha=0.7,
-                    s=80,
-                    edgecolors='black',
-                    linewidths=0.5
-                )
-        
-        ax.set_xlabel('Reasoning Characters (Token Proxy)', fontsize=12)
-        ax.set_ylabel('Average Profit', fontsize=12)
-        ax.set_title('Token Usage vs Performance (All Games)', fontsize=14, fontweight='bold')
-        ax.legend(loc='upper left', fontsize=8, ncol=2)
-        ax.grid(True, alpha=0.3)
-        
-        plt.tight_layout()
-        plt.savefig(self.output_dir / "F5_token_vs_outcome_combined.png", dpi=300, bbox_inches='tight')
-        plt.close()
+        # Save stats to CSV with mean±std format
+        stats_df['think_profit'] = stats_df.apply(
+            lambda r: f"{r['think_mean']:.2f} ± {r['think_std']:.2f}", axis=1)
+        stats_df['inst_profit'] = stats_df.apply(
+            lambda r: f"{r['inst_mean']:.2f} ± {r['inst_std']:.2f}", axis=1)
+        stats_df['sig'] = stats_df['p_value'].apply(
+            lambda p: '***' if pd.notna(p) and p < 0.001 else '**' if pd.notna(p) and p < 0.01 else '*' if pd.notna(p) and p < 0.05 else '')
+        stats_df['p_value'] = stats_df['p_value'].round(4)
+        stats_df.to_csv(self.output_dir / "F5_stats.csv", index=False)
 
 
 # =============================================================================
