@@ -91,9 +91,11 @@ COLLINEARITY_THRESHOLD = 0.95
 # =============================================================================
 
 class DataLoader:
-    def __init__(self, analysis_dir: Path, config_path: Optional[Path] = None):
+    def __init__(self, analysis_dir: Path, config_path: Optional[Path] = None, 
+                 experiments_dir: Optional[Path] = None):
         self.analysis_dir = Path(analysis_dir)
         self.config_path = config_path
+        self.experiments_dir = experiments_dir
         self.model_configs = {}
         self.display_names = {}
         self.family_encoder = None
@@ -120,6 +122,94 @@ class DataLoader:
         
         logger.info(f"Loaded {len(perf_df)} performance rows, {len(magic_df)} MAgIC rows")
         return perf_df, magic_df
+    
+    def load_token_data(self) -> pd.DataFrame:
+        """Extract reasoning_char_count and tokens_used from experiment files."""
+        if not self.experiments_dir or not self.experiments_dir.exists():
+            logger.warning("Experiments directory not available for token extraction")
+            return pd.DataFrame()
+        
+        records = []
+        
+        for exp_file in self.experiments_dir.glob("**/*.json"):
+            try:
+                with open(exp_file) as f:
+                    data = json.load(f)
+                
+                # Extract metadata
+                model = data.get('model', data.get('challenger_model', ''))
+                game = data.get('game', data.get('game_name', ''))
+                condition = data.get('condition', data.get('condition_name', ''))
+                
+                if not model or not game:
+                    continue
+                
+                # Skip excluded models
+                if 'random' in model.lower() or 'gemma' in model.lower():
+                    continue
+                
+                # Aggregate token stats across simulations
+                simulations = data.get('simulations', data.get('results', []))
+                if not isinstance(simulations, list):
+                    simulations = [simulations]
+                
+                total_reasoning_chars = 0
+                total_tokens = 0
+                count = 0
+                
+                for sim in simulations:
+                    if not isinstance(sim, dict):
+                        continue
+                    
+                    # Check for round-level data
+                    rounds = sim.get('rounds', sim.get('round_results', []))
+                    if isinstance(rounds, list):
+                        for rnd in rounds:
+                            if isinstance(rnd, dict):
+                                # Look for challenger response data
+                                for key in ['challenger_response', 'response', 'agent_response']:
+                                    resp = rnd.get(key, {})
+                                    if isinstance(resp, dict):
+                                        total_reasoning_chars += resp.get('reasoning_char_count', 0)
+                                        total_tokens += resp.get('tokens_used', 0)
+                                        count += 1
+                    
+                    # Also check top-level metadata
+                    if 'reasoning_char_count' in sim:
+                        total_reasoning_chars += sim.get('reasoning_char_count', 0)
+                        count += 1
+                    if 'metadata' in sim and isinstance(sim['metadata'], dict):
+                        meta = sim['metadata']
+                        total_reasoning_chars += meta.get('total_reasoning_chars', 0)
+                        total_tokens += meta.get('total_tokens', 0)
+                
+                if count > 0:
+                    records.append({
+                        'model': model,
+                        'game': game,
+                        'condition': condition,
+                        'reasoning_char_count': total_reasoning_chars / count,
+                        'tokens_used': total_tokens / count if total_tokens > 0 else 0,
+                        'n_observations': count
+                    })
+                    
+            except Exception as e:
+                logger.debug(f"Could not parse {exp_file}: {e}")
+                continue
+        
+        if records:
+            df = pd.DataFrame(records)
+            # Aggregate by model/game/condition
+            df = df.groupby(['model', 'game', 'condition']).agg({
+                'reasoning_char_count': 'mean',
+                'tokens_used': 'mean',
+                'n_observations': 'sum'
+            }).reset_index()
+            logger.info(f"Loaded token data: {len(df)} rows")
+            return df
+        
+        logger.warning("No token data extracted from experiments")
+        return pd.DataFrame()
     
     def get_display_name(self, model: str) -> str:
         """Get display name from config.json."""
@@ -201,7 +291,7 @@ class TableGenerator:
         self.loader = loader
         self.output_dir.mkdir(parents=True, exist_ok=True)
     
-    def generate_all(self):
+    def generate_all(self, token_df: pd.DataFrame = None):
         self.performance_win_rate_table()
         self.performance_avg_profit_table()
         self.performance_game_specific_table()
@@ -213,6 +303,10 @@ class TableGenerator:
         self.mlr_features_to_performance()
         self.mlr_magic_to_performance()
         self.pca_variance_table()
+        
+        # Table 8: Cost-benefit analysis
+        if token_df is not None and not token_df.empty:
+            self.cost_benefit_table(token_df)
     
     def _display_name(self, model: str) -> str:
         return self.loader.get_display_name(model)
@@ -707,6 +801,79 @@ class TableGenerator:
             df_out = pd.DataFrame(results)
             df_out.to_csv(self.output_dir / "T6_pca_variance.csv", index=False)
             self._save_table_as_png(df_out, "T6_pca_variance.png", "T6: PCA Variance Explained", bold_best=False)
+    
+    def cost_benefit_table(self, token_df: pd.DataFrame):
+        """Table 8: Cost-benefit analysis - Thinking On vs Off per game/condition."""
+        logger.info("Generating T8: Cost-Benefit (Tokens vs Performance)...")
+        
+        if token_df.empty:
+            logger.warning("No token data available for cost-benefit analysis")
+            return
+        
+        # Merge with performance data
+        profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        
+        # Add thinking flag from features_df
+        thinking_map = dict(zip(self.features_df['model'], self.features_df['thinking']))
+        
+        merged = profit_df.merge(token_df, on=['model', 'game', 'condition'], how='inner')
+        merged['thinking'] = merged['model'].map(thinking_map).fillna(0).astype(int)
+        merged['thinking_mode'] = merged['thinking'].map({1: 'Think', 0: 'Inst'})
+        
+        if merged.empty:
+            logger.warning("No merged data for cost-benefit")
+            return
+        
+        results = []
+        for game in merged['game'].unique():
+            for condition in merged[merged['game'] == game]['condition'].unique():
+                subset = merged[(merged['game'] == game) & (merged['condition'] == condition)]
+                
+                for mode in ['Think', 'Inst']:
+                    mode_data = subset[subset['thinking_mode'] == mode]
+                    if mode_data.empty:
+                        continue
+                    
+                    results.append({
+                        'game': game,
+                        'condition': condition,
+                        'mode': mode,
+                        'n_models': len(mode_data),
+                        'avg_profit': round(mode_data['mean'].mean(), 2),
+                        'std_profit': round(mode_data['mean'].std(), 2) if len(mode_data) > 1 else 0,
+                        'avg_reasoning_chars': round(mode_data['reasoning_char_count'].mean(), 0),
+                        'avg_tokens': round(mode_data['tokens_used'].mean(), 0) if 'tokens_used' in mode_data else 0,
+                    })
+        
+        if not results:
+            return
+        
+        df_out = pd.DataFrame(results)
+        
+        # Calculate gain: Think profit - Inst profit per game/condition
+        pivot = df_out.pivot_table(
+            index=['game', 'condition'], 
+            columns='mode', 
+            values=['avg_profit', 'avg_reasoning_chars']
+        ).reset_index()
+        pivot.columns = ['_'.join(col).strip('_') for col in pivot.columns.values]
+        
+        if 'avg_profit_Think' in pivot.columns and 'avg_profit_Inst' in pivot.columns:
+            pivot['profit_gain'] = pivot['avg_profit_Think'] - pivot['avg_profit_Inst']
+            pivot['profit_gain_pct'] = ((pivot['avg_profit_Think'] / pivot['avg_profit_Inst'].replace(0, np.nan)) - 1) * 100
+            pivot['token_cost'] = pivot.get('avg_reasoning_chars_Think', 0)
+            pivot['efficiency'] = pivot['profit_gain'] / pivot['token_cost'].replace(0, np.nan)
+            
+            # Round values
+            for col in ['profit_gain', 'profit_gain_pct', 'token_cost', 'efficiency']:
+                if col in pivot.columns:
+                    pivot[col] = pivot[col].round(2)
+        
+        df_out.to_csv(self.output_dir / "T8_cost_benefit_detail.csv", index=False)
+        pivot.to_csv(self.output_dir / "T8_cost_benefit_summary.csv", index=False)
+        
+        self._save_table_as_png(pivot.round(2), "T8_cost_benefit_summary.png", 
+                               "T8: Cost-Benefit Analysis (Thinking vs Instruct)", bold_best=False)
 
 
 # =============================================================================
@@ -723,7 +890,7 @@ class FigureGenerator:
         self.loader = loader
         self.output_dir.mkdir(parents=True, exist_ok=True)
     
-    def generate_all(self):
+    def generate_all(self, token_df: pd.DataFrame = None):
         if not PLOT_AVAILABLE or not SKLEARN_AVAILABLE:
             return
         
@@ -734,6 +901,10 @@ class FigureGenerator:
         
         self.similarity_3v5_scores()
         self.pca_scree_plots()
+        
+        # Figure 5: Token usage vs outcome
+        if token_df is not None and not token_df.empty:
+            self.cost_benefit_scatter(token_df)
     
     def _display_name(self, model: str) -> str:
         return self.loader.get_display_name(model)
@@ -871,6 +1042,144 @@ class FigureGenerator:
         plt.tight_layout(rect=[0, 0, 1, 0.96])
         plt.savefig(self.output_dir / "F_pca_scree.png", dpi=300, bbox_inches='tight')
         plt.close()
+    
+    def cost_benefit_scatter(self, token_df: pd.DataFrame):
+        """Figure 5: Scatter plot of token usage vs average profit."""
+        logger.info("Generating F5: Token Usage vs Outcome scatter...")
+        
+        if token_df.empty:
+            logger.warning("No token data for scatter plot")
+            return
+        
+        # Merge with performance
+        profit_df = self.perf_df[self.perf_df['metric'] == 'average_profit'].copy()
+        
+        # Add thinking flag
+        thinking_map = dict(zip(self.features_df['model'], self.features_df['thinking']))
+        
+        merged = profit_df.merge(token_df, on=['model', 'game', 'condition'], how='inner')
+        merged['thinking'] = merged['model'].map(thinking_map).fillna(0).astype(int)
+        merged['thinking_mode'] = merged['thinking'].map({1: 'Think', 0: 'Inst'})
+        merged['display_name'] = merged['model'].apply(self._display_name)
+        
+        if merged.empty or 'reasoning_char_count' not in merged.columns:
+            logger.warning("Insufficient data for scatter plot")
+            return
+        
+        # Filter to only models with some reasoning chars (thinking models)
+        # Include all models but distinguish by color
+        
+        fig, axes = plt.subplots(2, 2, figsize=(14, 12))
+        axes = axes.flatten()
+        
+        games = list(merged['game'].unique())[:4]
+        colors = {'Think': 'coral', 'Inst': 'steelblue'}
+        
+        for idx, game in enumerate(games):
+            if idx >= 4:
+                break
+            ax = axes[idx]
+            game_data = merged[merged['game'] == game]
+            
+            for mode, color in colors.items():
+                mode_data = game_data[game_data['thinking_mode'] == mode]
+                if mode_data.empty:
+                    continue
+                
+                ax.scatter(
+                    mode_data['reasoning_char_count'], 
+                    mode_data['mean'],
+                    c=color, 
+                    label=mode,
+                    alpha=0.7,
+                    s=100,
+                    edgecolors='black',
+                    linewidths=0.5
+                )
+                
+                # Add model labels for thinking models with significant reasoning
+                for _, row in mode_data.iterrows():
+                    if row['reasoning_char_count'] > 100:
+                        ax.annotate(
+                            row['display_name'],
+                            (row['reasoning_char_count'], row['mean']),
+                            fontsize=7,
+                            alpha=0.8,
+                            xytext=(5, 5),
+                            textcoords='offset points'
+                        )
+            
+            # Fit regression line if enough data points
+            think_data = game_data[game_data['thinking_mode'] == 'Think']
+            if len(think_data) >= 3 and think_data['reasoning_char_count'].std() > 0:
+                x = think_data['reasoning_char_count'].values
+                y = think_data['mean'].values
+                z = np.polyfit(x, y, 1)
+                p = np.poly1d(z)
+                x_line = np.linspace(x.min(), x.max(), 100)
+                ax.plot(x_line, p(x_line), 'r--', alpha=0.5, linewidth=2)
+                
+                # Calculate correlation
+                corr = np.corrcoef(x, y)[0, 1]
+                ax.text(0.95, 0.05, f'r={corr:.2f}', transform=ax.transAxes, 
+                       fontsize=10, ha='right', va='bottom',
+                       bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+            
+            ax.set_xlabel('Reasoning Characters')
+            ax.set_ylabel('Average Profit')
+            ax.set_title(f'{game.replace("_", " ").title()}')
+            ax.legend(loc='upper left')
+            ax.grid(True, alpha=0.3)
+        
+        # Hide unused subplots
+        for idx in range(len(games), 4):
+            axes[idx].set_visible(False)
+        
+        plt.suptitle('Figure 5: Token Usage vs Performance Outcome', fontsize=14, fontweight='bold')
+        plt.tight_layout(rect=[0, 0, 1, 0.96])
+        plt.savefig(self.output_dir / "F5_token_vs_outcome.png", dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        # Also create a combined scatter
+        self._combined_token_scatter(merged)
+    
+    def _combined_token_scatter(self, merged: pd.DataFrame):
+        """Single combined scatter plot across all games."""
+        fig, ax = plt.subplots(figsize=(12, 8))
+        
+        game_markers = {'salop': 'o', 'spulber': 's', 'green_porter': '^', 'athey_bagwell': 'D'}
+        colors = {'Think': 'coral', 'Inst': 'steelblue'}
+        
+        for game in merged['game'].unique():
+            game_data = merged[merged['game'] == game]
+            marker = game_markers.get(game, 'o')
+            
+            for mode, color in colors.items():
+                mode_data = game_data[game_data['thinking_mode'] == mode]
+                if mode_data.empty:
+                    continue
+                
+                ax.scatter(
+                    mode_data['reasoning_char_count'],
+                    mode_data['mean'],
+                    c=color,
+                    marker=marker,
+                    label=f'{game.replace("_", " ").title()} ({mode})',
+                    alpha=0.7,
+                    s=80,
+                    edgecolors='black',
+                    linewidths=0.5
+                )
+        
+        ax.set_xlabel('Reasoning Characters (Token Proxy)', fontsize=12)
+        ax.set_ylabel('Average Profit', fontsize=12)
+        ax.set_title('Token Usage vs Performance (All Games)', fontsize=14, fontweight='bold')
+        ax.legend(loc='upper left', fontsize=8, ncol=2)
+        ax.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(self.output_dir / "F5_token_vs_outcome_combined.png", dpi=300, bbox_inches='tight')
+        plt.close()
 
 
 # =============================================================================
@@ -891,27 +1200,35 @@ def main():
         sys.exit(1)
     
     try:
-        logger.info("[Step 1/4] Analyzing metrics...")
+        logger.info("[Step 1/5] Analyzing metrics...")
         MetricsAnalyzer().analyze_all_games()
         
-        logger.info("[Step 2/4] Creating summary CSVs...")
+        logger.info("[Step 2/5] Creating summary CSVs...")
         SummaryCreator().create_all_summaries()
         
-        logger.info("[Step 3/4] Generating tables...")
+        logger.info("[Step 3/5] Loading data...")
         config_path = Path("config/config.json")
-        loader = DataLoader(analysis_dir, config_path if config_path.exists() else None)
+        loader = DataLoader(
+            analysis_dir, 
+            config_path if config_path.exists() else None,
+            experiments_dir
+        )
         perf_df, magic_df = loader.load()
+        
+        # Load token data for cost-benefit analysis
+        token_df = loader.load_token_data()
         
         all_models = list(set(perf_df['model'].unique()) | set(magic_df['model'].unique()))
         features_df = loader.extract_model_features(all_models)
         
+        logger.info("[Step 4/5] Generating tables...")
         pub_dir = analysis_dir / "publication"
         tables = TableGenerator(perf_df, magic_df, features_df, pub_dir, loader)
-        tables.generate_all()
+        tables.generate_all(token_df)
         
-        logger.info("[Step 4/4] Generating figures...")
+        logger.info("[Step 5/5] Generating figures...")
         figures = FigureGenerator(perf_df, magic_df, features_df, pub_dir, loader)
-        figures.generate_all()
+        figures.generate_all(token_df)
         
         logger.info("=" * 80)
         logger.info("🎉 ANALYSIS COMPLETE 🎉")

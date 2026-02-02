@@ -1,5 +1,0 @@
-game,cosine_similarity,pearson_r,p_value,sig,n_models,n_metrics
-salop,0.9758,0.9472,2.2729552452909184e-18,***,12,3
-spulber,0.9928,0.961,2.5201873555207237e-27,***,12,4
-green_porter,0.9813,0.8863,8.308099580821544e-09,***,12,2
-athey_bagwell,0.9959,0.9772,1.3312478660365323e-32,***,12,4
