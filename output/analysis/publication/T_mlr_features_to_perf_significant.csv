@@ -1,0 +1,12 @@
+game,target,predictor,coef,std_err,p_value,sig,r_squared,n_obs
+athey_bagwell,average_profit,thinking,698.6626,315.5092,0.03922442933912796,*,0.2818,24
+athey_bagwell,win_rate,thinking,0.0968,0.044,0.04047110193425603,*,0.3936,24
+green_porter,reversion_frequency,thinking,0.0048,0.0018,0.01780798983392707,*,0.4165,24
+green_porter,win_rate,family_encoded,0.0318,0.0151,0.04847358866672511,*,0.4448,24
+green_porter,win_rate,thinking,-0.0441,0.0116,0.001215889980820815,**,0.4448,24
+salop,average_profit,thinking,638.7777,151.9916,0.00048231803473776954,***,0.7357,24
+salop,win_rate,architecture_moe,0.0989,0.044,0.036535942404104814,*,0.9562,24
+salop,win_rate,thinking,0.7248,0.0444,1.2534861243255478e-12,***,0.9562,24
+spulber,allocative_efficiency,version,0.4158,0.1577,0.016244199116121648,*,0.3878,24
+spulber,average_profit,family_encoded,211.6139,86.7113,0.02463677278874968,*,0.6879,24
+spulber,win_rate,architecture_moe,0.2939,0.1351,0.04237371777404517,*,0.6836,24

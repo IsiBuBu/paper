@@ -1,14 +1,14 @@
 {
   "models": {
     "challenger_models": [
-     "Qwen/Qwen3-32B-Thinking-On"
+     "Qwen/Qwen3-14B-Thinking-Off"
     ],
     "defender_model": "google/gemma-3-27b-it"
   },
-  "model_configs": {
-    "random_agent": {                              
+"model_configs": {
+   "random_agent": {
       "model_name": "random_agent",
-      "display_name": "Random Baseline",
+      "display_name": "Random",
       "model_family": "none",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
@@ -17,7 +17,7 @@
     },
     "google/gemma-3-27b-it": {
       "model_name": "google/gemma-3-27b-it",
-      "display_name": "google/gemma-3-27b-it",
+      "display_name": "Gemma-27B",
       "model_family": "gemma",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
@@ -26,7 +26,7 @@
     },
     "Qwen/Qwen3-235B-A22B-Thinking-2507": {
       "model_name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
-      "display_name": "Qwen3-235B-A22B-Thinking-2507",
+      "display_name": "Q3-235B Think",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "reasoning_tokens",
@@ -35,9 +35,9 @@
     },
     "Qwen/Qwen3-235B-A22B-Instruct-2507": {
       "model_name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
-      "display_name": "Qwen3-235B-A22B-Instruct-2507",
+      "display_name": "Q3-235B Inst",
       "model_family": "qwen3",
-     "reasoning_effort": "standard",
+      "reasoning_effort": "standard",
       "reasoning_output": "none",
       "forced_json_response": false,
       "temperature": 0.0
@@ -53,7 +53,7 @@
     },
     "Qwen/Qwen3-30B-A3B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-30B-A3B",
-      "display_name": "Qwen3-30B-A3B (Thinking Off)",
+      "display_name": "Q3-30B Inst",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
@@ -62,7 +62,7 @@
     },
     "Qwen/Qwen3-32B-Thinking-On": {
       "model_name": "Qwen/Qwen3-32B",
-      "display_name": "Qwen3-32B (Thinking On)",
+      "display_name": "Q3-32B Think",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "output_tokens",
@@ -71,7 +71,7 @@
     },
     "Qwen/Qwen3-32B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-32B",
-      "display_name": "Qwen3-32B (Thinking Off)",
+      "display_name": "Q3-32B Inst",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
@@ -80,7 +80,7 @@
     },
     "Qwen/Qwen3-14B-Thinking-On": {
       "model_name": "Qwen/Qwen3-14B",
-      "display_name": "Qwen3-14B (Thinking On)",
+      "display_name": "Q3-14B Think",
       "model_family": "qwen3",
       "reasoning_effort": "standard",
       "reasoning_output": "output_tokens",
@@ -89,7 +89,7 @@
     },
     "Qwen/Qwen3-14B-Thinking-Off": {
       "model_name": "Qwen/Qwen3-14B",
-      "display_name": "Qwen3-14B (Thinking Off)",
+      "display_name": "Q3-14B Inst",
       "model_family": "qwen3",
       "reasoning_effort": "none",
       "reasoning_output": "none",
@@ -98,8 +98,8 @@
     },
     "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
       "model_name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-      "display_name": "Llama-4-Maverick-17B-128E-Instruct",
-      "model_family": "qwen3",
+      "display_name": "L4-Maverick",
+      "model_family": "llama",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
       "forced_json_response": true,
@@ -107,8 +107,8 @@
     },
     "meta-llama/Llama-4-Scout-17B-16E-Instruct": {
       "model_name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      "display_name": "Llama-4-Scout-17B-16E-Instruct",
-      "model_family": "qwen3",
+      "display_name": "L4-Scout",
+      "model_family": "llama",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
       "forced_json_response": true,
@@ -116,7 +116,7 @@
     },
     "meta-llama/Llama-3.3-70B-Instruct-Turbo": {
       "model_name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "display_name": "Llama-3.3-70B-Instruct",
+      "display_name": "L3.3-70B",
       "model_family": "llama",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
@@ -125,7 +125,7 @@
     },
     "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
       "model_name": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-      "display_name": "Llama-3.1-70B-Instruct",
+      "display_name": "L3.1-70B",
       "model_family": "llama",
       "reasoning_effort": "standard",
       "reasoning_output": "none",
@@ -134,7 +134,7 @@
     },
     "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo": {
       "model_name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "display_name": "Llama-3.1-8B-Instruct",
+      "display_name": "L3.1-8B",
       "model_family": "llama",
       "reasoning_effort": "standard",
       "reasoning_output": "none",

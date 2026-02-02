@@ -1,0 +1,5 @@
+game,metric,mean_3P,mean_5P,mean_diff,t_statistic,p_value,sig,n_models
+salop,market_price,12.9341,12.7574,0.1767,1.5595,0.14716932622381318,,12
+spulber,allocative_efficiency,0.5133,0.4317,0.0817,2.7842,0.017768717760187503,*,12
+green_porter,reversion_frequency,0.1303,0.1277,0.0027,3.3503,0.006474183174351956,**,12
+athey_bagwell,productive_efficiency,0.5473,0.4406,0.1067,14.287,1.9007435891204924e-08,***,12

@@ -251,6 +251,12 @@ salop,random_agent,baseline,win_rate,0.2,0.42163702135578396,0.3016209550472132
 salop,random_agent,more_players,average_profit,312.3735833333334,832.9770236538297,595.8758664003798
 salop,random_agent,more_players,market_price,13.7912,1.2644563873679298,0.904537609024716
 salop,random_agent,more_players,win_rate,0.1,0.31622776601683794,0.22621571628540987
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,allocative_efficiency,0.7,0.4605661864718383,0.09138632344891304
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,average_profit,33.75,147.85396665137353,29.33743469774547
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,win_rate,0.16,0.3684529491774707,0.07310905875913043
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,allocative_efficiency,0.74,0.44084400227680826,0.08747301422885749
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,average_profit,0.0,0.0,0.0
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,win_rate,0.04,0.19694638556693236,0.039078435678027226
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,allocative_efficiency,0.42,0.49604496374885837,0.09842608257809947
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,average_profit,390.45399899999995,146.8291521041525,29.134089258070613
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,win_rate,0.88,0.3265986323710904,0.064804254269027

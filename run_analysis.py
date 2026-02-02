@@ -25,8 +25,6 @@ except ImportError as e:
 from config.config import get_experiments_dir, get_analysis_dir
 from analysis.engine.analyze_metrics import MetricsAnalyzer
 from analysis.engine.create_summary_csvs import SummaryCreator
-from analysis.engine.analyze_correlations import CorrelationAnalyzer
-from analysis.visualization.visualize_results import main as visualize_all
 
 def setup_logging():
     """Configures basic logging for the analysis pipeline."""
@@ -79,7 +77,7 @@ def main():
         logger.info("[Step 3/4] ✅ Correlation analysis complete.")
 
         # --- Check for necessary CSV files before visualization ---
-        required_csvs = ["performance_metrics.csv", "magic_behavioral_metrics.csv", "correlations_analysis_structural.csv"]
+        required_csvs = ["performance_metrics.csv", "magic_behavioral_metrics.csv"]
         missing_csvs = [f for f in required_csvs if not (analysis_dir / f).exists()]
 
         if missing_csvs:

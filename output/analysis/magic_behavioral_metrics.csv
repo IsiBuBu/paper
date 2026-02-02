@@ -251,6 +251,14 @@ salop,random_agent,baseline,reasoning,0.389889093049271,0.41938101489777585,0.30
 salop,random_agent,more_players,cooperation,0.9,0.31622776601683794,0.22621571628540987
 salop,random_agent,more_players,rationality,0.10800498007968129,0.31442314259387705,0.22492476645708648
 salop,random_agent,more_players,reasoning,0.19749349935533064,0.24642195156643737,0.17627964484017514
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,judgment,0.6265733333333334,0.19235185726200735,0.03816678158334536
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,rationality,0.71,0.4560480215720686,0.09048982151052958
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,reasoning,1.0,0.0,0.0
+spulber,Qwen/Qwen3-14B-Thinking-Off,baseline,self_awareness,0.21666666666666667,0.0,0.0
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,judgment,0.5730266666666668,0.19716760763228544,0.03912233093523935
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,rationality,0.79,0.4093601807403325,0.08122594098976255
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,reasoning,1.0,0.0,0.0
+spulber,Qwen/Qwen3-14B-Thinking-Off,more_players,self_awareness,0.21666666666666667,0.0,0.0
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,judgment,0.9525466666666667,0.1594627450166978,0.03164086817962385
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,rationality,0.43,0.497569851956243,0.09872865348112429
 spulber,Qwen/Qwen3-14B-Thinking-On,baseline,reasoning,1.0,0.0,0.0

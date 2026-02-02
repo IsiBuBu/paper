@@ -1,0 +1,14 @@
+game,component,variance_explained,cumulative,n_models,n_metrics
+salop,PC1,0.9065,0.9065,12,3
+salop,PC2,0.0615,0.9681,12,3
+salop,PC3,0.0319,1.0,12,3
+spulber,PC1,0.7593,0.7593,12,4
+spulber,PC2,0.1892,0.9485,12,4
+spulber,PC3,0.051,0.9995,12,4
+spulber,PC4,0.0005,1.0,12,4
+green_porter,PC1,0.9154,0.9154,12,2
+green_porter,PC2,0.0846,1.0,12,2
+athey_bagwell,PC1,0.6177,0.6177,12,4
+athey_bagwell,PC2,0.3653,0.983,12,4
+athey_bagwell,PC3,0.0169,0.9999,12,4
+athey_bagwell,PC4,0.0001,1.0,12,4

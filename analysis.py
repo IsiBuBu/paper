@@ -1,944 +1,927 @@
+#!/usr/bin/env python3
 """
-Unified Paper Analysis for MAgIC Benchmark
-==========================================
+MAgIC Analysis Pipeline - Publication Version
 
-Combines: PCA, Regression, Radar Charts, Summary CSVs
-
-RQ1: Model Features → Performance
-RQ2: Capability Profiles (PCA, Similarity)  
-RQ3: Capabilities → Performance (Hierarchical Regression)
-
-Uses config.json for all model definitions.
+Usage:
+    python analysis.py
 """
 
 import sys
-import json
 import logging
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
-from scipy import stats
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass
+import json
+import re
+from typing import Dict, List, Optional, Tuple
+from collections import defaultdict
 
-# =============================================================================
-# Configuration Loader (matches config/config.py pattern)
-# =============================================================================
-
-def load_config(config_path: Path = None) -> Dict[str, Any]:
-    """Load config.json from project root."""
-    if config_path is None:
-        # Try common locations
-        for path in [Path("config/config.json"), Path("config.json"), 
-                     Path(__file__).parent / "config" / "config.json"]:
-            if path.exists():
-                config_path = path
-                break
-    
-    if config_path is None or not config_path.exists():
-        raise FileNotFoundError("config.json not found")
-    
-    with open(config_path, 'r') as f:
-        return json.load(f)
-
-
-@dataclass
-class ModelInfo:
-    """Model information extracted from config."""
-    model_name: str
-    display_name: str
-    model_family: str
-    reasoning_effort: str
-    reasoning_output: str
-    is_thinking: bool
-    is_large: bool
-    param_size: float
-
-
-class ConfigManager:
-    """Manages model configurations from config.json."""
-    
-    def __init__(self, config: Dict = None):
-        self.config = config or load_config()
-        self._parse_models()
-    
-    def _parse_models(self):
-        """Parse model configurations."""
-        self.model_configs = self.config.get('model_configs', {})
-        self.challenger_models = self.config.get('models', {}).get('challenger_models', [])
-        self.defender_model = self.config.get('models', {}).get('defender_model', '')
-        self.random_agent = 'random_agent'
-        
-    def get_all_model_names(self) -> List[str]:
-        """Get all model names from config."""
-        return list(self.model_configs.keys())
-    
-    def get_challenger_models(self) -> List[str]:
-        """Get challenger model names."""
-        return self.challenger_models
-    
-    def get_defender_model(self) -> str:
-        """Get defender model name."""
-        return self.defender_model
-    
-    def get_model_info(self, model_name: str) -> ModelInfo:
-        """Get parsed model information."""
-        cfg = self.model_configs.get(model_name, {})
-        
-        display_name = cfg.get('display_name', model_name)
-        family = cfg.get('model_family', 'unknown')
-        reasoning_effort = cfg.get('reasoning_effort', 'standard')
-        reasoning_output = cfg.get('reasoning_output', 'none')
-        
-        # Derived features
-        is_thinking = reasoning_output != 'none' or 'Thinking-On' in model_name
-        is_large = any(s in model_name for s in ['70B', '235B', '32B', '30B'])
-        
-        # Extract param size
-        import re
-        match = re.search(r'(\d+)B', model_name)
-        param_size = float(match.group(1)) if match else 0.0
-        
-        return ModelInfo(
-            model_name=model_name,
-            display_name=display_name,
-            model_family=family,
-            reasoning_effort=reasoning_effort,
-            reasoning_output=reasoning_output,
-            is_thinking=is_thinking,
-            is_large=is_large,
-            param_size=param_size
-        )
-    
-    def create_features_dataframe(self) -> pd.DataFrame:
-        """Create DataFrame with model features for regression."""
-        records = []
-        for model_name in self.get_all_model_names():
-            info = self.get_model_info(model_name)
-            records.append({
-                'model': model_name,
-                'display_name': info.display_name,
-                'family': info.model_family,
-                'is_large': int(info.is_large),
-                'is_thinking': int(info.is_thinking),
-                'param_size': info.param_size,
-                'is_qwen3': int('qwen3' in info.model_family.lower() or 'Qwen3' in model_name),
-                'is_llama': int('llama' in info.model_family.lower() or 'Llama' in model_name),
-                'is_gemma': int('gemma' in info.model_family.lower()),
-                'is_random': int(model_name == self.random_agent),
-                'is_defender': int(model_name == self.defender_model),
-            })
-        return pd.DataFrame(records)
-
-
-# =============================================================================
-# Optional Imports
-# =============================================================================
-
-try:
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.decomposition import PCA
-    SKLEARN_AVAILABLE = True
-except ImportError:
-    SKLEARN_AVAILABLE = False
+from analysis.engine.analyze_metrics import MetricsAnalyzer
+from analysis.engine.create_summary_csvs import SummaryCreator
+from config.config import get_experiments_dir, get_analysis_dir
 
 try:
     import statsmodels.api as sm
+    from scipy.stats import linregress, ttest_rel, pearsonr
     STATSMODELS_AVAILABLE = True
 except ImportError:
     STATSMODELS_AVAILABLE = False
 
 try:
+    from sklearn.preprocessing import StandardScaler, LabelEncoder
+    from sklearn.decomposition import PCA
+    from sklearn.metrics.pairwise import cosine_similarity
+    SKLEARN_AVAILABLE = True
+except ImportError:
+    SKLEARN_AVAILABLE = False
+
+try:
     import matplotlib.pyplot as plt
     import seaborn as sns
-    plt.style.use('seaborn-v0_8-whitegrid')
     PLOT_AVAILABLE = True
 except ImportError:
     PLOT_AVAILABLE = False
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', stream=sys.stdout)
+logger = logging.getLogger("AnalysisPipeline")
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+
+GAME_CONFIGS = {
+    'salop': {
+        'performance_metrics': ['average_profit', 'win_rate', 'market_price'],
+        'magic_metrics': ['rationality', 'reasoning', 'cooperation'],
+        'game_specific_metric': 'market_price'
+    },
+    'spulber': {
+        'performance_metrics': ['average_profit', 'win_rate', 'allocative_efficiency'],
+        'magic_metrics': ['rationality', 'judgment', 'reasoning', 'self_awareness'],
+        'game_specific_metric': 'allocative_efficiency'
+    },
+    'green_porter': {
+        'performance_metrics': ['average_profit', 'win_rate', 'reversion_frequency'],
+        'magic_metrics': ['cooperation', 'coordination'],
+        'game_specific_metric': 'reversion_frequency'
+    },
+    'athey_bagwell': {
+        'performance_metrics': ['average_profit', 'win_rate', 'productive_efficiency'],
+        'magic_metrics': ['rationality', 'reasoning', 'deception', 'cooperation'],
+        'game_specific_metric': 'productive_efficiency'
+    }
+}
+
+METRIC_DIRECTION = {
+    'average_profit': '↑', 'win_rate': '↑', 'market_price': '↑',
+    'allocative_efficiency': '↑', 'productive_efficiency': '↑', 'reversion_frequency': '↓',
+    'rationality': '↑', 'reasoning': '↑', 'cooperation': '↑', 'coordination': '↑',
+    'judgment': '↑', 'self_awareness': '↑', 'deception': '↑',
+}
+
+MODEL_FEATURES = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
+COLLINEARITY_THRESHOLD = 0.95
 
 
 # =============================================================================
-# Main Analysis Class
+# DATA LOADER
 # =============================================================================
 
-class UnifiedPaperAnalysis:
-    """
-    Unified analysis pipeline for MAgIC paper.
-    
-    Generates:
-    - T1: Performance Descriptives
-    - T2: RQ1 Regression (Model Features → Performance)
-    - T3: MAgIC Descriptives  
-    - T4: PCA Loadings
-    - T5: Profile Stability
-    - T6: Hierarchical Regression (Incremental Validity)
-    - T7: Final Coefficients
-    - F1: Coefficient Plot
-    - F2: PCA Biplot
-    - F3: Radar Chart
-    - F4: Variance Decomposition
-    """
-    
-    MAGIC_METRICS = ['rationality', 'reasoning', 'judgment', 'self_awareness',
-                     'cooperation', 'coordination', 'deception']
-    
-    PERF_METRICS = ['win_rate', 'average_profit']
-    
-    def __init__(self, analysis_dir: str = "output/analysis", config: Dict = None):
+class DataLoader:
+    def __init__(self, analysis_dir: Path, config_path: Optional[Path] = None):
         self.analysis_dir = Path(analysis_dir)
-        self.output_dir = self.analysis_dir / "paper_outputs"
-        self.output_dir.mkdir(exist_ok=True, parents=True)
-        
-        # Load config
-        self.cfg = ConfigManager(config)
-        
-        # Load data
-        self._load_data()
-        
-        # Prepare merged dataset
-        self.df = self._prepare_data()
-        
-        logger.info(f"Initialized with {len(self.df)} observations, {self.df['model'].nunique()} models")
-        logger.info(f"Challenger models: {len(self.cfg.get_challenger_models())}")
-        logger.info(f"Defender model: {self.cfg.get_defender_model()}")
+        self.config_path = config_path
+        self.model_configs = {}
+        self.display_names = {}
+        self.family_encoder = None
     
-    def _load_data(self):
-        """Load performance and MAgIC CSVs."""
-        try:
-            self.perf_df = pd.read_csv(self.analysis_dir / "performance_metrics.csv")
-            self.magic_df = pd.read_csv(self.analysis_dir / "magic_behavioral_metrics.csv")
-            logger.info(f"Loaded performance_metrics.csv: {len(self.perf_df)} rows")
-            logger.info(f"Loaded magic_behavioral_metrics.csv: {len(self.magic_df)} rows")
-        except FileNotFoundError as e:
-            logger.error(f"Data files not found: {e}")
-            raise
+    def load(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        perf_path = self.analysis_dir / "performance_metrics.csv"
+        magic_path = self.analysis_dir / "magic_behavioral_metrics.csv"
+        
+        if not perf_path.exists() or not magic_path.exists():
+            raise FileNotFoundError(f"Required CSVs not found in {self.analysis_dir}")
+        
+        perf_df = pd.read_csv(perf_path)
+        magic_df = pd.read_csv(magic_path)
+        
+        perf_df = self._filter_models(perf_df)
+        magic_df = self._filter_models(magic_df)
+        
+        if self.config_path and self.config_path.exists():
+            with open(self.config_path) as f:
+                config = json.load(f)
+                self.model_configs = config.get('model_configs', {})
+                for model_name, cfg in self.model_configs.items():
+                    self.display_names[model_name] = cfg.get('display_name', model_name)
+        
+        logger.info(f"Loaded {len(perf_df)} performance rows, {len(magic_df)} MAgIC rows")
+        return perf_df, magic_df
     
-    def _prepare_data(self) -> pd.DataFrame:
-        """Merge and prepare analysis dataset with feature engineering from regression.py."""
-        import re
-        
-        # Get valid models from config
-        valid_models = self.cfg.get_all_model_names()
-        
-        # Filter to valid models (exclude random_agent and defender for main analysis)
-        def is_excluded(model_name):
-            model_lower = model_name.lower()
-            if 'random' in model_lower:
-                return True
-            if 'gemma' in model_lower:  # defender model
-                return True
-            return False
-        
-        perf_filtered = self.perf_df[
-            (self.perf_df['model'].isin(valid_models)) & 
-            (~self.perf_df['model'].apply(is_excluded))
-        ]
-        magic_filtered = self.magic_df[
-            (self.magic_df['model'].isin(valid_models)) &
-            (~self.magic_df['model'].apply(is_excluded))
-        ]
-        
-        # Pivot to wide format
-        perf_pivot = perf_filtered.pivot_table(
-            index=['game', 'model', 'condition'],
-            columns='metric', values='mean'
-        ).reset_index()
-        
-        magic_pivot = magic_filtered.pivot_table(
-            index=['game', 'model', 'condition'],
-            columns='metric', values='mean'
-        ).reset_index()
-        
-        # Merge
-        df = pd.merge(perf_pivot, magic_pivot, on=['game', 'model', 'condition'], how='outer')
-        
-        # =================================================================
-        # FEATURE ENGINEERING (matching regression.py pattern)
-        # =================================================================
-        
-        def extract_features(model_name: str) -> Dict[str, Any]:
-            """Extract model features matching regression.py logic."""
-            model_lower = model_name.lower()
+    def get_display_name(self, model: str) -> str:
+        """Get display name from config.json."""
+        if model in self.display_names:
+            return self.display_names[model]
+        return str(model).split('/')[-1]
+    
+    def _filter_models(self, df: pd.DataFrame) -> pd.DataFrame:
+        def is_excluded(model: str) -> bool:
+            m = str(model).lower()
+            return 'random' in m or 'gemma' in m
+        return df[~df['model'].apply(is_excluded)].copy()
+    
+    def extract_model_features(self, models: List[str]) -> pd.DataFrame:
+        records = []
+        for model in models:
+            m_lower = str(model).lower()
             
-            # --- Architecture: MoE detection ---
-            is_moe = bool(re.search(r'-a\d+b', model_lower)) or 'moe' in model_lower
-            if re.search(r'\d+e-instruct', model_lower) or 'maverick' in model_lower or 'scout' in model_lower:
+            is_moe = bool(re.search(r'-a\d+b', m_lower)) or 'moe' in m_lower
+            if 'maverick' in m_lower or 'scout' in m_lower:
                 is_moe = True
             
-            # --- Size: Extract parameter count ---
-            size_params = 0.0
-            size_match = re.search(r'(?<!a)(\d+\.?\d*)b(?!-)', model_lower)
-            if size_match:
-                size_params = float(size_match.group(1))
-            if size_params == 0:
-                size_match = re.search(r'-(\d+\.?\d*)b-', model_lower)
-                if size_match:
-                    size_params = float(size_match.group(1))
-            if size_params == 0:
-                size_match = re.search(r'-(\d+\.?\d*)b$', model_lower)
-                if size_match:
-                    size_params = float(size_match.group(1))
+            size = 0.0
+            match = re.search(r'(?<!a)(\d+\.?\d*)b(?!-)', m_lower)
+            if match:
+                size = float(match.group(1))
             
-            # --- Family detection ---
             family = 'unknown'
-            if 'qwen' in model_lower:
-                family = 'qwen'
-            elif 'llama' in model_lower:
-                family = 'llama'
-            elif 'gemma' in model_lower:
-                family = 'gemma'
-            elif 'mistral' in model_lower:
-                family = 'mistral'
+            for fam in ['qwen', 'llama', 'gemma', 'mistral', 'gemini', 'gpt', 'claude']:
+                if fam in m_lower:
+                    family = fam
+                    break
             
-            # --- Version extraction ---
             version = 0.0
-            version_patterns = [
-                r'qwen(\d+)',
-                r'llama-?(\d+\.?\d*)',
-                r'gemma-?(\d+)',
-            ]
-            for pattern in version_patterns:
-                match = re.search(pattern, model_lower)
+            for pattern in [r'qwen(\d+)', r'llama-?(\d+\.?\d*)', r'gemma-?(\d+)']:
+                match = re.search(pattern, m_lower)
                 if match:
                     version = float(match.group(1))
                     break
             
-            # --- Thinking mode: FROM CONFIG ---
             thinking = 0
-            if model_name in self.cfg.model_configs:
-                reasoning_output = self.cfg.model_configs[model_name].get('reasoning_output', 'none')
-                if reasoning_output in ['reasoning_tokens', 'output_tokens']:
+            if model in self.model_configs:
+                ro = self.model_configs[model].get('reasoning_output', 'none')
+                if ro in ['reasoning_tokens', 'output_tokens']:
                     thinking = 1
-            else:
-                # Fallback: name-based detection
-                if 'thinking-off' in model_lower or 'instruct' in model_lower:
-                    thinking = 0
-                elif 'thinking' in model_lower:
-                    thinking = 1
+            elif 'thinking' in m_lower and 'off' not in m_lower:
+                thinking = 1
             
-            return {
-                'architecture_moe': 1 if is_moe else 0,
-                'size_params': size_params,
+            records.append({
+                'model': model,
+                'display_name': self.get_display_name(model),
+                'architecture_moe': int(is_moe),
+                'size_params': size,
                 'family': family,
                 'version': version,
-                'thinking': thinking,
-            }
+                'thinking': thinking
+            })
         
-        # Extract features for each model
-        unique_models = df['model'].unique()
-        feature_records = []
-        for model in unique_models:
-            feats = extract_features(model)
-            feats['model'] = model
-            feature_records.append(feats)
-        
-        features_df = pd.DataFrame(feature_records)
-        
-        # Encode family as numeric
-        from sklearn.preprocessing import LabelEncoder
-        le = LabelEncoder()
-        features_df['family_encoded'] = le.fit_transform(features_df['family'])
-        self._family_encoder = le
-        self._family_mapping = dict(zip(le.classes_, le.transform(le.classes_)))
-        
-        # Log extracted features
-        logger.info("\nExtracted model features:")
-        logger.info("-" * 100)
-        for _, row in features_df.iterrows():
-            logger.info(
-                f"  {row['model'][:50]:50s} | arch_moe={row['architecture_moe']} | "
-                f"size={row['size_params']:6.1f}B | family={row['family']:8s} | "
-                f"ver={row['version']:4.1f} | thinking={row['thinking']}"
-            )
-        logger.info("-" * 100)
-        
-        # Merge features into main dataframe
-        df = pd.merge(df, features_df, on='model', how='left')
-        
-        # Condition features
-        df['is_5_player'] = df['condition'].apply(lambda x: 1 if 'more_players' in str(x) else 0)
-        
-        # Game features
-        df['is_dynamic'] = df['game'].isin(['green_porter', 'athey_bagwell']).astype(int)
-        
-        # Add display names from config
-        df['display_name'] = df['model'].apply(
-            lambda x: self.cfg.get_model_info(x).display_name if x in self.cfg.get_all_model_names() else x
-        )
-        
+        df = pd.DataFrame(records)
+        if SKLEARN_AVAILABLE and len(df) > 0:
+            self.family_encoder = LabelEncoder()
+            df['family_encoded'] = self.family_encoder.fit_transform(df['family'])
+        else:
+            df['family_encoded'] = 0
         return df
+
+
+# =============================================================================
+# TABLE GENERATOR
+# =============================================================================
+
+class TableGenerator:
+    def __init__(self, perf_df: pd.DataFrame, magic_df: pd.DataFrame,
+                 features_df: pd.DataFrame, output_dir: Path, loader: DataLoader):
+        self.perf_df = perf_df
+        self.magic_df = magic_df
+        self.features_df = features_df
+        self.output_dir = output_dir
+        self.loader = loader
+        self.output_dir.mkdir(parents=True, exist_ok=True)
     
-    # =========================================================================
-    # TABLE 1: Performance Descriptives
-    # =========================================================================
+    def generate_all(self):
+        self.performance_win_rate_table()
+        self.performance_avg_profit_table()
+        self.performance_game_specific_table()
+        self.performance_3v5_summary()
+        
+        for game in GAME_CONFIGS.keys():
+            self.magic_per_game_table(game)
+        
+        self.mlr_features_to_performance()
+        self.mlr_magic_to_performance()
+        self.pca_variance_table()
     
-    def table_1_performance_descriptives(self) -> pd.DataFrame:
-        """T1: Performance by Model."""
-        logger.info("Generating T1: Performance Descriptives")
-        
-        available = [c for c in self.PERF_METRICS if c in self.df.columns]
-        
-        summary = self.df.groupby('model')[available].agg(['mean', 'std', 'count'])
-        summary.columns = ['_'.join(col) for col in summary.columns]
-        summary = summary.round(4).reset_index()
-        
-        # Add display names - derive from model name or use config
-        def get_display_name(model_name):
-            if model_name in self.cfg.get_all_model_names():
-                return self.cfg.get_model_info(model_name).display_name
-            return model_name.split('/')[-1] if '/' in model_name else model_name
-        
-        summary['display_name'] = summary['model'].apply(get_display_name)
-        
-        cols = ['model', 'display_name'] + [c for c in summary.columns if c not in ['model', 'display_name']]
-        summary = summary[cols]
-        
-        summary.to_csv(self.output_dir / "T1_performance_descriptives.csv", index=False)
-        logger.info("Saved T1")
-        return summary
+    def _display_name(self, model: str) -> str:
+        return self.loader.get_display_name(model)
     
-    # =========================================================================
-    # TABLE 2: RQ1 Regression
-    # =========================================================================
+    def _format_mean_std(self, mean_val, std_val) -> str:
+        if pd.isna(mean_val):
+            return "N/A"
+        if pd.isna(std_val) or std_val == 0:
+            return f"{mean_val:.3f}"
+        return f"{mean_val:.3f} ± {std_val:.3f}"
     
-    def table_2_rq1_regression(self) -> pd.DataFrame:
-        """T2: Model Features → Performance."""
-        if not STATSMODELS_AVAILABLE:
-            logger.warning("statsmodels not available")
+    @staticmethod
+    def _sig_stars(p):
+        if p is None or pd.isna(p):
+            return ''
+        if p < 0.001:
+            return '***'
+        if p < 0.01:
+            return '**'
+        if p < 0.05:
+            return '*'
+        return ''
+    
+    def _save_table_as_png(self, df: pd.DataFrame, filename: str, title: str, 
+                           bold_best: bool = True, metric_cols: List[str] = None):
+        if not PLOT_AVAILABLE or df.empty:
+            return
+        
+        fig, ax = plt.subplots(figsize=(max(14, len(df.columns) * 1.8), max(5, len(df) * 0.5)))
+        ax.axis('off')
+        
+        cell_colors = [['white'] * len(df.columns) for _ in range(len(df))]
+        
+        if bold_best and metric_cols:
+            for col_idx, col in enumerate(df.columns):
+                if col in metric_cols:
+                    direction = '↓' if '↓' in col else '↑'
+                    try:
+                        numeric_vals = pd.to_numeric(df[col].astype(str).str.split(' ±').str[0], errors='coerce')
+                        best_idx = numeric_vals.idxmin() if direction == '↓' else numeric_vals.idxmax()
+                        if pd.notna(best_idx):
+                            row_idx = df.index.get_loc(best_idx)
+                            cell_colors[row_idx][col_idx] = '#90EE90'
+                    except:
+                        pass
+        
+        table = ax.table(cellText=df.values, colLabels=df.columns, cellLoc='center',
+                        loc='center', cellColours=cell_colors)
+        table.auto_set_font_size(False)
+        table.set_fontsize(8)
+        table.scale(1.2, 1.5)
+        
+        for i in range(len(df.columns)):
+            table[(0, i)].set_facecolor('#4472C4')
+            table[(0, i)].set_text_props(color='white', fontweight='bold')
+        
+        ax.set_title(title, fontsize=12, fontweight='bold', pad=20)
+        plt.tight_layout()
+        plt.savefig(self.output_dir / filename, dpi=150, bbox_inches='tight', facecolor='white')
+        plt.close()
+    
+    def _compute_3v5_pvalues(self, df: pd.DataFrame, metric: str) -> pd.DataFrame:
+        """Compute paired t-test p-values for 3P vs 5P."""
+        results = []
+        metric_df = df[df['metric'] == metric]
+        
+        for game in metric_df['game'].unique():
+            game_df = metric_df[metric_df['game'] == game]
+            
+            cond_3 = game_df[game_df['condition'].str.contains('baseline|few|3', case=False, na=False)]
+            cond_5 = game_df[game_df['condition'].str.contains('more|5', case=False, na=False)]
+            
+            if cond_3.empty or cond_5.empty:
+                continue
+            
+            common_models = set(cond_3['model'].unique()) & set(cond_5['model'].unique())
+            if len(common_models) < 3:
+                continue
+            
+            vals_3, vals_5 = [], []
+            for model in common_models:
+                v3 = cond_3[cond_3['model'] == model]['mean'].values
+                v5 = cond_5[cond_5['model'] == model]['mean'].values
+                if len(v3) > 0 and len(v5) > 0:
+                    vals_3.append(v3[0])
+                    vals_5.append(v5[0])
+            
+            if len(vals_3) >= 3:
+                try:
+                    t_stat, p_value = ttest_rel(vals_3, vals_5)
+                    results.append({
+                        'game': game, 'metric': metric,
+                        'mean_3P': round(np.mean(vals_3), 4),
+                        'mean_5P': round(np.mean(vals_5), 4),
+                        'mean_diff': round(np.mean(vals_3) - np.mean(vals_5), 4),
+                        't_statistic': round(t_stat, 4),
+                        'p_value': p_value,
+                        'sig': self._sig_stars(p_value),
+                        'n_models': len(vals_3)
+                    })
+                except:
+                    pass
+        
+        return pd.DataFrame(results)
+    
+    def _build_metric_table_3v5(self, df: pd.DataFrame, metric: str) -> pd.DataFrame:
+        """Build table with 3P and 5P columns for each game."""
+        games = list(df['game'].unique())
+        metric_df = df[df['metric'] == metric].copy()
+        if metric_df.empty:
             return pd.DataFrame()
         
-        logger.info("Generating T2: RQ1 Regression")
+        records = []
+        for model in metric_df['model'].unique():
+            row = {'Model': self._display_name(model)}
+            model_df = metric_df[metric_df['model'] == model]
+            
+            for game in games:
+                game_df = model_df[model_df['game'] == game]
+                
+                cond_3 = game_df[game_df['condition'].str.contains('baseline|few|3', case=False, na=False)]
+                cond_5 = game_df[game_df['condition'].str.contains('more|5', case=False, na=False)]
+                
+                if not cond_3.empty:
+                    row[f'{game}_3P'] = self._format_mean_std(cond_3['mean'].iloc[0], 
+                                                              cond_3['std'].iloc[0] if 'std' in cond_3 else 0)
+                else:
+                    row[f'{game}_3P'] = 'N/A'
+                
+                if not cond_5.empty:
+                    row[f'{game}_5P'] = self._format_mean_std(cond_5['mean'].iloc[0],
+                                                              cond_5['std'].iloc[0] if 'std' in cond_5 else 0)
+                else:
+                    row[f'{game}_5P'] = 'N/A'
+            
+            records.append(row)
         
-        # Feature columns from regression.py
-        feature_cols = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
-        feature_cols = [c for c in feature_cols if c in self.df.columns]
+        return pd.DataFrame(records)
+    
+    def performance_win_rate_table(self):
+        logger.info("Generating Win Rate table...")
+        direction = METRIC_DIRECTION.get('win_rate', '↑')
+        table_df = self._build_metric_table_3v5(self.perf_df, 'win_rate')
+        
+        if table_df.empty:
+            return
+        
+        new_cols = {col: f"{col} {direction}" for col in table_df.columns if col != 'Model'}
+        table_df = table_df.rename(columns=new_cols)
+        
+        table_df.to_csv(self.output_dir / "T_perf_win_rate.csv", index=False)
+        metric_cols = [c for c in table_df.columns if c != 'Model']
+        self._save_table_as_png(table_df, "T_perf_win_rate.png", 
+                               f"Win Rate by Model (3P vs 5P) {direction}", metric_cols=metric_cols)
+        
+        pval_df = self._compute_3v5_pvalues(self.perf_df, 'win_rate')
+        if not pval_df.empty:
+            pval_df.to_csv(self.output_dir / "T_perf_win_rate_pvalues.csv", index=False)
+    
+    def performance_avg_profit_table(self):
+        logger.info("Generating Average Profit table...")
+        direction = METRIC_DIRECTION.get('average_profit', '↑')
+        table_df = self._build_metric_table_3v5(self.perf_df, 'average_profit')
+        
+        if table_df.empty:
+            return
+        
+        new_cols = {col: f"{col} {direction}" for col in table_df.columns if col != 'Model'}
+        table_df = table_df.rename(columns=new_cols)
+        
+        table_df.to_csv(self.output_dir / "T_perf_avg_profit.csv", index=False)
+        metric_cols = [c for c in table_df.columns if c != 'Model']
+        self._save_table_as_png(table_df, "T_perf_avg_profit.png",
+                               f"Average Profit by Model (3P vs 5P) {direction}", metric_cols=metric_cols)
+        
+        pval_df = self._compute_3v5_pvalues(self.perf_df, 'average_profit')
+        if not pval_df.empty:
+            pval_df.to_csv(self.output_dir / "T_perf_avg_profit_pvalues.csv", index=False)
+    
+    def performance_game_specific_table(self):
+        """Table: Game-specific metrics WITH 3P vs 5P."""
+        logger.info("Generating Game-Specific metrics table (3P vs 5P)...")
+        
+        records = []
+        for model in self.perf_df['model'].unique():
+            row = {'Model': self._display_name(model)}
+            model_df = self.perf_df[self.perf_df['model'] == model]
+            
+            for game, config in GAME_CONFIGS.items():
+                metric = config['game_specific_metric']
+                direction = METRIC_DIRECTION.get(metric, '↑')
+                
+                game_metric_df = model_df[(model_df['game'] == game) & (model_df['metric'] == metric)]
+                
+                # 3-player condition
+                cond_3 = game_metric_df[game_metric_df['condition'].str.contains('baseline|few|3', case=False, na=False)]
+                if not cond_3.empty:
+                    row[f'{game}_{metric}_3P {direction}'] = self._format_mean_std(
+                        cond_3['mean'].iloc[0], cond_3['std'].iloc[0] if 'std' in cond_3 else 0)
+                else:
+                    row[f'{game}_{metric}_3P {direction}'] = 'N/A'
+                
+                # 5-player condition
+                cond_5 = game_metric_df[game_metric_df['condition'].str.contains('more|5', case=False, na=False)]
+                if not cond_5.empty:
+                    row[f'{game}_{metric}_5P {direction}'] = self._format_mean_std(
+                        cond_5['mean'].iloc[0], cond_5['std'].iloc[0] if 'std' in cond_5 else 0)
+                else:
+                    row[f'{game}_{metric}_5P {direction}'] = 'N/A'
+            
+            records.append(row)
+        
+        table_df = pd.DataFrame(records)
+        table_df.to_csv(self.output_dir / "T_perf_game_specific.csv", index=False)
+        metric_cols = [c for c in table_df.columns if c != 'Model']
+        self._save_table_as_png(table_df, "T_perf_game_specific.png",
+                               "Game-Specific Metrics (3P vs 5P)", metric_cols=metric_cols)
+        
+        # Compute p-values for each game-specific metric
+        all_pvals = []
+        for game, config in GAME_CONFIGS.items():
+            metric = config['game_specific_metric']
+            pval_df = self._compute_3v5_pvalues(self.perf_df, metric)
+            if not pval_df.empty:
+                all_pvals.append(pval_df)
+        
+        if all_pvals:
+            combined_pvals = pd.concat(all_pvals, ignore_index=True)
+            combined_pvals.to_csv(self.output_dir / "T_perf_game_specific_pvalues.csv", index=False)
+    
+    def performance_3v5_summary(self):
+        """Summary of all 3P vs 5P p-values."""
+        logger.info("Generating 3P vs 5P summary...")
+        
+        all_pvals = []
+        for metric in ['win_rate', 'average_profit']:
+            pval_df = self._compute_3v5_pvalues(self.perf_df, metric)
+            if not pval_df.empty:
+                all_pvals.append(pval_df)
+        
+        for game, config in GAME_CONFIGS.items():
+            metric = config['game_specific_metric']
+            pval_df = self._compute_3v5_pvalues(self.perf_df, metric)
+            if not pval_df.empty:
+                all_pvals.append(pval_df)
+        
+        if all_pvals:
+            combined = pd.concat(all_pvals, ignore_index=True)
+            combined.to_csv(self.output_dir / "T_perf_3v5_pvalues_summary.csv", index=False)
+            self._save_table_as_png(combined.round(4), "T_perf_3v5_pvalues_summary.png",
+                                   "Performance: 3P vs 5P Statistical Comparison", bold_best=False)
+    
+    def magic_per_game_table(self, game: str):
+        logger.info(f"Generating MAgIC table for {game}...")
+        
+        game_df = self.magic_df[self.magic_df['game'] == game]
+        if game_df.empty:
+            return
+        
+        metrics = GAME_CONFIGS[game]['magic_metrics']
+        
+        records = []
+        for model in game_df['model'].unique():
+            row = {'Model': self._display_name(model)}
+            model_df = game_df[game_df['model'] == model]
+            
+            for metric in metrics:
+                direction = METRIC_DIRECTION.get(metric, '↑')
+                metric_df = model_df[model_df['metric'] == metric]
+                
+                if not metric_df.empty:
+                    row[f'{metric} {direction}'] = self._format_mean_std(
+                        metric_df['mean'].mean(), metric_df['std'].mean() if 'std' in metric_df else 0)
+                else:
+                    row[f'{metric} {direction}'] = 'N/A'
+            
+            records.append(row)
+        
+        table_df = pd.DataFrame(records)
+        table_df.to_csv(self.output_dir / f"T_magic_{game}.csv", index=False)
+        metric_cols = [c for c in table_df.columns if c != 'Model']
+        self._save_table_as_png(table_df, f"T_magic_{game}.png",
+                               f"MAgIC Metrics: {game.replace('_', ' ').title()}", metric_cols=metric_cols)
+    
+    def _remove_collinear(self, df: pd.DataFrame, preds: List[str]) -> Tuple[List[str], List]:
+        if len(preds) < 2:
+            return preds, []
+        
+        dropped = []
+        remaining = list(preds)
+        
+        while len(remaining) >= 2:
+            valid = [p for p in remaining if p in df.columns and df[p].std() > 0]
+            if len(valid) < 2:
+                break
+            
+            corr = df[valid].corr().abs()
+            found = False
+            for i in range(len(valid)):
+                for j in range(i + 1, len(valid)):
+                    if corr.iloc[i, j] >= COLLINEARITY_THRESHOLD:
+                        to_drop = valid[i] if df[valid[i]].var() <= df[valid[j]].var() else valid[j]
+                        dropped.append(to_drop)
+                        remaining.remove(to_drop)
+                        found = True
+                        break
+                if found:
+                    break
+            if not found:
+                break
+        
+        return remaining, dropped
+    
+    def mlr_features_to_performance(self):
+        """MLR: Model Features → Performance Metrics."""
+        if not STATSMODELS_AVAILABLE:
+            return
+        
+        logger.info("Generating MLR: Features → Performance...")
+        
+        perf_pivot = self.perf_df.pivot_table(
+            index=['game', 'model', 'condition'], columns='metric', values='mean'
+        ).reset_index()
+        
+        merged = perf_pivot.merge(self.features_df, on='model', how='left')
         
         results = []
         
-        for outcome in self.PERF_METRICS:
-            if outcome not in self.df.columns:
+        for game in merged['game'].unique():
+            game_df = merged[merged['game'] == game].copy()
+            
+            valid_preds = [p for p in MODEL_FEATURES if p in game_df.columns and game_df[p].std() > 0]
+            valid_preds, _ = self._remove_collinear(game_df, valid_preds)
+            
+            if not valid_preds:
                 continue
             
-            analysis_df = self.df.dropna(subset=[outcome] + feature_cols)
-            if len(analysis_df) < 10:
-                continue
+            perf_metrics = [c for c in perf_pivot.columns if c not in ['game', 'model', 'condition']]
             
-            X = analysis_df[feature_cols].astype(float)
-            y = analysis_df[outcome]
-            X_const = sm.add_constant(X)
-            
-            model = sm.OLS(y, X_const).fit()
-            
-            for var in model.params.index:
-                results.append({
-                    'outcome': outcome,
-                    'predictor': var,
-                    'coefficient': round(model.params[var], 4),
-                    'std_error': round(model.bse[var], 4),
-                    't_value': round(model.tvalues[var], 3),
-                    'p_value': round(model.pvalues[var], 4),
-                    'ci_lower': round(model.conf_int().loc[var, 0], 4),
-                    'ci_upper': round(model.conf_int().loc[var, 1], 4),
-                    'sig': '***' if model.pvalues[var] < 0.001 else 
-                           '**' if model.pvalues[var] < 0.01 else
-                           '*' if model.pvalues[var] < 0.05 else ''
-                })
-            
-            # Fit stats
-            results.append({'outcome': outcome, 'predictor': 'R_squared',
-                          'coefficient': round(model.rsquared, 4), 'std_error': np.nan,
-                          't_value': np.nan, 'p_value': np.nan, 'ci_lower': np.nan,
-                          'ci_upper': np.nan, 'sig': ''})
-            results.append({'outcome': outcome, 'predictor': 'N',
-                          'coefficient': int(model.nobs), 'std_error': np.nan,
-                          't_value': np.nan, 'p_value': np.nan, 'ci_lower': np.nan,
-                          'ci_upper': np.nan, 'sig': ''})
-        
-        df = pd.DataFrame(results)
-        df.to_csv(self.output_dir / "T2_rq1_regression.csv", index=False)
-        logger.info("Saved T2")
-        return df
-    
-    # =========================================================================
-    # TABLE 3: MAgIC Descriptives
-    # =========================================================================
-    
-    def table_3_magic_descriptives(self) -> pd.DataFrame:
-        """T3: MAgIC Metrics by Model."""
-        logger.info("Generating T3: MAgIC Descriptives")
-        
-        available = [c for c in self.MAGIC_METRICS if c in self.df.columns]
-        
-        summary = self.df.groupby('model')[available].agg(['mean', 'std']).round(4)
-        summary.columns = ['_'.join(col) for col in summary.columns]
-        summary = summary.reset_index()
-        
-        summary.to_csv(self.output_dir / "T3_magic_descriptives.csv", index=False)
-        logger.info("Saved T3")
-        return summary
-    
-    # =========================================================================
-    # TABLE 4: PCA Loadings
-    # =========================================================================
-    
-    def table_4_pca_loadings(self) -> pd.DataFrame:
-        """T4: PCA on MAgIC metrics."""
-        if not SKLEARN_AVAILABLE:
-            logger.warning("sklearn not available")
-            return pd.DataFrame()
-        
-        logger.info("Generating T4: PCA Loadings")
-        
-        available = [c for c in self.MAGIC_METRICS if c in self.df.columns]
-        pca_data = self.df[available].dropna()
-        
-        if len(pca_data) < 5:
-            logger.warning("Insufficient data for PCA")
-            return pd.DataFrame()
-        
-        scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(pca_data)
-        
-        n_comp = min(len(available), 3)
-        pca = PCA(n_components=n_comp)
-        pca.fit(X_scaled)
-        
-        # Store for plots
-        self._pca = pca
-        self._scaler = scaler
-        self._pca_cols = available
-        
-        # Loadings table
-        loadings = pd.DataFrame(
-            pca.components_.T,
-            columns=[f'PC{i+1}' for i in range(n_comp)],
-            index=available
-        ).round(3)
-        
-        # Add variance explained
-        var_row = pd.DataFrame({
-            f'PC{i+1}': [round(pca.explained_variance_ratio_[i], 3)]
-            for i in range(n_comp)
-        }, index=['Variance_Explained'])
-        
-        loadings = pd.concat([loadings, var_row])
-        loadings = loadings.reset_index().rename(columns={'index': 'metric'})
-        
-        loadings.to_csv(self.output_dir / "T4_pca_loadings.csv", index=False)
-        logger.info("Saved T4")
-        return loadings
-    
-    # =========================================================================
-    # TABLE 5: Profile Stability
-    # =========================================================================
-    
-    def table_5_profile_stability(self) -> pd.DataFrame:
-        """T5: Cross-condition stability."""
-        logger.info("Generating T5: Profile Stability")
-        
-        available = [c for c in self.MAGIC_METRICS if c in self.df.columns]
-        conditions = self.df['condition'].dropna().unique()
-        
-        stability = pd.DataFrame(index=conditions, columns=conditions, dtype=float)
-        
-        for c1 in conditions:
-            for c2 in conditions:
-                p1 = self.df[self.df['condition'] == c1].groupby('model')[available].mean()
-                p2 = self.df[self.df['condition'] == c2].groupby('model')[available].mean()
-                
-                common = p1.index.intersection(p2.index)
-                if len(common) < 3:
+            for target in perf_metrics:
+                if target not in game_df.columns or game_df[target].std() == 0:
                     continue
                 
-                f1 = p1.loc[common].values.flatten()
-                f2 = p2.loc[common].values.flatten()
+                valid = game_df[valid_preds + [target]].dropna()
+                if len(valid) < len(valid_preds) + 2:
+                    continue
                 
-                if len(f1) > 2:
-                    corr, _ = stats.pearsonr(f1, f2)
-                    stability.loc[c1, c2] = round(corr, 3)
+                X = sm.add_constant(valid[valid_preds])
+                Y = valid[target]
+                
+                try:
+                    model = sm.OLS(Y, X).fit()
+                    
+                    for pred in valid_preds:
+                        results.append({
+                            'game': game, 'target': target, 'predictor': pred,
+                            'coef': round(model.params.get(pred, np.nan), 4),
+                            'std_err': round(model.bse.get(pred, np.nan), 4),
+                            'p_value': model.pvalues.get(pred, np.nan),
+                            'sig': self._sig_stars(model.pvalues.get(pred, np.nan)),
+                            'r_squared': round(model.rsquared, 4),
+                            'n_obs': int(model.nobs)
+                        })
+                except Exception as e:
+                    logger.warning(f"MLR failed: {e}")
         
-        stability.to_csv(self.output_dir / "T5_profile_stability.csv")
-        logger.info("Saved T5")
-        return stability
+        if results:
+            df_out = pd.DataFrame(results)
+            df_out.to_csv(self.output_dir / "T_mlr_features_to_performance.csv", index=False)
+            
+            sig_df = df_out[df_out['p_value'] < 0.05].copy()
+            if not sig_df.empty:
+                sig_df.to_csv(self.output_dir / "T_mlr_features_to_perf_significant.csv", index=False)
+                self._save_table_as_png(sig_df.round(4), "T_mlr_features_to_perf_significant.png",
+                                       "Features → Performance (p < 0.05)", bold_best=False)
+            
+            logger.info(f"  Saved MLR Features→Perf: {len(df_out)} rows, {len(sig_df)} significant")
     
-    # =========================================================================
-    # TABLE 6: Hierarchical Regression
-    # =========================================================================
-    
-    def table_6_hierarchical_regression(self) -> pd.DataFrame:
-        """T6: Incremental validity of MAgIC."""
+    def mlr_magic_to_performance(self):
+        """MLR: MAgIC → Performance (T5a, T5b)."""
         if not STATSMODELS_AVAILABLE:
-            return pd.DataFrame()
+            return
         
-        logger.info("Generating T6: Hierarchical Regression")
+        logger.info("Generating T5: MAgIC → Performance...")
         
-        # Feature columns from regression.py
-        feature_cols = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
-        feature_cols = [c for c in feature_cols if c in self.df.columns]
+        magic_pivot = self.magic_df.pivot_table(
+            index=['game', 'model', 'condition'], columns='metric', values='mean'
+        ).reset_index()
         
-        magic_cols = [c for c in self.MAGIC_METRICS if c in self.df.columns]
+        perf_pivot = self.perf_df.pivot_table(
+            index=['game', 'model', 'condition'], columns='metric', values='mean'
+        ).reset_index()
+        
+        merged = perf_pivot.merge(magic_pivot, on=['game', 'model', 'condition'], how='inner')
+        
+        if merged.empty:
+            logger.warning("No merged data for T5")
+            return
+        
+        perf_metrics = [c for c in perf_pivot.columns if c not in ['game', 'model', 'condition']]
+        magic_metrics = [c for c in magic_pivot.columns if c not in ['game', 'model', 'condition']]
+        
+        results_coef = []
+        results_hier = []
+        
+        for game in merged['game'].unique():
+            game_df = merged[merged['game'] == game].copy()
+            
+            available_magic = [m for m in magic_metrics if m in game_df.columns and game_df[m].std() > 0]
+            available_magic, _ = self._remove_collinear(game_df, available_magic)
+            
+            if not available_magic:
+                continue
+            
+            for target in perf_metrics:
+                if target not in game_df.columns or game_df[target].std() == 0:
+                    continue
+                
+                valid = game_df[[target] + available_magic].dropna()
+                if len(valid) < len(available_magic) + 2:
+                    continue
+                
+                X = sm.add_constant(valid[available_magic])
+                Y = valid[target]
+                
+                try:
+                    model = sm.OLS(Y, X).fit()
+                    
+                    for magic_var in available_magic:
+                        if magic_var in model.params.index:
+                            results_coef.append({
+                                'game': game, 'target': target, 'predictor': magic_var,
+                                'coef': round(model.params[magic_var], 4),
+                                'std_err': round(model.bse[magic_var], 4),
+                                'p_value': model.pvalues[magic_var],
+                                'sig': self._sig_stars(model.pvalues[magic_var])
+                            })
+                    
+                    results_hier.append({
+                        'game': game, 'target': target,
+                        'R2': round(model.rsquared, 4),
+                        'R2_adj': round(model.rsquared_adj, 4),
+                        'n_predictors': len(available_magic),
+                        'n_obs': int(model.nobs)
+                    })
+                except Exception as e:
+                    logger.warning(f"T5 failed: {e}")
+        
+        if results_coef:
+            df_coef = pd.DataFrame(results_coef)
+            df_coef.to_csv(self.output_dir / "T5a_magic_to_perf_coef.csv", index=False)
+            self._save_table_as_png(df_coef.round(4), "T5a_magic_to_perf_coef.png",
+                                   "T5a: MAgIC → Performance Coefficients", bold_best=False)
+        
+        if results_hier:
+            df_hier = pd.DataFrame(results_hier)
+            df_hier.to_csv(self.output_dir / "T5b_magic_to_perf_summary.csv", index=False)
+            self._save_table_as_png(df_hier, "T5b_magic_to_perf_summary.png",
+                                   "T5b: MAgIC → Performance Model Summary", bold_best=False)
+    
+    def pca_variance_table(self):
+        if not SKLEARN_AVAILABLE:
+            return
+        
+        logger.info("Generating T6: PCA Variance...")
         
         results = []
-        
-        for outcome in self.PERF_METRICS:
-            if outcome not in self.df.columns:
+        for game, config in GAME_CONFIGS.items():
+            game_df = self.magic_df[self.magic_df['game'] == game]
+            if game_df.empty:
                 continue
             
-            all_cols = feature_cols + magic_cols + [outcome]
-            analysis_df = self.df.dropna(subset=all_cols)
+            pivot = game_df.pivot_table(index='model', columns='metric', values='mean').dropna()
+            available = [m for m in config['magic_metrics'] if m in pivot.columns]
             
-            if len(analysis_df) < 15:
+            if len(available) < 2:
                 continue
             
-            y = analysis_df[outcome]
+            X = StandardScaler().fit_transform(pivot[available].values)
+            pca = PCA().fit(X)
+            cumulative = np.cumsum(pca.explained_variance_ratio_)
             
-            # Model 1: Features only
-            X1 = sm.add_constant(analysis_df[feature_cols].astype(float))
-            m1 = sm.OLS(y, X1).fit()
-            
-            # Model 2: Features + MAgIC
-            X2 = sm.add_constant(analysis_df[feature_cols + magic_cols].astype(float))
-            m2 = sm.OLS(y, X2).fit()
-            
-            r2_change = m2.rsquared - m1.rsquared
-            df1, df2 = len(magic_cols), m2.df_resid
-            
-            if df2 > 0 and (1 - m2.rsquared) > 0:
-                f_change = (r2_change / df1) / ((1 - m2.rsquared) / df2)
-                p_change = 1 - stats.f.cdf(f_change, df1, df2)
-            else:
-                f_change, p_change = np.nan, np.nan
-            
-            results.append({
-                'outcome': outcome, 'step': 'Model 1: Features Only',
-                'R_squared': round(m1.rsquared, 4), 'R2_change': np.nan,
-                'F_change': np.nan, 'p_change': np.nan, 'N': int(m1.nobs)
-            })
-            results.append({
-                'outcome': outcome, 'step': 'Model 2: Features + MAgIC',
-                'R_squared': round(m2.rsquared, 4), 
-                'R2_change': round(r2_change, 4),
-                'F_change': round(f_change, 4) if not np.isnan(f_change) else np.nan,
-                'p_change': round(p_change, 4) if not np.isnan(p_change) else np.nan,
-                'N': int(m2.nobs)
-            })
-        
-        df = pd.DataFrame(results)
-        df.to_csv(self.output_dir / "T6_hierarchical_regression.csv", index=False)
-        logger.info("Saved T6")
-        return df
-    
-    # =========================================================================
-    # TABLE 7: Final Coefficients
-    # =========================================================================
-    
-    def table_7_final_coefficients(self) -> pd.DataFrame:
-        """T7: Full model coefficients."""
-        if not STATSMODELS_AVAILABLE:
-            return pd.DataFrame()
-        
-        logger.info("Generating T7: Final Coefficients")
-        
-        # Feature columns from regression.py
-        feature_cols = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
-        feature_cols = [c for c in feature_cols if c in self.df.columns]
-        
-        magic_cols = [c for c in self.MAGIC_METRICS if c in self.df.columns]
-        all_pred = feature_cols + magic_cols
-        
-        results = []
-        
-        for outcome in self.PERF_METRICS:
-            if outcome not in self.df.columns:
-                continue
-            
-            analysis_df = self.df.dropna(subset=all_pred + [outcome])
-            if len(analysis_df) < 10:
-                continue
-            
-            y = analysis_df[outcome]
-            X = sm.add_constant(analysis_df[all_pred].astype(float))
-            model = sm.OLS(y, X).fit()
-            
-            for var in model.params.index:
-                pred_type = 'Feature' if var in feature_cols else 'MAgIC'
-                if var == 'const':
-                    pred_type = 'Intercept'
-                
+            for i, var in enumerate(pca.explained_variance_ratio_):
                 results.append({
-                    'outcome': outcome, 'predictor': var, 'type': pred_type,
-                    'coefficient': round(model.params[var], 4),
-                    'std_error': round(model.bse[var], 4),
-                    'p_value': round(model.pvalues[var], 4),
-                    'sig': '***' if model.pvalues[var] < 0.001 else 
-                           '**' if model.pvalues[var] < 0.01 else
-                           '*' if model.pvalues[var] < 0.05 else ''
+                    'game': game, 'component': f'PC{i+1}',
+                    'variance_explained': round(var, 4),
+                    'cumulative': round(cumulative[i], 4),
+                    'n_models': len(pivot), 'n_metrics': len(available)
                 })
         
-        df = pd.DataFrame(results)
-        df.to_csv(self.output_dir / "T7_final_coefficients.csv", index=False)
-        logger.info("Saved T7")
-        return df
+        if results:
+            df_out = pd.DataFrame(results)
+            df_out.to_csv(self.output_dir / "T6_pca_variance.csv", index=False)
+            self._save_table_as_png(df_out, "T6_pca_variance.png", "T6: PCA Variance Explained", bold_best=False)
+
+
+# =============================================================================
+# FIGURE GENERATOR
+# =============================================================================
+
+class FigureGenerator:
+    def __init__(self, perf_df: pd.DataFrame, magic_df: pd.DataFrame,
+                 features_df: pd.DataFrame, output_dir: Path, loader: DataLoader):
+        self.perf_df = perf_df
+        self.magic_df = magic_df
+        self.features_df = features_df
+        self.output_dir = output_dir
+        self.loader = loader
+        self.output_dir.mkdir(parents=True, exist_ok=True)
     
-    # =========================================================================
-    # FIGURE 1: Coefficient Plot
-    # =========================================================================
-    
-    def figure_1_coefficient_plot(self):
-        """F1: Model feature effects."""
-        if not PLOT_AVAILABLE:
+    def generate_all(self):
+        if not PLOT_AVAILABLE or not SKLEARN_AVAILABLE:
             return
         
-        logger.info("Generating F1: Coefficient Plot")
+        plt.style.use('seaborn-v0_8-whitegrid')
         
-        t2_path = self.output_dir / "T2_rq1_regression.csv"
-        if not t2_path.exists():
-            self.table_2_rq1_regression()
+        for game in GAME_CONFIGS.keys():
+            self.similarity_matrix_per_game(game)
         
-        reg_df = pd.read_csv(t2_path)
-        exclude = ['const', 'R_squared', 'N']
-        plot_df = reg_df[~reg_df['predictor'].isin(exclude)]
+        self.similarity_3v5_scores()
+        self.pca_scree_plots()
+    
+    def _display_name(self, model: str) -> str:
+        return self.loader.get_display_name(model)
+    
+    def similarity_matrix_per_game(self, game: str):
+        logger.info(f"Generating similarity matrix for {game}...")
         
-        outcomes = [o for o in self.PERF_METRICS if o in plot_df['outcome'].values]
-        if not outcomes:
+        game_df = self.magic_df[self.magic_df['game'] == game].copy()
+        if game_df.empty:
             return
         
-        fig, axes = plt.subplots(1, len(outcomes), figsize=(7*len(outcomes), 6))
-        if len(outcomes) == 1:
-            axes = [axes]
+        pivot = game_df.pivot_table(index='model', columns='metric', values='mean').fillna(0)
+        if len(pivot) < 2:
+            return
         
-        for ax, outcome in zip(axes, outcomes):
-            data = plot_df[plot_df['outcome'] == outcome].sort_values('coefficient')
-            if data.empty:
+        sim = cosine_similarity(pivot.values)
+        names = [self._display_name(m) for m in pivot.index]
+        sim_df = pd.DataFrame(sim, index=names, columns=names)
+        
+        fig, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(sim_df, annot=True, fmt='.2f', cmap='RdBu_r', center=0.5, ax=ax,
+                   vmin=0, vmax=1, square=True)
+        ax.set_title(f'Model Behavioral Similarity: {game.replace("_", " ").title()}')
+        plt.tight_layout()
+        plt.savefig(self.output_dir / f"F_similarity_{game}.png", dpi=300, bbox_inches='tight')
+        plt.close()
+    
+    def similarity_3v5_scores(self):
+        """Single similarity score per game: 3P vs 5P."""
+        logger.info("Generating 3P vs 5P similarity scores...")
+        
+        results = []
+        
+        for game in GAME_CONFIGS.keys():
+            game_df = self.magic_df[self.magic_df['game'] == game].copy()
+            if game_df.empty:
                 continue
             
-            y_pos = np.arange(len(data))
-            ax.errorbar(data['coefficient'], y_pos,
-                       xerr=[data['coefficient'] - data['ci_lower'],
-                             data['ci_upper'] - data['coefficient']],
-                       fmt='o', capsize=4, color='steelblue', markersize=8)
-            ax.axvline(x=0, color='gray', linestyle='--', alpha=0.7)
-            ax.set_yticks(y_pos)
-            ax.set_yticklabels(data['predictor'].str.replace('_', ' ').str.title())
-            ax.set_xlabel('Coefficient (95% CI)')
-            ax.set_title(f'Effect on {outcome.replace("_", " ").title()}')
-        
-        plt.suptitle('RQ1: Model Features → Performance', fontweight='bold')
-        plt.tight_layout()
-        plt.savefig(self.output_dir / "F1_coefficient_plot.png", dpi=300, bbox_inches='tight')
-        plt.close()
-        logger.info("Saved F1")
-    
-    # =========================================================================
-    # FIGURE 2: PCA Biplot
-    # =========================================================================
-    
-    def figure_2_pca_biplot(self):
-        """F2: Models in capability space."""
-        if not PLOT_AVAILABLE or not hasattr(self, '_pca'):
-            self.table_4_pca_loadings()
-        
-        if not hasattr(self, '_pca'):
-            return
-        
-        logger.info("Generating F2: PCA Biplot")
-        
-        cols = self._pca_cols
-        
-        # Aggregate by model - family is already in the dataframe from feature extraction
-        model_agg = self.df.groupby('model')[cols + ['family']].agg({
-            **{c: 'mean' for c in cols}, 'family': 'first'
-        }).reset_index()
-        
-        X_scaled = self._scaler.transform(model_agg[cols])
-        scores = self._pca.transform(X_scaled)
-        model_agg['PC1'], model_agg['PC2'] = scores[:, 0], scores[:, 1]
-        
-        fig, ax = plt.subplots(figsize=(12, 10))
-        
-        colors = {'qwen': 'blue', 'llama': 'red', 'gemma': 'green', 'unknown': 'gray'}
-        
-        for family in model_agg['family'].unique():
-            subset = model_agg[model_agg['family'] == family]
-            ax.scatter(subset['PC1'], subset['PC2'], label=family.title(),
-                      c=colors.get(family, 'gray'), s=100, alpha=0.7)
-            for _, row in subset.iterrows():
-                short = row['model'].split('/')[-1][:12]
-                ax.annotate(short, (row['PC1'], row['PC2']), fontsize=7, alpha=0.7)
-        
-        # Loading arrows
-        loadings = self._pca.components_.T
-        for i, col in enumerate(cols):
-            ax.arrow(0, 0, loadings[i, 0]*2.5, loadings[i, 1]*2.5,
-                    head_width=0.08, fc='black', ec='black', alpha=0.5)
-            ax.text(loadings[i, 0]*3, loadings[i, 1]*3, col.replace('_', '\n'), 
-                   fontsize=8, ha='center')
-        
-        var = self._pca.explained_variance_ratio_
-        ax.set_xlabel(f'PC1 ({var[0]*100:.1f}%)')
-        ax.set_ylabel(f'PC2 ({var[1]*100:.1f}%)')
-        ax.set_title('RQ2: Models in Capability Space', fontweight='bold')
-        ax.axhline(0, color='gray', ls='--', alpha=0.3)
-        ax.axvline(0, color='gray', ls='--', alpha=0.3)
-        ax.legend(title='Family')
-        
-        plt.tight_layout()
-        plt.savefig(self.output_dir / "F2_pca_biplot.png", dpi=300, bbox_inches='tight')
-        plt.close()
-        logger.info("Saved F2")
-    
-    # =========================================================================
-    # FIGURE 3: Radar Chart
-    # =========================================================================
-    
-    def figure_3_radar_chart(self):
-        """F3: MAgIC capability profiles."""
-        if not PLOT_AVAILABLE:
-            return
-        
-        logger.info("Generating F3: Radar Chart")
-        
-        available = [c for c in self.MAGIC_METRICS if c in self.df.columns]
-        if len(available) < 3:
-            return
-        
-        profiles = self.df.groupby('model')[available].mean()
-        
-        num_vars = len(available)
-        angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
-        angles += angles[:1]
-        
-        fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
-        
-        colors = plt.cm.tab10(np.linspace(0, 1, len(profiles)))
-        
-        for (model, values), color in zip(profiles.iterrows(), colors):
-            vals = values.tolist() + [values.tolist()[0]]
-            short = model.split('/')[-1][:15]
-            ax.plot(angles, vals, 'o-', linewidth=2, label=short, color=color)
-            ax.fill(angles, vals, alpha=0.1, color=color)
-        
-        ax.set_xticks(angles[:-1])
-        ax.set_xticklabels([c.replace('_', '\n').title() for c in available])
-        ax.set_title('RQ2: MAgIC Capability Profiles', fontweight='bold', y=1.1)
-        ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.0), fontsize=7)
-        
-        plt.tight_layout()
-        plt.savefig(self.output_dir / "F3_radar_chart.png", dpi=300, bbox_inches='tight')
-        plt.close()
-        logger.info("Saved F3")
-    
-    # =========================================================================
-    # FIGURE 4: Variance Decomposition
-    # =========================================================================
-    
-    def figure_4_variance_decomposition(self):
-        """F4: Features vs MAgIC contribution."""
-        if not PLOT_AVAILABLE:
-            return
-        
-        logger.info("Generating F4: Variance Decomposition")
-        
-        t6_path = self.output_dir / "T6_hierarchical_regression.csv"
-        if not t6_path.exists():
-            self.table_6_hierarchical_regression()
-        
-        hier_df = pd.read_csv(t6_path)
-        
-        plot_data = []
-        for outcome in hier_df['outcome'].unique():
-            odf = hier_df[hier_df['outcome'] == outcome]
-            r2_feat = odf[odf['step'].str.contains('Features Only')]['R_squared'].values
-            r2_full = odf[odf['step'].str.contains('MAgIC')]['R_squared'].values
+            cond_3 = game_df[game_df['condition'].str.contains('baseline|few|3', case=False, na=False)]
+            cond_5 = game_df[game_df['condition'].str.contains('more|5', case=False, na=False)]
             
-            if len(r2_feat) > 0 and len(r2_full) > 0:
-                plot_data.append({
-                    'outcome': outcome.replace('_', ' ').title(),
-                    'Features': r2_feat[0],
-                    'MAgIC': r2_full[0] - r2_feat[0],
-                    'Unexplained': 1 - r2_full[0]
-                })
+            if cond_3.empty or cond_5.empty:
+                continue
+            
+            pivot_3 = cond_3.pivot_table(index='model', columns='metric', values='mean').fillna(0)
+            pivot_5 = cond_5.pivot_table(index='model', columns='metric', values='mean').fillna(0)
+            
+            common_models = list(set(pivot_3.index) & set(pivot_5.index))
+            common_metrics = list(set(pivot_3.columns) & set(pivot_5.columns))
+            
+            if len(common_models) < 2 or len(common_metrics) < 1:
+                continue
+            
+            vec_3 = pivot_3.loc[common_models, common_metrics].values.flatten()
+            vec_5 = pivot_5.loc[common_models, common_metrics].values.flatten()
+            
+            cos_sim = cosine_similarity([vec_3], [vec_5])[0, 0]
+            corr, p_value = pearsonr(vec_3, vec_5)
+            
+            results.append({
+                'game': game,
+                'cosine_similarity': round(cos_sim, 4),
+                'pearson_r': round(corr, 4),
+                'p_value': p_value,
+                'sig': '***' if p_value < 0.001 else '**' if p_value < 0.01 else '*' if p_value < 0.05 else '',
+                'n_models': len(common_models),
+                'n_metrics': len(common_metrics)
+            })
         
-        if not plot_data:
+        if not results:
             return
         
-        df = pd.DataFrame(plot_data)
+        df_results = pd.DataFrame(results)
+        df_results.to_csv(self.output_dir / "T_similarity_3v5.csv", index=False)
         
         fig, ax = plt.subplots(figsize=(10, 6))
-        x = np.arange(len(df))
+        x = np.arange(len(results))
+        width = 0.35
         
-        ax.bar(x, df['Features'], label='Model Features', color='steelblue')
-        ax.bar(x, df['MAgIC'], bottom=df['Features'], label='MAgIC (ΔR²)', color='coral')
-        ax.bar(x, df['Unexplained'], bottom=df['Features']+df['MAgIC'],
-               label='Unexplained', color='lightgray')
+        bars1 = ax.bar(x - width/2, df_results['cosine_similarity'], width, label='Cosine Similarity', color='steelblue')
+        bars2 = ax.bar(x + width/2, df_results['pearson_r'], width, label='Pearson r', color='coral')
         
-        ax.set_ylabel('R²')
-        ax.set_title('RQ3: Variance Decomposition', fontweight='bold')
+        for bar, row in zip(bars1, df_results.itertuples()):
+            ax.annotate(f'{bar.get_height():.3f}{row.sig}', xy=(bar.get_x() + bar.get_width()/2, bar.get_height()),
+                       xytext=(0, 3), textcoords="offset points", ha='center', fontsize=9)
+        
+        ax.set_xlabel('Game')
+        ax.set_ylabel('Similarity Score')
+        ax.set_title('3P vs 5P Behavioral Similarity (with p-values)')
         ax.set_xticks(x)
-        ax.set_xticklabels(df['outcome'])
+        ax.set_xticklabels([g.replace('_', ' ').title() for g in df_results['game']])
         ax.legend()
-        ax.set_ylim(0, 1)
+        ax.set_ylim(0, 1.15)
         
         plt.tight_layout()
-        plt.savefig(self.output_dir / "F4_variance_decomposition.png", dpi=300, bbox_inches='tight')
+        plt.savefig(self.output_dir / "F_similarity_3v5.png", dpi=300, bbox_inches='tight')
         plt.close()
-        logger.info("Saved F4")
     
-    # =========================================================================
-    # RUN ALL
-    # =========================================================================
-    
-    def run_all(self) -> Path:
-        """Run complete analysis pipeline."""
-        logger.info("=" * 60)
-        logger.info("UNIFIED PAPER ANALYSIS")
-        logger.info(f"Models from config: {len(self.cfg.get_all_model_names())}")
-        logger.info(f"Output: {self.output_dir}")
-        logger.info("=" * 60)
+    def pca_scree_plots(self):
+        logger.info("Generating PCA scree plots...")
         
-        # Tables
-        self.table_1_performance_descriptives()
-        self.table_2_rq1_regression()
-        self.table_3_magic_descriptives()
-        self.table_4_pca_loadings()
-        self.table_5_profile_stability()
-        self.table_6_hierarchical_regression()
-        self.table_7_final_coefficients()
+        games = [g for g, c in GAME_CONFIGS.items() if len(c['magic_metrics']) >= 2]
+        if not games:
+            return
         
-        # Figures
-        self.figure_1_coefficient_plot()
-        self.figure_2_pca_biplot()
-        self.figure_3_radar_chart()
-        self.figure_4_variance_decomposition()
+        fig, axes = plt.subplots(1, len(games), figsize=(5 * len(games), 4))
+        if len(games) == 1:
+            axes = [axes]
         
-        logger.info("=" * 60)
-        logger.info(f"✅ DONE! Outputs: {self.output_dir}")
-        logger.info("=" * 60)
+        for ax, game in zip(axes, games):
+            game_df = self.magic_df[self.magic_df['game'] == game]
+            pivot = game_df.pivot_table(index='model', columns='metric', values='mean').dropna()
+            available = [m for m in GAME_CONFIGS[game]['magic_metrics'] if m in pivot.columns]
+            
+            if len(available) < 2:
+                continue
+            
+            X = StandardScaler().fit_transform(pivot[available].values)
+            pca = PCA().fit(X)
+            var = pca.explained_variance_ratio_
+            
+            x_pos = range(1, len(var) + 1)
+            ax.bar(x_pos, var, alpha=0.7, color='steelblue', label='Individual')
+            ax.plot(x_pos, np.cumsum(var), 'ro-', label='Cumulative')
+            ax.axhline(0.8, color='green', linestyle='--', alpha=0.5, label='80%')
+            
+            ax.set_title(game.replace('_', ' ').title())
+            ax.set_xlabel('Component')
+            ax.set_ylabel('Variance Explained')
+            ax.set_ylim(0, 1.05)
+            ax.set_xticks(x_pos)
+            ax.legend(loc='best', fontsize=8)
         
-        return self.output_dir
+        plt.suptitle('PCA Variance Explained', fontsize=14, fontweight='bold')
+        plt.tight_layout(rect=[0, 0, 1, 0.96])
+        plt.savefig(self.output_dir / "F_pca_scree.png", dpi=300, bbox_inches='tight')
+        plt.close()
 
 
 # =============================================================================
-# CLI
+# MAIN
 # =============================================================================
+
+def main():
+    logger.info("=" * 80)
+    logger.info("🚀 STARTING ANALYSIS PIPELINE 🚀")
+    logger.info("=" * 80)
+    
+    experiments_dir = get_experiments_dir()
+    analysis_dir = get_analysis_dir()
+    analysis_dir.mkdir(exist_ok=True, parents=True)
+    
+    if not experiments_dir.exists() or not any(experiments_dir.iterdir()):
+        logger.critical(f"No experiments found in {experiments_dir}")
+        sys.exit(1)
+    
+    try:
+        logger.info("[Step 1/4] Analyzing metrics...")
+        MetricsAnalyzer().analyze_all_games()
+        
+        logger.info("[Step 2/4] Creating summary CSVs...")
+        SummaryCreator().create_all_summaries()
+        
+        logger.info("[Step 3/4] Generating tables...")
+        config_path = Path("config/config.json")
+        loader = DataLoader(analysis_dir, config_path if config_path.exists() else None)
+        perf_df, magic_df = loader.load()
+        
+        all_models = list(set(perf_df['model'].unique()) | set(magic_df['model'].unique()))
+        features_df = loader.extract_model_features(all_models)
+        
+        pub_dir = analysis_dir / "publication"
+        tables = TableGenerator(perf_df, magic_df, features_df, pub_dir, loader)
+        tables.generate_all()
+        
+        logger.info("[Step 4/4] Generating figures...")
+        figures = FigureGenerator(perf_df, magic_df, features_df, pub_dir, loader)
+        figures.generate_all()
+        
+        logger.info("=" * 80)
+        logger.info("🎉 ANALYSIS COMPLETE 🎉")
+        logger.info(f"Outputs: {pub_dir}")
+        logger.info("=" * 80)
+        
+    except Exception as e:
+        logger.error(f"Pipeline failed: {e}", exc_info=True)
+        sys.exit(1)
+
 
 if __name__ == "__main__":
-    import argparse
-    
-    parser = argparse.ArgumentParser(description="Unified MAgIC Paper Analysis")
-    parser.add_argument('--analysis-dir', type=str, default="output/analysis",
-                       help='Path to analysis directory')
-    parser.add_argument('--config', type=str, default=None,
-                       help='Path to config.json')
-    args = parser.parse_args()
-    
-    config = None
-    if args.config:
-        with open(args.config, 'r') as f:
-            config = json.load(f)
-    
-    analyzer = UnifiedPaperAnalysis(args.analysis_dir, config)
-    analyzer.run_all()
+    main()
