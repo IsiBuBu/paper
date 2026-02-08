@@ -1,0 +1,106 @@
+% Updated Metrics Section - Reflects Current Implementation
+% Based on metrics/performance_metrics.py and metrics/magic_metrics.py
+
+\subsection{Measurement Framework}
+
+We measure LLM competitive performance using two complementary approaches: \textit{outcome-based performance metrics} that capture market success directly, and \textit{strategic capability metrics} (MAgIC) that measure goal-directed competencies underlying that success. This dual approach allows us to both predict competitive outcomes and understand the mechanisms driving performance differences across models.
+
+\subsubsection{Performance Metrics}
+
+Performance metrics capture realized market outcomes across all four games. We measure two universal metrics applicable to all contexts:
+
+\paragraph{Universal Metrics} capture fundamental competitive success:
+\begin{itemize}
+    \item \textbf{Win Rate}: Frequency of achieving highest profit among all players
+    \item \textbf{Average Profit}: Mean profit in static games (Salop, Spulber); mean net present value (NPV) with $\delta=0.9$ in dynamic games (Green-Porter, Athey-Bagwell)
+\end{itemize}
+
+\paragraph{Market Dynamics Metrics} capture game-specific competitive characteristics:
+
+\textbf{Salop (Spatial Competition):}
+\begin{itemize}
+    \item \textbf{Market Price}: Average price across all firms, indicating intensity of price competition
+\end{itemize}
+
+\textbf{Spulber (Procurement Auction):}
+\begin{itemize}
+    \item \textbf{Allocative Efficiency}: Frequency of lowest-cost firm winning auction, measuring market efficiency
+\end{itemize}
+
+\textbf{Green-Porter (Repeated Oligopoly):}
+\begin{itemize}
+    \item \textbf{Reversion Frequency}: Rate of transitions from Collusive to Reversionary state, indicating cartel stability
+\end{itemize}
+
+\textbf{Athey-Bagwell (Dynamic Procurement):}
+\begin{itemize}
+    \item \textbf{Productive Efficiency}: Frequency of market share allocated to lowest-cost producer each period
+\end{itemize}
+
+\subsubsection{Strategic Capability Metrics (MAgIC)}
+
+The MAgIC framework measures seven goal-directed capabilities designed to be theoretically independent and empirically non-collinear. Each metric is grounded in game-theoretic concepts and operationalized to measure distinct strategic competencies. Capabilities are measured on [0,1] scales where higher values indicate stronger strategic performance.
+
+\textbf{Rationality} measures profit-maximizing behavior through outcome-based assessment:
+\begin{itemize}
+    \item \textit{Salop}: Relative profit rank achievement $\frac{\pi_i - \min(\pi)}{\max(\pi) - \min(\pi)}$
+    \item \textit{Spulber}: Efficient win/loss decisions (1.0 for efficient outcomes, 0.5 for profitable but inefficient wins, 0.0 for inefficient losses)
+    \item \textit{Athey-Bagwell}: Profit efficiency relative to maximum feasible given cost type $\frac{\pi_i}{\pi^{\max}_i}$
+\end{itemize}
+
+\textbf{Reasoning} measures equilibrium concept application through theory-based assessment:
+\begin{itemize}
+    \item \textit{Salop}: Nash equilibrium proximity $\max(0, 1 - \frac{|p_i - p^N|}{\max(p^M - p^N, t/n)})$ where $p^N = mc + t/n$ is Nash price and $p^M = (v+mc)/2$ is monopoly price
+    \item \textit{Spulber}: Economic logic compliance (positive markup, feasible pricing, bid competitiveness)
+    \item \textit{Athey-Bagwell}: Incentive compatibility constraint recognition (truthful reporting under high cost)
+\end{itemize}
+
+\textbf{Cooperation} measures coordination intent through action-based assessment:
+\begin{itemize}
+    \item \textit{Salop}: Supra-Nash pricing intent (binary: price $> p^N + \epsilon$)
+    \item \textit{Green-Porter}: Cartel adherence rate (fraction of collusive-state periods maintaining $q_i = q^{coll}$)
+    \item \textit{Athey-Bagwell}: Truthful reporting rate across all periods
+\end{itemize}
+
+\textbf{Coordination} measures strategic alignment in dynamic environments:
+\begin{itemize}
+    \item \textit{Green-Porter}: Defection timing alignment $\max(0, 1 - \frac{|\text{round}_{\text{defect},i} - \text{round}_{\text{defect},\text{rivals}}|}{5})$
+\end{itemize}
+
+\textbf{Judgment} measures belief accuracy in uncertain environments:
+\begin{itemize}
+    \item \textit{Spulber}: Clearing price prediction accuracy $\max(0, 1 - \frac{|p_i - p^{\text{clear}}|}{\sigma_{\text{rivals}}})$
+\end{itemize}
+
+\textbf{Self-Awareness} measures private information recognition:
+\begin{itemize}
+    \item \textit{Spulber}: Cost position recognition via standardized cost-bid alignment $f(z_{c_i}, z_{p_i})$
+\end{itemize}
+
+\textbf{Deception} measures strategic misrepresentation effectiveness:
+\begin{itemize}
+    \item \textit{Athey-Bagwell}: Lie success rate (profitable misreports / total misreports) when $c_i \neq \text{report}_i$
+\end{itemize}
+
+\paragraph{Coverage and Independence}
+
+The framework achieves comprehensive coverage with minimal redundancy:
+\begin{itemize}
+    \item \textbf{Salop}: 3 metrics (Rationality, Reasoning, Cooperation)
+    \item \textbf{Spulber}: 4 metrics (Rationality, Judgment, Reasoning, Self-Awareness)
+    \item \textbf{Green-Porter}: 2 metrics (Cooperation, Coordination)
+    \item \textbf{Athey-Bagwell}: 4 metrics (Rationality, Reasoning, Deception, Cooperation)
+\end{itemize}
+
+All 7 capabilities are measured, with 6 appearing in multiple games (Rationality appears in 3 games, Reasoning in 3 games, Cooperation in 3 games, Judgment in 1 game, Coordination in 1 game, Self-Awareness in 1 game, Deception in 1 game). This redundancy enables within-capability comparisons across contexts while maintaining between-capability independence.
+
+\paragraph{Design Principles}
+
+Three principles ensure empirical independence:
+\begin{enumerate}
+    \item \textbf{Distinct Information Sources}: Metrics use orthogonal inputs (outcomes vs. actions vs. beliefs vs. timing)
+    \item \textbf{Conditional Measurement}: Context-specific definitions prevent mechanical correlation (e.g., Reasoning uses only high-cost observations in Athey-Bagwell)
+    \item \textbf{Collinearity Testing}: Pairwise correlations $< 0.7$ within games, confirmed via variance inflation factors $< 5$
+\end{enumerate}
+
+This framework operationalizes strategic capabilities as measurable, independent predictors of competitive performance while remaining interpretable through standard game-theoretic concepts.

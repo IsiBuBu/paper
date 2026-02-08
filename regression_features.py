@@ -36,6 +36,7 @@ from dataclasses import dataclass
 from collections import defaultdict
 import statsmodels.api as sm
 from sklearn.preprocessing import LabelEncoder
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -391,7 +392,7 @@ class ModelFeatureRegression:
             }
     
     def run_mlr(self, X: pd.DataFrame, y: np.ndarray, feature_names: List[str]) -> Dict[str, Any]:
-        """Run Multiple Linear Regression."""
+        """Run Multiple Linear Regression with VIF calculation."""
         mask = ~pd.isna(y)
         for col in feature_names:
             if col in X.columns:
@@ -406,6 +407,7 @@ class ModelFeatureRegression:
                 'r_squared_adj': np.nan,
                 'coefficients': {},
                 'p_values': {},
+                'vif': {},
                 'n_obs': len(X_clean)
             }
         
@@ -418,10 +420,21 @@ class ModelFeatureRegression:
                 'r_squared_adj': np.nan,
                 'coefficients': {},
                 'p_values': {},
+                'vif': {},
                 'n_obs': len(y_clean)
             }
         
         try:
+            # Calculate VIF for multicollinearity check
+            vif_dict = {}
+            try:
+                for i, col in enumerate(X_clean.columns):
+                    vif_value = variance_inflation_factor(X_clean.values, i)
+                    vif_dict[col] = vif_value
+            except Exception as vif_error:
+                self.logger.debug(f"VIF calculation failed: {vif_error}")
+                vif_dict = {col: np.nan for col in X_clean.columns}
+            
             X_const = sm.add_constant(X_clean)
             model = sm.OLS(y_clean, X_const).fit()
             
@@ -438,6 +451,7 @@ class ModelFeatureRegression:
                 'r_squared_adj': model.rsquared_adj,
                 'coefficients': coefficients,
                 'p_values': p_values,
+                'vif': vif_dict,
                 'n_obs': len(X_clean)
             }
         except Exception as e:
@@ -447,6 +461,7 @@ class ModelFeatureRegression:
                 'r_squared_adj': np.nan,
                 'coefficients': {},
                 'p_values': {},
+                'vif': {},
                 'n_obs': len(X_clean)
             }
     
@@ -472,8 +487,8 @@ class ModelFeatureRegression:
         # Build feature matrix
         features_df = self.build_feature_matrix(list(all_models))
         
-        # Features for regression
-        numeric_features = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking', 'reasoning_chars']
+        # Features for regression (reasoning_chars removed due to multicollinearity with thinking)
+        numeric_features = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
         
         # Get conditions
         conditions = set()
@@ -517,6 +532,7 @@ class ModelFeatureRegression:
                             'r_squared_adj': mlr_result['r_squared_adj'],
                             'coef': mlr_result['coefficients'].get(feat, np.nan),
                             'p_value': mlr_result['p_values'].get(feat, np.nan),
+                            'vif': mlr_result.get('vif', {}).get(feat, np.nan),
                             'n_obs': mlr_result['n_obs']
                         }
                         mlr_results.append(mlr_row)
@@ -555,6 +571,7 @@ class ModelFeatureRegression:
                             'r_squared_adj': mlr_result['r_squared_adj'],
                             'coef': mlr_result['coefficients'].get(feat, np.nan),
                             'p_value': mlr_result['p_values'].get(feat, np.nan),
+                            'vif': mlr_result.get('vif', {}).get(feat, np.nan),
                             'n_obs': mlr_result['n_obs']
                         }
                         mlr_results.append(mlr_row)
@@ -589,7 +606,7 @@ class ModelFeatureRegression:
         combined = pd.concat([slr_df, mlr_df], ignore_index=True)
         
         col_order = ['game', 'condition', 'target_type', 'target', 'analysis', 'feature', 
-                     'r_squared', 'r_squared_adj', 'coef', 'p_value', 'n_obs']
+                     'r_squared', 'r_squared_adj', 'coef', 'p_value', 'vif', 'n_obs']
         col_order = [c for c in col_order if c in combined.columns]
         combined = combined[col_order]
         

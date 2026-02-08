@@ -1,0 +1,85 @@
+% filepath: metrics/latex_tables/regression_summary_win_rate_by_game.tex
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{llccc}
+\toprule
+Game & Predictor & Arch. (Coef, $R^2_{adj}$) & Strat. (Coef, $R^2_{adj}$) & Both (Coef, $R^2_{adj}$) \ 
+\midrule
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+athey_bagwell & family_qwen3 & 0.108***,  &  & -0.043,  \ 
+athey_bagwell & param_size_num & 0.000,  &  & -0.000,  \ 
+athey_bagwell & arch_dense & -0.062,  &  & 0.006,  \ 
+athey_bagwell & arch_moe &  &  &  \ 
+athey_bagwell & thinking_enabled_False & 0.003,  &  & -0.029,  \ 
+athey_bagwell & thinking_enabled_True & 0.106***,  &  & -0.014,  \ 
+athey_bagwell & family_version_3.1 & 0.218***,  &  & -0.046,  \ 
+athey_bagwell & family_version_3.3 & 0.228***,  &  & -0.059,  \ 
+athey_bagwell & family_version_4 & 0.199**,  &  & 0.285**,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+athey_bagwell & cooperation &  & 0.928**,  & 1.201**,  \ 
+athey_bagwell & deception &  & -0.039,  & 0.077,  \ 
+athey_bagwell & rationality &  & -0.652*,  & -0.573*,  \ 
+athey_bagwell & reasoning &  & -1.204***,  &  \ 
+athey_bagwell & coordination &  &  &  \ 
+athey_bagwell & judgment &  &  &  \ 
+athey_bagwell & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+green_porter & family_qwen3 & 0.137***,  &  & 0.138***,  \ 
+green_porter & param_size_num & -0.000,  &  & -0.000*,  \ 
+green_porter & arch_dense & 0.009,  &  & -0.021,  \ 
+green_porter & arch_moe &  &  &  \ 
+green_porter & thinking_enabled_False & 0.092***,  &  & 0.089***,  \ 
+green_porter & thinking_enabled_True & 0.045***,  &  & 0.048***,  \ 
+green_porter & family_version_3.1 & 0.197***,  &  & 0.205***,  \ 
+green_porter & family_version_3.3 & 0.210***,  &  & 0.249***,  \ 
+green_porter & family_version_4 & 0.222***,  &  & 0.219***,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+green_porter & cooperation &  & -0.060,  & -0.114***,  \ 
+green_porter & deception &  &  &  \ 
+green_porter & rationality &  &  &  \ 
+green_porter & reasoning &  &  &  \ 
+green_porter & coordination &  & 0.080**,  & 0.103**,  \ 
+green_porter & judgment &  &  &  \ 
+green_porter & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+salop & family_qwen3 & 0.274***,  &  & 0.210***,  \ 
+salop & param_size_num & 0.000,  &  & 0.000,  \ 
+salop & arch_dense & -0.089,  &  & -0.055,  \ 
+salop & arch_moe &  &  &  \ 
+salop & thinking_enabled_False & -0.228***,  &  & -0.226***,  \ 
+salop & thinking_enabled_True & 0.503***,  &  & 0.436***,  \ 
+salop & family_version_3.1 & -0.028,  &  & -0.053,  \ 
+salop & family_version_3.3 & -0.033,  &  & -0.036,  \ 
+salop & family_version_4 & -0.101,  &  & -0.120,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+salop & cooperation &  & 0.099*,  & 0.074,  \ 
+salop & deception &  &  &  \ 
+salop & rationality &  & 1.005***,  &  \ 
+salop & reasoning &  & 0.104,  & 0.228,  \ 
+salop & coordination &  &  &  \ 
+salop & judgment &  &  &  \ 
+salop & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+spulber & family_qwen3 & 0.399***,  &  & -0.431***,  \ 
+spulber & param_size_num & 0.000,  &  & 0.000,  \ 
+spulber & arch_dense & -0.267,  &  & -0.012,  \ 
+spulber & arch_moe &  &  &  \ 
+spulber & thinking_enabled_False & 0.080,  &  & -0.258***,  \ 
+spulber & thinking_enabled_True & 0.319**,  &  & -0.173***,  \ 
+spulber & family_version_3.1 & 0.215,  &  & -0.592***,  \ 
+spulber & family_version_3.3 & -0.055,  &  & -0.678***,  \ 
+spulber & family_version_4 & -0.247,  &  & -0.792***,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+spulber & cooperation &  &  &  \ 
+spulber & deception &  &  &  \ 
+spulber & rationality &  &  &  \ 
+spulber & reasoning &  & 3.007***,  & 2.926***,  \ 
+spulber & coordination &  &  &  \ 
+spulber & judgment &  & 0.083,  & 0.268*,  \ 
+spulber & self_awareness &  & 1.279***,  & 1.047***,  \ 
+\bottomrule
+\end{tabular}
+\caption{Regression summary for win rate by game.}
+\label{tab:regression_summary_win_rate_by_game}
+\end{table}

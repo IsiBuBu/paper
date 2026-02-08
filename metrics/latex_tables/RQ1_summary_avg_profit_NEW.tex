@@ -1,0 +1,25 @@
+% filepath: metrics/latex_tables/RQ1_summary_avg_profit_NEW.tex
+\begin{table}[h]
+\centering
+\caption{RQ1: Average Profit (Pooled Mean/Std) by Game}
+\label{tab:rq1_average_profit_summary}
+\begin{tabular}{l cccc}
+\toprule
+\textbf{Model} & \textbf{Athey-Bagwell} & \textbf{Green-Porter} & \textbf{Salop} & \textbf{Spulber} \\
+\midrule
+Q3-235B Inst & $0.97 \pm 0.47$ & $0.87 \pm 0.30$ & $0.35 \pm 0.52$ & $1.00 \pm 0.38$ \\
+Q3-32B (TE) & $0.97 \pm 0.47$ & $0.95 \pm 0.38$ & $1.00 \pm 0.22$ & $0.86 \pm 0.45$ \\
+Q3-32B (TD) & $0.85 \pm 0.34$ & $0.85 \pm 0.29$ & $0.07 \pm 0.34$ & $0.63 \pm 0.32$ \\
+Q3-14B (TE) & $0.97 \pm 0.47$ & $0.89 \pm 0.33$ & $0.81 \pm 0.46$ & $0.97 \pm 0.36$ \\
+Q3-14B (TD) & $0.59 \pm 0.37$ & $0.85 \pm 0.29$ & $0.33 \pm 0.43$ & $0.05 \pm 0.30$ \\
+Qwen3-30B-A3B (TE) & $0.97 \pm 0.47$ & $0.86 \pm 0.30$ & $0.96 \pm 0.29$ & $0.91 \pm 0.39$ \\
+Qwen3-30B-A3B (TD) & $0.92 \pm 0.51$ & $0.98 \pm 0.40$ & $0.86 \pm 0.46$ & $0.72 \pm 0.23$ \\
+L4-Maverick & $1.00 \pm 0.46$ & $0.85 \pm 0.29$ & $0.33 \pm 0.56$ & $0.01 \pm 0.08$ \\
+L4-Scout & $0.82 \pm 0.38$ & $0.88 \pm 0.30$ & $0.03 \pm 0.23$ & $0.08 \pm 0.37$ \\
+L3.1-70B & $0.97 \pm 0.47$ & $1.00 \pm 0.42$ & $-0.05 \pm 0.11$ & $0.01 \pm 0.17$ \\
+L3.3-70B & $0.97 \pm 0.47$ & $0.99 \pm 0.41$ & $-0.07 \pm 0.06$ & $-0.58 \pm 0.19$ \\
+L3.1-8B & $0.63 \pm 0.25$ & $0.89 \pm 0.33$ & $0.03 \pm 0.39$ & $-0.17 \pm 0.35$ \\
+Random & $0.70 \pm 0.40$ & $0.94 \pm 0.38$ & $0.32 \pm 0.67$ & $-2.49 \pm 3.64$ \\
+\bottomrule
+\end{tabular}
+\end{table}

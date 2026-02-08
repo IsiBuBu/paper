@@ -1,0 +1,85 @@
+% filepath: metrics/latex_tables/regression_summary_average_profit_by_game.tex
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{llccc}
+\toprule
+Game & Predictor & Arch. (Coef, $R^2_{adj}$) & Strat. (Coef, $R^2_{adj}$) & Both (Coef, $R^2_{adj}$) \ 
+\midrule
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+athey_bagwell & family_qwen3 & 0.154***,  &  & 0.100***,  \ 
+athey_bagwell & param_size_num & 0.001*,  &  & 0.000*,  \ 
+athey_bagwell & arch_dense & -0.082,  &  & 0.062*,  \ 
+athey_bagwell & arch_moe &  &  &  \ 
+athey_bagwell & thinking_enabled_False & -0.019,  &  & 0.048**,  \ 
+athey_bagwell & thinking_enabled_True & 0.173***,  &  & 0.052*,  \ 
+athey_bagwell & family_version_3.1 & 0.174**,  &  & 0.066,  \ 
+athey_bagwell & family_version_3.3 & 0.319***,  &  & 0.095*,  \ 
+athey_bagwell & family_version_4 & 0.034,  &  & 0.326***,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+athey_bagwell & cooperation &  & -0.313,  & -0.042,  \ 
+athey_bagwell & deception &  & -0.416***,  & -0.317***,  \ 
+athey_bagwell & rationality &  & 0.406,  & 0.415*,  \ 
+athey_bagwell & reasoning &  & -0.775**,  &  \ 
+athey_bagwell & coordination &  &  &  \ 
+athey_bagwell & judgment &  &  &  \ 
+athey_bagwell & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+green_porter & family_qwen3 & 0.106***,  &  & 0.126***,  \ 
+green_porter & param_size_num & -0.000,  &  & -0.000,  \ 
+green_porter & arch_dense & -0.030,  &  & -0.058,  \ 
+green_porter & arch_moe &  &  &  \ 
+green_porter & thinking_enabled_False & 0.047*,  &  & 0.087**,  \ 
+green_porter & thinking_enabled_True & 0.059*,  &  & 0.039,  \ 
+green_porter & family_version_3.1 & 0.228***,  &  & 0.227***,  \ 
+green_porter & family_version_3.3 & 0.281***,  &  & 0.327***,  \ 
+green_porter & family_version_4 & 0.135**,  &  & 0.202***,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+green_porter & cooperation &  & -0.087,  & -0.224*,  \ 
+green_porter & deception &  &  &  \ 
+green_porter & rationality &  &  &  \ 
+green_porter & reasoning &  &  &  \ 
+green_porter & coordination &  & -0.078,  & 0.035,  \ 
+green_porter & judgment &  &  &  \ 
+green_porter & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+salop & family_qwen3 & 0.378***,  &  & 0.024,  \ 
+salop & param_size_num & 0.000,  &  & 0.000,  \ 
+salop & arch_dense & -0.236,  &  & -0.052,  \ 
+salop & arch_moe &  &  &  \ 
+salop & thinking_enabled_False & -0.105,  &  & -0.132,  \ 
+salop & thinking_enabled_True & 0.483***,  &  & 0.156,  \ 
+salop & family_version_3.1 & -0.001,  &  & -0.128,  \ 
+salop & family_version_3.3 & -0.075,  &  & -0.129,  \ 
+salop & family_version_4 & -0.077,  &  & -0.218*,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+salop & cooperation &  & 0.575***,  & 0.516*,  \ 
+salop & deception &  &  &  \ 
+salop & rationality &  & 0.460**,  &  \ 
+salop & reasoning &  & 1.268***,  & 1.281***,  \ 
+salop & coordination &  &  &  \ 
+salop & judgment &  &  &  \ 
+salop & self_awareness &  &  &  \ 
+\multicolumn{5}{l}{\textbf{Architectural Features}} \ 
+spulber & family_qwen3 & 0.522***,  &  & -0.774***,  \ 
+spulber & param_size_num & 0.001,  &  & 0.002***,  \ 
+spulber & arch_dense & -0.249,  &  & -0.025,  \ 
+spulber & arch_moe &  &  &  \ 
+spulber & thinking_enabled_False & 0.079,  &  & -0.533***,  \ 
+spulber & thinking_enabled_True & 0.443***,  &  & -0.240***,  \ 
+spulber & family_version_3.1 & 0.082,  &  & -1.140***,  \ 
+spulber & family_version_3.3 & -0.390,  &  & -0.849***,  \ 
+spulber & family_version_4 & -0.175,  &  & -1.646***,  \ 
+\multicolumn{5}{l}{\textbf{Strategic Capabilities}} \ 
+spulber & cooperation &  &  &  \ 
+spulber & deception &  &  &  \ 
+spulber & rationality &  &  &  \ 
+spulber & reasoning &  & 4.829***,  & 5.264***,  \ 
+spulber & coordination &  &  &  \ 
+spulber & judgment &  & 0.221,  & 0.792***,  \ 
+spulber & self_awareness &  & 1.130***,  & 0.363,  \ 
+\bottomrule
+\end{tabular}
+\caption{Regression summary for average profit by game.}
+\label{tab:regression_summary_average_profit_by_game}
+\end{table}

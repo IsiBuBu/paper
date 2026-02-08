@@ -56,6 +56,7 @@ from config.config import get_experiments_dir, get_analysis_dir
 
 try:
     import statsmodels.api as sm
+    from statsmodels.stats.outliers_influence import variance_inflation_factor
     from scipy.stats import ttest_rel, pearsonr
     STATSMODELS_AVAILABLE = True
 except ImportError:
@@ -109,7 +110,7 @@ METRIC_DIRECTION = {
     'judgment': '↑', 'self_awareness': '↑', 'deception': '↑',
 }
 
-MODEL_FEATURES = ['architecture_moe', 'size_params', 'family_encoded', 'version', 'thinking']
+MODEL_FEATURES = ['architecture_moe', 'size_params', 'family_encoded', 'family_version', 'thinking']
 COLLINEARITY_THRESHOLD = 0.95
 
 
@@ -184,12 +185,45 @@ class DataLoader:
         records = []
         for model in models:
             m = str(model).lower()
+            
+            # Determine if this is an MoE model
+            is_moe = bool(re.search(r'-a\d+b|moe|maverick|scout', m))
+            
+            # Extract size_params based on model type
+            if is_moe:
+                # Qwen3 MoE: Extract active parameters from -A\d+B pattern
+                qwen_active = re.search(r'-a(\d+\.?\d*)b', m)
+                if qwen_active:
+                    size = float(qwen_active.group(1))
+                else:
+                    # Llama MoE: Extract main parameter, ignore expert count (-\d+E)
+                    # Look for pattern like "17b" but not the "128e" in "17b-128e"
+                    llama_size = re.search(r'(?<!a)(\d+\.?\d*)b(?!.*-\d+e)', m)
+                    if not llama_size:
+                        # Fallback: find any \d+B that's not preceded by 'a'
+                        llama_size = re.search(r'(?<!a)(\d+\.?\d*)b', m)
+                    size = float(llama_size.group(1)) if llama_size else 0
+            else:
+                # Standard models: use first \d+B not preceded by 'a'
+                standard_size = re.search(r'(?<!a)(\d+\.?\d*)b', m)
+                size = float(standard_size.group(1)) if standard_size else 0
+            
+            # Within-family version encoding (ordinal: 0, 1, 2 for successive generations)
+            family_version = 0  # Default for families with single generation (e.g., Qwen-3)
+            if 'llama' in m:
+                if re.search(r'llama-?3\.1', m):
+                    family_version = 0  # Llama-3.1 (oldest Llama-3 variant)
+                elif re.search(r'llama-?3\.3', m):
+                    family_version = 1  # Llama-3.3 (middle variant)
+                elif re.search(r'llama-?4', m):
+                    family_version = 2  # Llama-4 (newest generation)
+            
             records.append({
                 'model': model,
-                'architecture_moe': int(bool(re.search(r'-a\d+b|moe|maverick|scout', m))),
-                'size_params': float(re.search(r'(?<!a)(\d+\.?\d*)b(?!-)', m).group(1)) if re.search(r'(?<!a)(\d+\.?\d*)b(?!-)', m) else 0,
+                'architecture_moe': int(is_moe),
+                'size_params': size,
                 'family': next((f for f in ['qwen','llama','gemma','mistral','gemini','gpt','claude'] if f in m), 'unknown'),
-                'version': float(re.search(r'qwen(\d+)|llama-?(\d+\.?\d*)', m).group(1) or re.search(r'qwen(\d+)|llama-?(\d+\.?\d*)', m).group(2)) if re.search(r'qwen(\d+)|llama-?(\d+\.?\d*)', m) else 0,
+                'family_version': family_version,
                 'thinking': 1 if self.model_configs.get(model, {}).get('reasoning_output', 'none') != 'none' else 0
             })
         df = pd.DataFrame(records)
@@ -216,6 +250,7 @@ class TableGenerator:
             self.magic_per_game_table(game)
         self.pca_variance_table()
         self.mlr_magic_to_performance()
+        self.mlr_combined_to_performance()  # New: Combined MAgIC + Features → Performance
         if token_df is not None and not token_df.empty:
             self.reasoning_chars_table(token_df)
     
@@ -374,6 +409,17 @@ class TableGenerator:
                 valid = gdf[preds + [target]].dropna()
                 if len(valid) < len(preds) + 2: continue
                 try:
+                    # Calculate VIF for multicollinearity detection
+                    vif_dict = {}
+                    try:
+                        X_valid = valid[preds]
+                        for i, col in enumerate(X_valid.columns):
+                            vif_value = variance_inflation_factor(X_valid.values, i)
+                            vif_dict[col] = round(vif_value, 2)
+                    except Exception as vif_error:
+                        logger.debug(f"VIF calculation failed for {g}/{target}: {vif_error}")
+                        vif_dict = {col: np.nan for col in preds}
+                    
                     m = sm.OLS(valid[target], sm.add_constant(valid[preds])).fit()
                     for p in preds:
                         results.append({
@@ -384,14 +430,15 @@ class TableGenerator:
                             'r_squared': round(m.rsquared, 4),
                             'coef': round(m.params.get(p, np.nan), 4),
                             'p_value': round(m.pvalues.get(p, np.nan), 4),
+                            'vif': vif_dict.get(p, np.nan),
                             'n_obs': int(m.nobs),
                             'r_squared_adj': round(m.rsquared_adj, 4)
                         })
                 except: pass
         if results:
             df = pd.DataFrame(results)
-            # Reorder columns to match requested format
-            df = df[['game', 'type', 'target', 'predictor', 'r_squared', 'coef', 'p_value', 'n_obs', 'r_squared_adj']]
+            # Reorder columns to match requested format (with VIF added)
+            df = df[['game', 'type', 'target', 'predictor', 'r_squared', 'coef', 'p_value', 'vif', 'n_obs', 'r_squared_adj']]
             df.to_csv(self.output_dir/"T_mlr_features_to_performance.csv", index=False)
             
             # For PNG: show coef with significance stars
@@ -503,6 +550,138 @@ class TableGenerator:
             df_png['coef'] = df_png.apply(lambda r: f"{r['coef']:.4f} {self._sig(r['p_value'])}".strip(), axis=1)
             df_png_display = df_png[['game', 'target', 'predictor', 'coef', 'r_squared']]
             self._save_png(df_png_display, "T5_magic_to_perf.png", "MAgIC → Performance (RQ3) | * p<.05, ** p<.01, *** p<.001")
+    
+    def mlr_combined_to_performance(self):
+        """
+        Combined regression: MAgIC metrics + Model features → Performance
+        
+        This analysis tests whether combining behavioral capabilities (MAgIC) 
+        and architectural features improves prediction of economic performance
+        within each game.
+        
+        Outputs:
+        - T7_combined_to_perf.csv: Full regression results
+        - T7_combined_to_perf.png: Visual summary with significance stars
+        """
+        if not STATSMODELS_AVAILABLE: return
+        logger.info("T7_combined_to_perf (Combined MAgIC + Features → Performance)")
+        
+        # Prepare data
+        magic = self.magic_df_no_random.pivot_table(index=['game','model','condition'], columns='metric', values='mean').reset_index()
+        perf = self.perf_df_no_random.pivot_table(index=['game','model','condition'], columns='metric', values='mean').reset_index()
+        
+        # Merge all three dataframes: performance + magic + features
+        merged = perf.merge(magic, on=['game','model','condition'], how='inner')
+        merged = merged.merge(self.features_df, on='model', how='left')
+        
+        if merged.empty: 
+            logger.warning("No data for combined regression")
+            return
+        
+        perf_cols = [c for c in perf.columns if c not in ['game','model','condition']]
+        magic_cols = [c for c in magic.columns if c not in ['game','model','condition']]
+        
+        results = []
+        
+        for g in merged['game'].unique():
+            gdf = merged[merged['game']==g].copy()
+            
+            # Get available MAgIC metrics for this game (with variance)
+            magic_avail = self._remove_collinear(gdf, [m for m in magic_cols if m in gdf and gdf[m].std() > 0])
+            
+            # Get available model features (with variance)
+            features_avail = self._remove_collinear(gdf, [f for f in MODEL_FEATURES if f in gdf and gdf[f].std() > 0])
+            
+            # Combine all predictors
+            all_predictors = magic_avail + features_avail
+            
+            # Remove collinearity between MAgIC and Features
+            all_predictors = self._remove_collinear(gdf, all_predictors)
+            
+            if not all_predictors:
+                logger.warning(f"No valid predictors for {g} (combined)")
+                continue
+            
+            logger.info(f"  {g}: {len(magic_avail)} MAgIC + {len(features_avail)} features = {len(all_predictors)} total predictors")
+            
+            # Run regression for each performance metric
+            for target in perf_cols:
+                if target not in gdf or gdf[target].std() == 0: 
+                    continue
+                
+                valid = gdf[[target] + all_predictors].dropna()
+                
+                if len(valid) < len(all_predictors) + 2:
+                    logger.debug(f"  Skipping {g}/{target}: insufficient observations")
+                    continue
+                
+                try:
+                    # Calculate VIF for multicollinearity detection
+                    vif_dict = {}
+                    try:
+                        X_valid = valid[all_predictors]
+                        for i, col in enumerate(X_valid.columns):
+                            vif_value = variance_inflation_factor(X_valid.values, i)
+                            vif_dict[col] = round(vif_value, 2)
+                    except Exception as vif_error:
+                        logger.debug(f"VIF calculation failed for {g}/{target}: {vif_error}")
+                        vif_dict = {col: np.nan for col in all_predictors}
+                    
+                    # Fit OLS model
+                    model = sm.OLS(valid[target], sm.add_constant(valid[all_predictors])).fit()
+                    
+                    # Store results for each predictor
+                    for pred in all_predictors:
+                        if pred in model.params.index:
+                            # Determine predictor type
+                            pred_type = 'magic' if pred in magic_cols else 'feature'
+                            
+                            results.append({
+                                'game': g,
+                                'type': 'combined_to_performance',
+                                'target': target,
+                                'predictor': pred,
+                                'predictor_type': pred_type,
+                                'r_squared': round(model.rsquared, 4),
+                                'coef': round(model.params[pred], 4),
+                                'p_value': round(model.pvalues[pred], 4),
+                                'vif': vif_dict.get(pred, np.nan),
+                                'n_obs': int(model.nobs),
+                                'r_squared_adj': round(model.rsquared_adj, 4),
+                                'n_predictors': len(all_predictors)
+                            })
+                
+                except Exception as e:
+                    logger.debug(f"  Failed regression {g}/{target}: {e}")
+                    pass
+        
+        if results:
+            df = pd.DataFrame(results)
+            # Reorder columns
+            df = df[['game', 'type', 'target', 'predictor', 'predictor_type', 'r_squared', 
+                     'coef', 'p_value', 'vif', 'n_obs', 'n_predictors', 'r_squared_adj']]
+            df.to_csv(self.output_dir/"T7_combined_to_perf.csv", index=False)
+            
+            logger.info(f"  Saved {len(df)} predictor results across {df['game'].nunique()} games")
+            
+            # Summary: Average R² by game
+            summary = df.groupby('game').agg({
+                'r_squared': 'first',  # R² is same for all predictors in same regression
+                'n_obs': 'first',
+                'n_predictors': 'first'
+            }).reset_index()
+            logger.info(f"\n  Average R² by game:\n{summary.to_string(index=False)}")
+            
+            # For PNG: show coef with significance stars
+            df_png = df.copy()
+            df_png['coef'] = df_png.apply(lambda r: f"{r['coef']:.4f} {self._sig(r['p_value'])}".strip(), axis=1)
+            df_png['predictor_display'] = df_png['predictor'] + ' (' + df_png['predictor_type'] + ')'
+            df_png_display = df_png[['game', 'target', 'predictor_display', 'coef', 'r_squared']]
+            df_png_display = df_png_display.rename(columns={'predictor_display': 'predictor'})
+            self._save_png(df_png_display, "T7_combined_to_perf.png", 
+                          "Combined (MAgIC + Features) → Performance | * p<.05, ** p<.01, *** p<.001")
+        else:
+            logger.warning("No results for combined regression")
     
     def reasoning_chars_table(self, token_df):
         logger.info("T_reasoning_chars (Supplementary)")
