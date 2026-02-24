@@ -1,0 +1,6 @@
+variable,vif,game,group
+is_qwen3,2.7441902604952033,athey_bagwell,Architectural
+is_llama3_1,1.1165709822706924,athey_bagwell,Architectural
+is_moe,2.5541775796137025,athey_bagwell,Architectural
+thinking_enabled,1.8307160011220311,athey_bagwell,Architectural
+param_size_z,2.1774103595383067,athey_bagwell,Architectural

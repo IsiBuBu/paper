@@ -1,0 +1,9 @@
+variable,vif,game,group
+is_qwen3,7.115140380583632,salop,Both
+is_llama3_1,2.0092361237818537,salop,Both
+is_moe,4.569017604514833,salop,Both
+thinking_enabled,25.7257488114912,salop,Both
+param_size_z,3.569634102607426,salop,Both
+cooperation,4.004706011936282,salop,Both
+rationality,40.40236616125354,salop,Both
+reasoning,18.84844437301745,salop,Both

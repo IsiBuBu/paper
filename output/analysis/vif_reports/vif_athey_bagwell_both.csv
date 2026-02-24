@@ -1,0 +1,10 @@
+variable,vif,game,group
+is_qwen3,9.087111176633709,athey_bagwell,Both
+is_llama3_1,3.014432572714984,athey_bagwell,Both
+is_moe,3.373295583322875,athey_bagwell,Both
+thinking_enabled,3.272327739065498,athey_bagwell,Both
+param_size_z,3.4654805343828077,athey_bagwell,Both
+cooperation,555.4274375973365,athey_bagwell,Both
+deception,6.356502949537057,athey_bagwell,Both
+rationality,207.56423287703566,athey_bagwell,Both
+reasoning,213.77979218295053,athey_bagwell,Both

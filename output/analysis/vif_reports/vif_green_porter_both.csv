@@ -1,0 +1,8 @@
+variable,vif,game,group
+is_qwen3,5.364748120131013,green_porter,Both
+is_llama3_1,1.4711189662126436,green_porter,Both
+is_moe,4.149493699853043,green_porter,Both
+thinking_enabled,2.126637810047248,green_porter,Both
+param_size_z,2.5304693335010207,green_porter,Both
+cooperation,23.918833014677983,green_porter,Both
+coordination,20.105832634897354,green_porter,Both

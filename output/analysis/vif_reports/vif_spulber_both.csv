@@ -1,0 +1,10 @@
+variable,vif,game,group
+is_qwen3,8.898056210639842,spulber,Both
+is_llama3_1,3.874010304266125,spulber,Both
+is_moe,3.282879770242503,spulber,Both
+thinking_enabled,2.1501131262792716,spulber,Both
+param_size_z,3.8485344340004684,spulber,Both
+judgment,40.11362008666656,spulber,Both
+rationality,119.95424460526664,spulber,Both
+reasoning,346.30654478795464,spulber,Both
+self_awareness,83.86564007251789,spulber,Both

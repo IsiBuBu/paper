@@ -9,7 +9,7 @@ import re
 BEHAVIOR_FILE = 'output/analysis/magic_behavioral_metrics.csv'
 PERFORMANCE_FILE = 'output/analysis/performance_metrics.csv'
 OUTPUT_DIR = 'output/analysis'
-COLLINEARITY_THRESHOLD = 0.90  # Drop one predictor if |corr| >= this
+COLLINEARITY_THRESHOLD = 0.95 # use a stricter pairwise corr threshold (was 0.85)
 
 # --- Helper Functions ---
 
@@ -88,13 +88,24 @@ def load_and_merge_data():
     # Use model column from performance_metrics.csv for feature mapping
     arch_feats = pd.DataFrame([extract_arch_features(m) for m in df_perf['model'].unique() if extract_arch_features(m) is not None])
     merged_df = merged_df.merge(arch_feats, on='model', how='left')
-    # Drop rows with missing family (only keep Qwen3/Llama models)
-    merged_df = merged_df.dropna(subset=['family'])
-    # One-hot encode family
-    family_dummies = pd.get_dummies(merged_df['family'], prefix='family')
-    merged_df = pd.concat([merged_df, family_dummies], axis=1)
 
-    # Convert param_size to numeric (e.g., '70b' -> 70, '235b' -> 235)
+    # Fill thinking_enabled for models that don't define it (e.g., llama) -> treat as 0
+    if 'thinking_enabled' in merged_df.columns:
+        merged_df['thinking_enabled'] = merged_df['thinking_enabled'].fillna(False).astype(bool).astype(int)
+    else:
+        merged_df['thinking_enabled'] = 0
+
+    # Binary flags requested by user
+    merged_df['is_qwen3'] = (merged_df['family'] == 'qwen3').astype(int)
+    merged_df['is_llama3_1'] = (merged_df['family_version'] == '3.1').astype(int)
+
+    # Derive is_moe from explicit architecture if present, otherwise fallback to model name matching
+    if 'model_architecture' in merged_df.columns:
+        merged_df['is_moe'] = merged_df['model_architecture'].astype(str).str.contains('moe', case=False, na=False).astype(int)
+    else:
+        merged_df['is_moe'] = merged_df['model'].astype(str).str.contains('Llama-4|MoE|Moe', case=False, na=False).astype(int)
+
+    # Convert param_size to numeric (e.g., '70b' -> 70) if not already present
     def parse_param_size(s):
         if isinstance(s, str) and s.endswith('b'):
             try:
@@ -102,27 +113,30 @@ def load_and_merge_data():
             except:
                 return None
         return None
-    merged_df['param_size_num'] = merged_df['param_size'].apply(parse_param_size)
+    if 'param_size' in merged_df.columns:
+        merged_df['param_size_num'] = merged_df['param_size'].apply(parse_param_size)
+    else:
+        merged_df['param_size_num'] = np.nan
 
-    # One-hot encode model_architecture
-    arch_dummies = pd.get_dummies(merged_df['model_architecture'], prefix='arch')
+    # Log-transform + z-score param size (stable numeric predictor)
+    merged_df['param_size_log'] = np.log1p(merged_df['param_size_num'].fillna(0.0))
+    p_mean = merged_df['param_size_log'].mean()
+    p_std = merged_df['param_size_log'].std()
+    if pd.isna(p_std) or p_std == 0:
+        merged_df['param_size_z'] = 0.0
+    else:
+        merged_df['param_size_z'] = (merged_df['param_size_log'] - p_mean) / p_std
+
+    # Keep a small family_dummies like object for compatibility with existing code paths
+    family_dummies = merged_df[[c for c in ['is_qwen3', 'is_llama3_1'] if c in merged_df.columns]].copy()
+
+    # Preserve arch_dummies (if needed elsewhere) but we'll primarily use compact binaries above
+    arch_dummies = pd.get_dummies(merged_df.get('model_architecture', pd.Series(dtype=str)), prefix='arch')
     merged_df = pd.concat([merged_df, arch_dummies], axis=1)
 
-    # One-hot encode thinking_enabled (True/False)
-    if 'thinking_enabled' in merged_df.columns:
-        thinking_dummies = pd.get_dummies(merged_df['thinking_enabled'], prefix='thinking_enabled')
-        merged_df = pd.concat([merged_df, thinking_dummies], axis=1)
-    else:
-        thinking_dummies = pd.DataFrame()
+    # We prefer the compact binary columns for downstream modeling
 
-    # One-hot encode family_version (for llama models)
-    if 'family_version' in merged_df.columns:
-        version_dummies = pd.get_dummies(merged_df['family_version'], prefix='family_version')
-        merged_df = pd.concat([merged_df, version_dummies], axis=1)
-    else:
-        version_dummies = pd.DataFrame()
-
-    # Only keep rows where family is 'llama' or 'qwen3'
+    # Only keep rows where family is 'llama' or 'qwen3' (as before)
     merged_df = merged_df[merged_df['family'].isin(['llama', 'qwen3'])]
 
     # For family version analysis, include all Qwen3 models and only Llama models with versions 4, 3.3, or 3.1
@@ -145,10 +159,10 @@ def load_and_merge_data():
 
     # Identify Targets and Predictors
     targets = [c for c in pivot_perf.columns if c not in ['game', 'model', 'condition']]
-    # Only use numeric predictors and one-hot encoded columns
+    # Only use numeric predictors and the compact architectural columns
     numeric_predictors = [c for c in pivot_behavior.columns if c not in ['game', 'model', 'condition']]
-    arch_numeric = [c for c in family_dummies.columns] + list(thinking_dummies.columns) + list(version_dummies.columns)
-    predictors = numeric_predictors + arch_numeric
+    arch_numeric = ['is_qwen3', 'is_llama3_1', 'is_moe', 'thinking_enabled', 'param_size_z']
+    predictors = numeric_predictors + [c for c in arch_numeric if c in merged_df.columns]
 
     return merged_df, targets, predictors, family_dummies, pivot_behavior, arch_dummies
 
@@ -202,6 +216,144 @@ def remove_collinear_predictors(df, predictor_list, threshold=0.95):
             break  # No more collinear pairs
     
     return remaining, dropped
+
+
+# New helper: VIF calculation and high-VIF detector
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+def calculate_vif(df, features):
+    """Return DataFrame with VIF for each feature. Expects df[features] numeric and no-NaNs."""
+    X = df[features].astype(float)
+    # Add small ridge to avoid singular matrix issues
+    X = X.fillna(0.0) + 1e-8
+    vif_data = []
+    for i, col in enumerate(features):
+        try:
+            vif = variance_inflation_factor(X.values, i)
+        except Exception:
+            vif = np.nan
+        vif_data.append({'variable': col, 'vif': vif})
+    return pd.DataFrame(vif_data)
+
+
+def get_high_vif(df, features, thresh=10.0):
+    """Return list of features with VIF > thresh. Safe on small feature sets."""
+    if len(features) < 2:
+        return []
+    try:
+        sub = df[features].dropna()
+        if len(sub) < 2:
+            return []
+        vif_df = calculate_vif(sub, features)
+        high = vif_df[vif_df['vif'] > thresh]['variable'].tolist()
+        return high
+    except Exception:
+        return []
+
+# New helper: iterative VIF-based dropping
+def iterative_vif_filter(df, features, vif_thresh=10.0, min_features=1, log_prefix=''):
+    """Iteratively drop the feature with highest VIF until all VIFs <= vif_thresh or len(features) <= min_features.
+    Returns (kept_features, dropped_features_list).
+    """
+    features = list(features)
+    dropped = []
+    # If too few features, nothing to do
+    while True:
+        if len(features) <= min_features:
+            break
+        try:
+            vif_df = calculate_vif(df, features)
+        except Exception:
+            break
+        # If any NaN or infinite VIFs, treat as high and drop the corresponding variable
+        vif_df = vif_df.replace([np.inf, -np.inf], np.nan)
+        # pick highest VIF
+        if vif_df['vif'].isnull().all():
+            break
+        max_row = vif_df.sort_values('vif', ascending=False).iloc[0]
+        if pd.isna(max_row['vif']):
+            break
+        if max_row['vif'] > vif_thresh:
+            var_to_drop = max_row['variable']
+            dropped.append({'dropped': var_to_drop, 'vif': float(max_row['vif']), 'reason': f'vif>{vif_thresh}', 'context': log_prefix})
+            features.remove(var_to_drop)
+        else:
+            break
+    return features, dropped
+
+
+# New helper: generate VIF reports
+def generate_vif_reports(df, arch_predictors, strat_predictors, outdir):
+    """Generate per-game VIF reports for Architectural, Strategic and Both predictor sets.
+    Saves per-game/group CSVs to outdir/vif_reports/ and a combined summary.
+    """
+    reports_dir = os.path.join(outdir, 'vif_reports')
+    os.makedirs(reports_dir, exist_ok=True)
+    all_reports = []
+
+    games = df['game'].unique()
+    groups = [
+        ('Architectural', arch_predictors),
+        ('Strategic', strat_predictors),
+        ('Both', arch_predictors + strat_predictors)
+    ]
+
+    for game in games:
+        game_df = df[df['game'] == game]
+        for group_name, preds in groups:
+            # select valid predictors for this game
+            valid_preds = [p for p in preds if p in game_df.columns and game_df[p].notna().any() and game_df[p].std() > 0]
+            if len(valid_preds) < 1:
+                continue
+            sub = game_df[valid_preds].dropna()
+            if sub.empty:
+                continue
+            try:
+                vif_df = calculate_vif(sub, valid_preds)
+            except Exception:
+                # fallback: build empty structure
+                vif_df = pd.DataFrame([{'variable': v, 'vif': np.nan} for v in valid_preds])
+            vif_df['game'] = game
+            vif_df['group'] = group_name
+            # save per-game-group CSV
+            safe_group = re.sub(r"[^0-9a-zA-Z_-]", "_", group_name.lower())
+            safe_game = re.sub(r"[^0-9a-zA-Z_-]", "_", str(game))
+            out_path = os.path.join(reports_dir, f"vif_{safe_game}_{safe_group}.csv")
+            vif_df.to_csv(out_path, index=False)
+            all_reports.append(vif_df)
+
+    if all_reports:
+        combined = pd.concat(all_reports, ignore_index=True)
+        combined_path = os.path.join(reports_dir, 'vif_all_games.csv')
+        combined.to_csv(combined_path, index=False)
+        print(f"VIF reports written to: {reports_dir} (combined: {combined_path})")
+    else:
+        print("No VIF reports generated (no valid predictors present per game/group).")
+
+
+def save_high_vif_summary(reports_dir, thresh=10.0):
+    """Load combined VIF report (vif_all_games.csv), filter entries with vif > thresh,
+    and save a compact summary to vif_high_per_game.csv.
+    """
+    combined_path = os.path.join(reports_dir, 'vif_all_games.csv')
+    out_path = os.path.join(reports_dir, 'vif_high_per_game.csv')
+    if not os.path.exists(combined_path):
+        print(f"High-VIF summary: combined VIF file not found: {combined_path}")
+        return
+    try:
+        vdf = pd.read_csv(combined_path)
+        # ensure numeric
+        vdf['vif'] = pd.to_numeric(vdf['vif'], errors='coerce')
+        high = vdf[vdf['vif'] > float(thresh)].copy()
+        if high.empty:
+            print(f"No predictors with VIF > {thresh} found.")
+        else:
+            # sort for readability
+            high = high.sort_values(['game', 'group', 'vif'], ascending=[True, True, False])
+            high.to_csv(out_path, index=False)
+            print(f"High-VIF summary written: {out_path}")
+    except Exception as e:
+        print(f"Failed to write high-VIF summary: {e}")
 
 
 # --- Analysis 1: Simple Linear Regression (One-to-One) ---
@@ -378,12 +530,67 @@ def run_grouped_regressions(df, targets, predictors):
 
 
 # --- LaTeX Table Generation ---
+
+def _get_from_row(row, candidates):
+    """Safely extract a value from a pandas row-like object (DataFrame slice or Series).
+    Tries each candidate key in order and returns first non-None / non-NaN value.
+
+    This version is more defensive: it handles DataFrame (multi-row) slices by
+    searching down the column for the first non-null value, Series objects,
+    dict-like objects, and plain scalars.
+    """
+    if row is None:
+        return None
+    try:
+        # DataFrame with potential multiple rows
+        if hasattr(row, 'columns') and hasattr(row, 'iloc'):
+            if getattr(row, 'empty', False):
+                return None
+            for key in candidates:
+                if key in row.columns:
+                    col = row[key].dropna()
+                    if not col.empty:
+                        return col.iloc[0]
+            return None
+        # Series-like
+        if hasattr(row, 'index'):
+            for key in candidates:
+                try:
+                    if key in row.index:
+                        val = row.get(key, None)
+                        if val is not None and not (isinstance(val, float) and np.isnan(val)):
+                            return val
+                except Exception:
+                    continue
+        # dict-like
+        try:
+            for key in candidates:
+                if isinstance(row, dict) and key in row:
+                    val = row[key]
+                    if val is not None and not (isinstance(val, float) and np.isnan(val)):
+                        return val
+        except Exception:
+            pass
+        # fallback: if it's a scalar, return it if candidates include a generic key
+        return row
+    except Exception:
+        return None
+
+# Convenience wrappers
+def get_coef(row):
+    return _get_from_row(row, ['coef', 'coefficient', 'beta'])
+
+def get_pvalue(row):
+    return _get_from_row(row, ['p_value', 'pval', 'p'])
+
+def get_adj_r2(row):
+    return _get_from_row(row, ['r_squared_adj', 'adj_r2', 'adjR2', 'adj_r_squared', 'adjR_squared', 'adj_r2', 'adjR', 'r2_adj'])
+
 def generate_latex_regression_table(metric, latex_path, df):
     games = ['athey_bagwell', 'green_porter', 'salop', 'spulber']
     game_names = ['Athey-Bagwell', 'Green-Porter', 'Salop', 'Spulber']
     arch_predictors = [
-        'family_qwen3', 'param_size_num', 'arch_dense', 'arch_moe', 'thinking_enabled_False', 'thinking_enabled_True',
-        'family_version_3.1', 'family_version_3.3', 'family_version_4'
+        'is_qwen3', 'param_size_z', 'is_moe', 'is_llama3_1'
     ]
     strat_predictors = [
         'cooperation', 'deception', 'rationality', 'reasoning', 'coordination', 'judgment', 'self_awareness'
@@ -417,13 +624,20 @@ def generate_latex_regression_table(metric, latex_path, df):
             def cell(row):
                 if row.empty:
                     return ''
-                coef = row.iloc[0]['coef']
-                pval = row.iloc[0]['p_value'] if 'p_value' in row.iloc[0] else row.iloc[0].get('pval', None)
+                coef = get_coef(row)
+                pval = get_pvalue(row)
                 stars = pval_stars(pval)
-                adj_r2 = row.iloc[0]['r_squared_adj'] if 'r_squared_adj' in row.iloc[0] else row.iloc[0].get('adj_r2', None)
+                adj_r2 = get_adj_r2(row)
                 coef_fmt = f"{coef:.3f}{stars}" if coef is not None else ""
-                adj_r2_fmt = f"{adj_r2:.2f}" if adj_r2 is not None else ""
-                return f"{coef_fmt}, {adj_r2_fmt}" if coef_fmt else ''
+                adj_r2_fmt = f"{adj_r2:.2f}" if adj_r2 is not None and not pd.isna(adj_r2) else ""
+                if coef_fmt and adj_r2_fmt:
+                    return f"{coef_fmt}, {adj_r2_fmt}"
+                elif coef_fmt:
+                    return f"{coef_fmt}"
+                elif adj_r2_fmt:
+                    return f", {adj_r2_fmt}"
+                else:
+                    return ''
             rows.append(f"{game} & \texttt{{{predictor}}} & {cell(arch)} & {cell(strat)} & {cell(both)} \\ \n")
         rows.append("\\multicolumn{5}{l}{\\textbf{Strategic Capabilities}} \\ \n")
         for predictor in strat_predictors:
@@ -450,8 +664,7 @@ def generate_latex_tables_from_csv(csv_path, outdir):
     games = df['game'].unique()
     groups = ['Architectural', 'Strategic', 'Both']
     arch_predictors = [
-        'family_qwen3', 'param_size_num', 'arch_dense', 'arch_moe', 'thinking_enabled_False', 'thinking_enabled_True',
-        'family_version_3.1', 'family_version_3.3', 'family_version_4'
+        'is_qwen3', 'param_size_z', 'is_moe', 'is_llama3_1'
     ]
     strat_predictors = [
         'cooperation', 'deception', 'rationality', 'reasoning', 'coordination', 'judgment', 'self_awareness'
@@ -488,13 +701,20 @@ def generate_latex_tables_from_csv(csv_path, outdir):
                 def cell(row):
                     if row.empty:
                         return ''
-                    coef = row.iloc[0]['coef'] if 'coef' in row.iloc[0] else row.iloc[0].get('coefficient', None)
-                    pval = row.iloc[0]['pval'] if 'pval' in row.iloc[0] else row.iloc[0].get('p_value', None)
+                    coef = get_coef(row)
+                    pval = get_pvalue(row)
                     stars = pval_stars(pval) if pval is not None else ''
-                    adj_r2 = row.iloc[0]['adj_r2'] if 'adj_r2' in row.iloc[0] else row.iloc[0].get('adj_r2', None)
+                    adj_r2 = get_adj_r2(row)
                     coef_fmt = f"{coef:.3f}" if coef is not None else ""
-                    adj_r2_fmt = f"{adj_r2:.2f}" if adj_r2 is not None else ""
-                    return f"{coef_fmt}{stars}, {adj_r2_fmt}" if coef_fmt else ''
+                    adj_r2_fmt = f"{adj_r2:.2f}" if adj_r2 is not None and not pd.isna(adj_r2) else ""
+                    if coef_fmt and adj_r2_fmt:
+                        return f"{coef_fmt}{stars}, {adj_r2_fmt}"
+                    elif coef_fmt:
+                        return f"{coef_fmt}{stars}"
+                    elif adj_r2_fmt:
+                        return f", {adj_r2_fmt}"
+                    else:
+                        return ''
                 arch_rows.append(f"{game} & {predictor} & {cell(arch)} & {cell(strat)} & {cell(both)} \\ \n")
             if not any([r for r in arch_rows if r.strip() and r.count('&') > 1]):
                 rows.append("% No architectural features present for this game\n")
@@ -527,8 +747,7 @@ def generate_latex_tables_from_csv(csv_path, outdir):
 def make_regression_table(metric, latex_path, df):
     games = ['athey_bagwell', 'green_porter', 'salop', 'spulber']
     arch_predictors = [
-        'family_qwen3', 'param_size_num', 'arch_dense', 'arch_moe', 'thinking_enabled_False', 'thinking_enabled_True',
-        'family_version_3.1', 'family_version_3.3', 'family_version_4'
+        'is_qwen3', 'param_size_z', 'is_moe', 'is_llama3_1'
     ]
     strat_predictors = [
         'cooperation', 'deception', 'rationality', 'reasoning', 'coordination', 'judgment', 'self_awareness'
@@ -562,11 +781,10 @@ def make_regression_table(metric, latex_path, df):
             def cell(row):
                 if row.empty:
                     return ''
-                coef = row.iloc[0]['coef'] if 'coef' in row.iloc[0] else row.iloc[0].get('coef', None)
-                pval = row.iloc[0]['p_value'] if 'p_value' in row.iloc[0] else row.iloc[0].get('pval', None)
+                coef = get_coef(row)
+                pval = get_pvalue(row)
                 stars = pval_stars(pval)
-                # Always use r_squared_adj from regressions.csv
-                adj_r2 = row.iloc[0]['r_squared_adj'] if 'r_squared_adj' in row.iloc[0] else row.iloc[0].get('r_squared_adj', None)
+                adj_r2 = get_adj_r2(row)
                 coef_fmt = f"{coef:.3f}{stars}" if coef is not None else ""
                 adj_r2_fmt = f"{adj_r2:.2f}" if adj_r2 is not None and not pd.isna(adj_r2) else ""
                 if coef_fmt and adj_r2_fmt:
@@ -607,12 +825,20 @@ def main():
         return
 
     # --- Predictor Grouping ---
-    # Architectural features: one-hot encoded family columns, param_size_num, model_architecture dummies, and thinking_enabled dummies
-    arch_predictors = [c for c in df.columns if (
-        c.startswith('family_') or c == 'param_size_num' or c.startswith('arch_') or c.startswith('thinking_enabled_') or c.startswith('family_version_'))
-        and pd.api.types.is_numeric_dtype(df[c])]
+    # Architectural features: use compact binary features created earlier
+    arch_list = ['is_qwen3', 'is_llama3_1', 'is_moe', 'thinking_enabled', 'param_size_z']
+    arch_predictors = [c for c in arch_list if c in df.columns and pd.api.types.is_numeric_dtype(df[c])]
     # Strategic features: all behavioral metrics from magic_behavioral_metrics.csv (numeric)
     strat_predictors = [c for c in pivot_behavior.columns if c not in ['game', 'model', 'condition'] and pd.api.types.is_numeric_dtype(df[c])]
+
+    # Generate per-game VIF reports so we can inspect collinearity before modeling
+    try:
+        generate_vif_reports(df, arch_predictors, strat_predictors, OUTPUT_DIR)
+        # produce high-VIF summary (default threshold = 10)
+        reports_dir = os.path.join(OUTPUT_DIR, 'vif_reports')
+        save_high_vif_summary(reports_dir, thresh=10.0)
+    except Exception as e:
+        print(f"Failed to generate VIF reports: {e}")
 
     results = []
     for game in df['game'].unique():
@@ -624,6 +850,11 @@ def main():
             if arch_collinear_log:
                 for entry in arch_collinear_log:
                     print(f"  Collinearity in {game} {target} [Architectural]: dropped '{entry['dropped']}' (corr={entry['correlation']:.4f} with '{entry['kept']}')")
+            # Iterative VIF-based dropping (prefer VIF over one-shot removal)
+            arch_preds, arch_vif_dropped = iterative_vif_filter(game_df, arch_preds, vif_thresh=10.0, min_features=1, log_prefix=f"{game} {target} [Architectural]")
+            if arch_vif_dropped:
+                for e in arch_vif_dropped:
+                    print(f"  High VIF in {e['context']}: dropped '{e['dropped']}' (VIF={e['vif']:.2f})")
             if len(arch_preds) > 0:
                 valid = game_df[arch_preds + [target]].dropna()
                 valid = valid.astype(float)
@@ -653,6 +884,10 @@ def main():
             if strat_collinear_log:
                 for entry in strat_collinear_log:
                     print(f"  Collinearity in {game} {target} [Strategic]: dropped '{entry['dropped']}' (corr={entry['correlation']:.4f} with '{entry['kept']}')")
+            strat_preds, strat_vif_dropped = iterative_vif_filter(game_df, strat_preds, vif_thresh=10.0, min_features=1, log_prefix=f"{game} {target} [Strategic]")
+            if strat_vif_dropped:
+                for e in strat_vif_dropped:
+                    print(f"  High VIF in {e['context']}: dropped '{e['dropped']}' (VIF={e['vif']:.2f})")
             if strat_preds:
                 valid = game_df[strat_preds + [target]].dropna()
                 valid = valid.astype(float)
@@ -682,6 +917,10 @@ def main():
             if both_collinear_log:
                 for entry in both_collinear_log:
                     print(f"  Collinearity in {game} {target} [Both]: dropped '{entry['dropped']}' (corr={entry['correlation']:.4f} with '{entry['kept']}')")
+            both_preds, both_vif_dropped = iterative_vif_filter(game_df, both_preds, vif_thresh=10.0, min_features=1, log_prefix=f"{game} {target} [Both]")
+            if both_vif_dropped:
+                for e in both_vif_dropped:
+                    print(f"  High VIF in {e['context']}: dropped '{e['dropped']}' (VIF={e['vif']:.2f})")
             if both_preds:
                 valid = game_df[both_preds + [target]].dropna()
                 valid = valid.astype(float)
